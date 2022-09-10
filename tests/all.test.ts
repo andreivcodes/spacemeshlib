@@ -1,66 +1,24 @@
+import { Client } from '@grpc/grpc-js';
 import * as assert from 'assert';
 import * as bip39 from 'bip39';
+import exp from 'constants';
 import {
   generatePrivateKey,
   generatePublicKey,
   signMessage,
   verifyMessage,
   signTransaction,
-  derivePrivateKey,
   derivePublicKey,
   toHexString,
 } from '../src/crypto';
+import { accountDataQuery, createGlobalStateChannel, getAccountBalance, getAccountNonce } from '../src/global_state';
+import { AccountDataFlag, AccountDataQueryResponse } from '../src/proto/dist/spacemesh/v1/global_state_types';
+import { GlobalStateServiceClient } from './../src/proto/dist/spacemesh/v1/global_state';
 
-import * as debug from '../src/proto/dist/spacemesh/v1/debug';
-import * as debug_types from '../src/proto/dist/spacemesh/v1/debug_types';
-import * as gateway from '../src/proto/dist/spacemesh/v1/gateway';
-import * as gateway_types from '../src/proto/dist/spacemesh/v1/gateway_types';
-import * as global_state from '../src/proto/dist/spacemesh/v1/global_state';
-import * as global_state_types from '../src/proto/dist/spacemesh/v1/global_state_types';
-import * as mesh from '../src/proto/dist/spacemesh/v1/mesh';
-import * as mesh_types from '../src/proto/dist/spacemesh/v1/mesh_types';
-import * as node from '../src/proto/dist/spacemesh/v1/node';
-import * as node_types from '../src/proto/dist/spacemesh/v1/node_types';
-import * as smesher from '../src/proto/dist/spacemesh/v1/smesher';
-import * as smesher_types from '../src/proto/dist/spacemesh/v1/smesher_types';
-import * as tx from '../src/proto/dist/spacemesh/v1/tx';
-import * as tx_types from '../src/proto/dist/spacemesh/v1/tx_types';
-import * as types from '../src/proto/dist/spacemesh/v1/types';
-
-describe('Exports', function () {
-  it('should export own functions', async function () {
-    let exists =
-      generatePrivateKey != undefined &&
-      generatePublicKey != undefined &&
-      signMessage != undefined &&
-      verifyMessage != undefined &&
-      signTransaction != undefined &&
-      derivePrivateKey != undefined &&
-      derivePublicKey != undefined &&
-      toHexString != undefined;
-    assert.equal(exists, true);
-  });
-
-  it('should export proto functions', async function () {
-    let exists =
-      debug != undefined &&
-      debug_types != undefined &&
-      gateway != undefined &&
-      gateway_types != undefined &&
-      global_state != undefined &&
-      global_state_types != undefined &&
-      mesh != undefined &&
-      mesh_types != undefined &&
-      node != undefined &&
-      node_types != undefined &&
-      smesher != undefined &&
-      smesher_types != undefined &&
-      tx != undefined &&
-      tx_types != undefined &&
-      types != undefined;
-    assert.equal(exists, true);
-  });
-});
+const MNEMONIC = 'wing second among day sun vote nice fortune siren smart holiday video';
+const ADDRESS = '0x38db093ce43fe3db88d89568baaeb68a6b5e74a6';
+const NETWORK_URL = 'api-devnet226.spacemesh.io';
+const NETWORK_PORT = 443;
 
 describe('Create', function () {
   it('should create private key with length 128', async function () {
@@ -77,21 +35,12 @@ describe('Create', function () {
   });
 });
 
-describe('restore', function () {
-  it('should restore correct private key', async function () {
-    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
-    let prvk = (await generatePrivateKey(mnemonic)) as Uint8Array;
-
-    assert.equal(toHexString(prvk).length, 128);
-  });
+describe('Restore', function () {
   it('should restore correct public key', async function () {
-    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
+    let mnemonic = MNEMONIC;
     let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
 
-    assert.equal(
-      '0x' + toHexString(pubk).slice(24).toLowerCase(),
-      '0x38DB093Ce43Fe3dB88D89568bAAeB68A6b5E74a6'.toLowerCase(),
-    );
+    assert.equal('0x' + toHexString(pubk).slice(24).toLowerCase(), ADDRESS.toLowerCase());
   });
 });
 
@@ -187,5 +136,45 @@ describe('Transaction', function () {
     let sign = (await signMessage(toHexString(tx), toHexString(prvk))) as Uint8Array;
     let verify = await verifyMessage(toHexString(pubk), toHexString(badtx), toHexString(sign));
     assert.equal(verify, false);
+  });
+});
+
+describe('Global State', function () {
+  it('can create channel', async function () {
+    const channel = createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
+
+    expect(channel).not.toBeNull();
+  });
+  it('should return account data query result', async function () {
+    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
+    let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
+
+    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
+    let result = await accountDataQuery(pubk, AccountDataFlag.ACCOUNT_DATA_FLAG_ACCOUNT);
+
+    expect(result).not.toBeNull();
+    expect(result.totalResults).not.toBeNull();
+  });
+
+  it('should return account nonce', async function () {
+    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
+    let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
+
+    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
+    let result = Number(await getAccountNonce(pubk));
+
+    expect(result).not.toBeNull();
+    expect(result).toBeGreaterThanOrEqual(0);
+  });
+
+  it('should return account balance', async function () {
+    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
+    let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
+
+    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
+    let result = Number(await getAccountBalance(pubk));
+
+    expect(result).not.toBeNull();
+    expect(result).toBeGreaterThanOrEqual(0);
   });
 });
