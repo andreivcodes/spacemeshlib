@@ -1,6 +1,6 @@
 {
   "name": "@andreivcodes/spacemeshlib",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Utility lib for Spacemesh network",
   "main": "src/index",
   "author": "andreivcodes",
@@ -18,9 +18,13 @@
     "proto:compile": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_opt=esModuleInterop=true,forceLong=string,lowerCaseServiceMethods=true,outputServices=nice-grpc,outputServices=generic-definitions --ts_proto_out=./src/proto/dist  -I=./src/proto -I=./src/proto/third_party ./src/proto/spacemesh/v1/*.proto",
     "proto:watch": "chokidar \"**/*.proto\" -c \"yarn proto:compile\""
   },
+  "coveragePathIgnorePatterns": [
+    "/lib"
+  ],
   "dependencies": {
     "bip39": "^3.0.4",
     "js-xdr": "^1.3.0",
+    "nice-grpc": "^2.0.0",
     "nice-grpc-common": "^2.0.0",
     "ts-proto": "^1.125.0"
   },
