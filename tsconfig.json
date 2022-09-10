@@ -8,7 +8,8 @@
     "esModuleInterop": true /* Enables intero between CommonJS and ES */,
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently */,
-    "allowJs": true
+    "allowJs": true,
+    "declaration": true
   },
   "include": ["./**/*.ts", "./**/*.wasm", "src/wasm/wasm_exec.js", "jest.config.cjs"],
   "exclude": ["./node_modules/", "./lib/"]

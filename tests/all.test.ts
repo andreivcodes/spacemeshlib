@@ -9,7 +9,7 @@ import {
   derivePrivateKey,
   derivePublicKey,
   toHexString,
-} from '../src/util';
+} from '../src/crypto';
 
 import * as debug from '../src/proto/dist/spacemesh/v1/debug';
 import * as debug_types from '../src/proto/dist/spacemesh/v1/debug_types';

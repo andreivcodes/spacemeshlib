@@ -9,6 +9,10 @@ const { config, UnsignedHyper } = xdr;
 import path from 'path';
 import fs from 'fs';
 
+declare global {
+  var Go: any;
+}
+
 const wasmFile = path.join(path.dirname(fs.realpathSync(__filename)), './wasm/ed25519.wasm');
 
 export const generatePrivateKey = async (mnemonic: string) => {
