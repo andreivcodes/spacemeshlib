@@ -140,8 +140,8 @@ export interface TransactionResult {
   tx: Transaction | undefined;
   status: TransactionResult_Status;
   message: string;
-  gasConsumed: number;
-  fee: number;
+  gasConsumed: Long;
+  fee: Long;
   block: Uint8Array;
   layer: number;
   touchedAddresses: string[];
@@ -766,8 +766,8 @@ function createBaseTransactionResult(): TransactionResult {
     tx: undefined,
     status: 0,
     message: "",
-    gasConsumed: 0,
-    fee: 0,
+    gasConsumed: Long.UZERO,
+    fee: Long.UZERO,
     block: new Uint8Array(),
     layer: 0,
     touchedAddresses: [],
@@ -785,10 +785,10 @@ export const TransactionResult = {
     if (message.message !== "") {
       writer.uint32(26).string(message.message);
     }
-    if (message.gasConsumed !== 0) {
+    if (!message.gasConsumed.isZero()) {
       writer.uint32(32).uint64(message.gasConsumed);
     }
-    if (message.fee !== 0) {
+    if (!message.fee.isZero()) {
       writer.uint32(40).uint64(message.fee);
     }
     if (message.block.length !== 0) {
@@ -820,10 +820,10 @@ export const TransactionResult = {
           message.message = reader.string();
           break;
         case 4:
-          message.gasConsumed = longToNumber(reader.uint64() as Long);
+          message.gasConsumed = reader.uint64() as Long;
           break;
         case 5:
-          message.fee = longToNumber(reader.uint64() as Long);
+          message.fee = reader.uint64() as Long;
           break;
         case 6:
           message.block = reader.bytes();
@@ -847,8 +847,8 @@ export const TransactionResult = {
       tx: isSet(object.tx) ? Transaction.fromJSON(object.tx) : undefined,
       status: isSet(object.status) ? transactionResult_StatusFromJSON(object.status) : 0,
       message: isSet(object.message) ? String(object.message) : "",
-      gasConsumed: isSet(object.gasConsumed) ? Number(object.gasConsumed) : 0,
-      fee: isSet(object.fee) ? Number(object.fee) : 0,
+      gasConsumed: isSet(object.gasConsumed) ? Long.fromValue(object.gasConsumed) : Long.UZERO,
+      fee: isSet(object.fee) ? Long.fromValue(object.fee) : Long.UZERO,
       block: isSet(object.block) ? bytesFromBase64(object.block) : new Uint8Array(),
       layer: isSet(object.layer) ? Number(object.layer) : 0,
       touchedAddresses: Array.isArray(object?.touchedAddresses)
@@ -862,8 +862,8 @@ export const TransactionResult = {
     message.tx !== undefined && (obj.tx = message.tx ? Transaction.toJSON(message.tx) : undefined);
     message.status !== undefined && (obj.status = transactionResult_StatusToJSON(message.status));
     message.message !== undefined && (obj.message = message.message);
-    message.gasConsumed !== undefined && (obj.gasConsumed = Math.round(message.gasConsumed));
-    message.fee !== undefined && (obj.fee = Math.round(message.fee));
+    message.gasConsumed !== undefined && (obj.gasConsumed = (message.gasConsumed || Long.UZERO).toString());
+    message.fee !== undefined && (obj.fee = (message.fee || Long.UZERO).toString());
     message.block !== undefined &&
       (obj.block = base64FromBytes(message.block !== undefined ? message.block : new Uint8Array()));
     message.layer !== undefined && (obj.layer = Math.round(message.layer));
@@ -880,8 +880,10 @@ export const TransactionResult = {
     message.tx = (object.tx !== undefined && object.tx !== null) ? Transaction.fromPartial(object.tx) : undefined;
     message.status = object.status ?? 0;
     message.message = object.message ?? "";
-    message.gasConsumed = object.gasConsumed ?? 0;
-    message.fee = object.fee ?? 0;
+    message.gasConsumed = (object.gasConsumed !== undefined && object.gasConsumed !== null)
+      ? Long.fromValue(object.gasConsumed)
+      : Long.UZERO;
+    message.fee = (object.fee !== undefined && object.fee !== null) ? Long.fromValue(object.fee) : Long.UZERO;
     message.block = object.block ?? new Uint8Array();
     message.layer = object.layer ?? 0;
     message.touchedAddresses = object.touchedAddresses?.map((e) => e) || [];
@@ -936,20 +938,14 @@ function base64FromBytes(arr: Uint8Array): string {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Long ? string | number | Long : T extends Array<infer U> ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

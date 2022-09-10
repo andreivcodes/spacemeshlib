@@ -96,7 +96,7 @@ export interface PostSetupStatusStreamResponse {
 
 export interface PostConfigResponse {
   bitsPerLabel: number;
-  labelsPerUnit: number;
+  labelsPerUnit: Long;
   minNumUnits: number;
   maxNumUnits: number;
 }
@@ -109,7 +109,7 @@ export interface PostSetupComputeProvider {
   /** A provided compute api */
   computeApi: PostSetupComputeProvider_ComputeApiClass;
   /** Estimated performance in hashes per second */
-  performance: number;
+  performance: Long;
 }
 
 export enum PostSetupComputeProvider_ComputeApiClass {
@@ -179,7 +179,7 @@ export interface PostSetupOpts {
 export interface PostSetupStatus {
   state: PostSetupStatus_State;
   /** Number of labels (hashes) written to the data files */
-  numLabelsWritten: number;
+  numLabelsWritten: Long;
   /** setup options previously set by the user */
   opts:
     | PostSetupOpts
@@ -1148,7 +1148,7 @@ export const PostSetupStatusStreamResponse = {
 };
 
 function createBasePostConfigResponse(): PostConfigResponse {
-  return { bitsPerLabel: 0, labelsPerUnit: 0, minNumUnits: 0, maxNumUnits: 0 };
+  return { bitsPerLabel: 0, labelsPerUnit: Long.UZERO, minNumUnits: 0, maxNumUnits: 0 };
 }
 
 export const PostConfigResponse = {
@@ -1156,7 +1156,7 @@ export const PostConfigResponse = {
     if (message.bitsPerLabel !== 0) {
       writer.uint32(8).uint32(message.bitsPerLabel);
     }
-    if (message.labelsPerUnit !== 0) {
+    if (!message.labelsPerUnit.isZero()) {
       writer.uint32(16).uint64(message.labelsPerUnit);
     }
     if (message.minNumUnits !== 0) {
@@ -1179,7 +1179,7 @@ export const PostConfigResponse = {
           message.bitsPerLabel = reader.uint32();
           break;
         case 2:
-          message.labelsPerUnit = longToNumber(reader.uint64() as Long);
+          message.labelsPerUnit = reader.uint64() as Long;
           break;
         case 3:
           message.minNumUnits = reader.uint32();
@@ -1198,7 +1198,7 @@ export const PostConfigResponse = {
   fromJSON(object: any): PostConfigResponse {
     return {
       bitsPerLabel: isSet(object.bitsPerLabel) ? Number(object.bitsPerLabel) : 0,
-      labelsPerUnit: isSet(object.labelsPerUnit) ? Number(object.labelsPerUnit) : 0,
+      labelsPerUnit: isSet(object.labelsPerUnit) ? Long.fromValue(object.labelsPerUnit) : Long.UZERO,
       minNumUnits: isSet(object.minNumUnits) ? Number(object.minNumUnits) : 0,
       maxNumUnits: isSet(object.maxNumUnits) ? Number(object.maxNumUnits) : 0,
     };
@@ -1207,7 +1207,7 @@ export const PostConfigResponse = {
   toJSON(message: PostConfigResponse): unknown {
     const obj: any = {};
     message.bitsPerLabel !== undefined && (obj.bitsPerLabel = Math.round(message.bitsPerLabel));
-    message.labelsPerUnit !== undefined && (obj.labelsPerUnit = Math.round(message.labelsPerUnit));
+    message.labelsPerUnit !== undefined && (obj.labelsPerUnit = (message.labelsPerUnit || Long.UZERO).toString());
     message.minNumUnits !== undefined && (obj.minNumUnits = Math.round(message.minNumUnits));
     message.maxNumUnits !== undefined && (obj.maxNumUnits = Math.round(message.maxNumUnits));
     return obj;
@@ -1216,7 +1216,9 @@ export const PostConfigResponse = {
   fromPartial<I extends Exact<DeepPartial<PostConfigResponse>, I>>(object: I): PostConfigResponse {
     const message = createBasePostConfigResponse();
     message.bitsPerLabel = object.bitsPerLabel ?? 0;
-    message.labelsPerUnit = object.labelsPerUnit ?? 0;
+    message.labelsPerUnit = (object.labelsPerUnit !== undefined && object.labelsPerUnit !== null)
+      ? Long.fromValue(object.labelsPerUnit)
+      : Long.UZERO;
     message.minNumUnits = object.minNumUnits ?? 0;
     message.maxNumUnits = object.maxNumUnits ?? 0;
     return message;
@@ -1224,7 +1226,7 @@ export const PostConfigResponse = {
 };
 
 function createBasePostSetupComputeProvider(): PostSetupComputeProvider {
-  return { id: 0, model: "", computeApi: 0, performance: 0 };
+  return { id: 0, model: "", computeApi: 0, performance: Long.UZERO };
 }
 
 export const PostSetupComputeProvider = {
@@ -1238,7 +1240,7 @@ export const PostSetupComputeProvider = {
     if (message.computeApi !== 0) {
       writer.uint32(24).int32(message.computeApi);
     }
-    if (message.performance !== 0) {
+    if (!message.performance.isZero()) {
       writer.uint32(32).uint64(message.performance);
     }
     return writer;
@@ -1261,7 +1263,7 @@ export const PostSetupComputeProvider = {
           message.computeApi = reader.int32() as any;
           break;
         case 4:
-          message.performance = longToNumber(reader.uint64() as Long);
+          message.performance = reader.uint64() as Long;
           break;
         default:
           reader.skipType(tag & 7);
@@ -1276,7 +1278,7 @@ export const PostSetupComputeProvider = {
       id: isSet(object.id) ? Number(object.id) : 0,
       model: isSet(object.model) ? String(object.model) : "",
       computeApi: isSet(object.computeApi) ? postSetupComputeProvider_ComputeApiClassFromJSON(object.computeApi) : 0,
-      performance: isSet(object.performance) ? Number(object.performance) : 0,
+      performance: isSet(object.performance) ? Long.fromValue(object.performance) : Long.UZERO,
     };
   },
 
@@ -1286,7 +1288,7 @@ export const PostSetupComputeProvider = {
     message.model !== undefined && (obj.model = message.model);
     message.computeApi !== undefined &&
       (obj.computeApi = postSetupComputeProvider_ComputeApiClassToJSON(message.computeApi));
-    message.performance !== undefined && (obj.performance = Math.round(message.performance));
+    message.performance !== undefined && (obj.performance = (message.performance || Long.UZERO).toString());
     return obj;
   },
 
@@ -1295,7 +1297,9 @@ export const PostSetupComputeProvider = {
     message.id = object.id ?? 0;
     message.model = object.model ?? "";
     message.computeApi = object.computeApi ?? 0;
-    message.performance = object.performance ?? 0;
+    message.performance = (object.performance !== undefined && object.performance !== null)
+      ? Long.fromValue(object.performance)
+      : Long.UZERO;
     return message;
   },
 };
@@ -1386,7 +1390,7 @@ export const PostSetupOpts = {
 };
 
 function createBasePostSetupStatus(): PostSetupStatus {
-  return { state: 0, numLabelsWritten: 0, opts: undefined, errorMessage: "" };
+  return { state: 0, numLabelsWritten: Long.UZERO, opts: undefined, errorMessage: "" };
 }
 
 export const PostSetupStatus = {
@@ -1394,7 +1398,7 @@ export const PostSetupStatus = {
     if (message.state !== 0) {
       writer.uint32(8).int32(message.state);
     }
-    if (message.numLabelsWritten !== 0) {
+    if (!message.numLabelsWritten.isZero()) {
       writer.uint32(16).uint64(message.numLabelsWritten);
     }
     if (message.opts !== undefined) {
@@ -1417,7 +1421,7 @@ export const PostSetupStatus = {
           message.state = reader.int32() as any;
           break;
         case 2:
-          message.numLabelsWritten = longToNumber(reader.uint64() as Long);
+          message.numLabelsWritten = reader.uint64() as Long;
           break;
         case 3:
           message.opts = PostSetupOpts.decode(reader, reader.uint32());
@@ -1436,7 +1440,7 @@ export const PostSetupStatus = {
   fromJSON(object: any): PostSetupStatus {
     return {
       state: isSet(object.state) ? postSetupStatus_StateFromJSON(object.state) : 0,
-      numLabelsWritten: isSet(object.numLabelsWritten) ? Number(object.numLabelsWritten) : 0,
+      numLabelsWritten: isSet(object.numLabelsWritten) ? Long.fromValue(object.numLabelsWritten) : Long.UZERO,
       opts: isSet(object.opts) ? PostSetupOpts.fromJSON(object.opts) : undefined,
       errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
@@ -1445,7 +1449,8 @@ export const PostSetupStatus = {
   toJSON(message: PostSetupStatus): unknown {
     const obj: any = {};
     message.state !== undefined && (obj.state = postSetupStatus_StateToJSON(message.state));
-    message.numLabelsWritten !== undefined && (obj.numLabelsWritten = Math.round(message.numLabelsWritten));
+    message.numLabelsWritten !== undefined &&
+      (obj.numLabelsWritten = (message.numLabelsWritten || Long.UZERO).toString());
     message.opts !== undefined && (obj.opts = message.opts ? PostSetupOpts.toJSON(message.opts) : undefined);
     message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     return obj;
@@ -1454,7 +1459,9 @@ export const PostSetupStatus = {
   fromPartial<I extends Exact<DeepPartial<PostSetupStatus>, I>>(object: I): PostSetupStatus {
     const message = createBasePostSetupStatus();
     message.state = object.state ?? 0;
-    message.numLabelsWritten = object.numLabelsWritten ?? 0;
+    message.numLabelsWritten = (object.numLabelsWritten !== undefined && object.numLabelsWritten !== null)
+      ? Long.fromValue(object.numLabelsWritten)
+      : Long.UZERO;
     message.opts = (object.opts !== undefined && object.opts !== null)
       ? PostSetupOpts.fromPartial(object.opts)
       : undefined;
@@ -1463,42 +1470,17 @@ export const PostSetupStatus = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Long ? string | number | Long : T extends Array<infer U> ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

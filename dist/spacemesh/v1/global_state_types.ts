@@ -114,7 +114,7 @@ export function globalStateDataFlagToJSON(object: GlobalStateDataFlag): string {
 
 export interface AccountState {
   /** aka nonce */
-  counter: number;
+  counter: Long;
   /** known account balance */
   balance: Amount | undefined;
 }
@@ -174,7 +174,7 @@ export interface TransactionReceipt {
   /** tx processing result */
   result: TransactionReceipt_TransactionResult;
   /** gas units used by the transaction */
-  gasUsed: number;
+  gasUsed: Long;
   /** transaction fee charged for the transaction (in smidge, gas_price * gas_used) */
   fee:
     | Amount
@@ -333,12 +333,12 @@ export interface AppEventStreamResponse {
 }
 
 function createBaseAccountState(): AccountState {
-  return { counter: 0, balance: undefined };
+  return { counter: Long.UZERO, balance: undefined };
 }
 
 export const AccountState = {
   encode(message: AccountState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.counter !== 0) {
+    if (!message.counter.isZero()) {
       writer.uint32(8).uint64(message.counter);
     }
     if (message.balance !== undefined) {
@@ -355,7 +355,7 @@ export const AccountState = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.counter = longToNumber(reader.uint64() as Long);
+          message.counter = reader.uint64() as Long;
           break;
         case 2:
           message.balance = Amount.decode(reader, reader.uint32());
@@ -370,21 +370,23 @@ export const AccountState = {
 
   fromJSON(object: any): AccountState {
     return {
-      counter: isSet(object.counter) ? Number(object.counter) : 0,
+      counter: isSet(object.counter) ? Long.fromValue(object.counter) : Long.UZERO,
       balance: isSet(object.balance) ? Amount.fromJSON(object.balance) : undefined,
     };
   },
 
   toJSON(message: AccountState): unknown {
     const obj: any = {};
-    message.counter !== undefined && (obj.counter = Math.round(message.counter));
+    message.counter !== undefined && (obj.counter = (message.counter || Long.UZERO).toString());
     message.balance !== undefined && (obj.balance = message.balance ? Amount.toJSON(message.balance) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountState>, I>>(object: I): AccountState {
     const message = createBaseAccountState();
-    message.counter = object.counter ?? 0;
+    message.counter = (object.counter !== undefined && object.counter !== null)
+      ? Long.fromValue(object.counter)
+      : Long.UZERO;
     message.balance = (object.balance !== undefined && object.balance !== null)
       ? Amount.fromPartial(object.balance)
       : undefined;
@@ -802,7 +804,7 @@ function createBaseTransactionReceipt(): TransactionReceipt {
   return {
     id: undefined,
     result: 0,
-    gasUsed: 0,
+    gasUsed: Long.UZERO,
     fee: undefined,
     layer: undefined,
     index: 0,
@@ -818,7 +820,7 @@ export const TransactionReceipt = {
     if (message.result !== 0) {
       writer.uint32(16).int32(message.result);
     }
-    if (message.gasUsed !== 0) {
+    if (!message.gasUsed.isZero()) {
       writer.uint32(24).uint64(message.gasUsed);
     }
     if (message.fee !== undefined) {
@@ -850,7 +852,7 @@ export const TransactionReceipt = {
           message.result = reader.int32() as any;
           break;
         case 3:
-          message.gasUsed = longToNumber(reader.uint64() as Long);
+          message.gasUsed = reader.uint64() as Long;
           break;
         case 4:
           message.fee = Amount.decode(reader, reader.uint32());
@@ -876,7 +878,7 @@ export const TransactionReceipt = {
     return {
       id: isSet(object.id) ? TransactionId.fromJSON(object.id) : undefined,
       result: isSet(object.result) ? transactionReceipt_TransactionResultFromJSON(object.result) : 0,
-      gasUsed: isSet(object.gasUsed) ? Number(object.gasUsed) : 0,
+      gasUsed: isSet(object.gasUsed) ? Long.fromValue(object.gasUsed) : Long.UZERO,
       fee: isSet(object.fee) ? Amount.fromJSON(object.fee) : undefined,
       layer: isSet(object.layer) ? LayerNumber.fromJSON(object.layer) : undefined,
       index: isSet(object.index) ? Number(object.index) : 0,
@@ -888,7 +890,7 @@ export const TransactionReceipt = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id ? TransactionId.toJSON(message.id) : undefined);
     message.result !== undefined && (obj.result = transactionReceipt_TransactionResultToJSON(message.result));
-    message.gasUsed !== undefined && (obj.gasUsed = Math.round(message.gasUsed));
+    message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || Long.UZERO).toString());
     message.fee !== undefined && (obj.fee = message.fee ? Amount.toJSON(message.fee) : undefined);
     message.layer !== undefined && (obj.layer = message.layer ? LayerNumber.toJSON(message.layer) : undefined);
     message.index !== undefined && (obj.index = Math.round(message.index));
@@ -901,7 +903,9 @@ export const TransactionReceipt = {
     const message = createBaseTransactionReceipt();
     message.id = (object.id !== undefined && object.id !== null) ? TransactionId.fromPartial(object.id) : undefined;
     message.result = object.result ?? 0;
-    message.gasUsed = object.gasUsed ?? 0;
+    message.gasUsed = (object.gasUsed !== undefined && object.gasUsed !== null)
+      ? Long.fromValue(object.gasUsed)
+      : Long.UZERO;
     message.fee = (object.fee !== undefined && object.fee !== null) ? Amount.fromPartial(object.fee) : undefined;
     message.layer = (object.layer !== undefined && object.layer !== null)
       ? LayerNumber.fromPartial(object.layer)
@@ -1747,20 +1751,14 @@ function base64FromBytes(arr: Uint8Array): string {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Long ? string | number | Long : T extends Array<infer U> ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

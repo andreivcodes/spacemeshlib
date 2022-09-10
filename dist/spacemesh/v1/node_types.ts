@@ -108,7 +108,7 @@ export interface ShutdownResponse {
 /** current node status */
 export interface NodeStatus {
   /** number of connected neighbors */
-  connectedPeers: number;
+  connectedPeers: Long;
   /** true when meshed is synced */
   isSynced: boolean;
   /** the last layer node has synced */
@@ -530,12 +530,18 @@ export const ShutdownResponse = {
 };
 
 function createBaseNodeStatus(): NodeStatus {
-  return { connectedPeers: 0, isSynced: false, syncedLayer: undefined, topLayer: undefined, verifiedLayer: undefined };
+  return {
+    connectedPeers: Long.UZERO,
+    isSynced: false,
+    syncedLayer: undefined,
+    topLayer: undefined,
+    verifiedLayer: undefined,
+  };
 }
 
 export const NodeStatus = {
   encode(message: NodeStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.connectedPeers !== 0) {
+    if (!message.connectedPeers.isZero()) {
       writer.uint32(8).uint64(message.connectedPeers);
     }
     if (message.isSynced === true) {
@@ -561,7 +567,7 @@ export const NodeStatus = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.connectedPeers = longToNumber(reader.uint64() as Long);
+          message.connectedPeers = reader.uint64() as Long;
           break;
         case 2:
           message.isSynced = reader.bool();
@@ -585,7 +591,7 @@ export const NodeStatus = {
 
   fromJSON(object: any): NodeStatus {
     return {
-      connectedPeers: isSet(object.connectedPeers) ? Number(object.connectedPeers) : 0,
+      connectedPeers: isSet(object.connectedPeers) ? Long.fromValue(object.connectedPeers) : Long.UZERO,
       isSynced: isSet(object.isSynced) ? Boolean(object.isSynced) : false,
       syncedLayer: isSet(object.syncedLayer) ? LayerNumber.fromJSON(object.syncedLayer) : undefined,
       topLayer: isSet(object.topLayer) ? LayerNumber.fromJSON(object.topLayer) : undefined,
@@ -595,7 +601,7 @@ export const NodeStatus = {
 
   toJSON(message: NodeStatus): unknown {
     const obj: any = {};
-    message.connectedPeers !== undefined && (obj.connectedPeers = Math.round(message.connectedPeers));
+    message.connectedPeers !== undefined && (obj.connectedPeers = (message.connectedPeers || Long.UZERO).toString());
     message.isSynced !== undefined && (obj.isSynced = message.isSynced);
     message.syncedLayer !== undefined &&
       (obj.syncedLayer = message.syncedLayer ? LayerNumber.toJSON(message.syncedLayer) : undefined);
@@ -608,7 +614,9 @@ export const NodeStatus = {
 
   fromPartial<I extends Exact<DeepPartial<NodeStatus>, I>>(object: I): NodeStatus {
     const message = createBaseNodeStatus();
-    message.connectedPeers = object.connectedPeers ?? 0;
+    message.connectedPeers = (object.connectedPeers !== undefined && object.connectedPeers !== null)
+      ? Long.fromValue(object.connectedPeers)
+      : Long.UZERO;
     message.isSynced = object.isSynced ?? false;
     message.syncedLayer = (object.syncedLayer !== undefined && object.syncedLayer !== null)
       ? LayerNumber.fromPartial(object.syncedLayer)
@@ -1059,42 +1067,17 @@ export const ErrorStreamResponse = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Long ? string | number | Long : T extends Array<infer U> ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;

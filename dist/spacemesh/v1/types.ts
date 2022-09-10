@@ -5,7 +5,7 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "spacemesh.v1";
 
 export interface SimpleInt {
-  value: number;
+  value: Long;
 }
 
 export interface SimpleString {
@@ -14,7 +14,7 @@ export interface SimpleString {
 
 /** A non-negative coin amount, in smidge */
 export interface Amount {
-  value: number;
+  value: Long;
 }
 
 export interface AccountId {
@@ -72,9 +72,9 @@ export interface Transaction {
   method: number;
   nonce: Nonce | undefined;
   limits: LayerLimits | undefined;
-  maxGas: number;
-  gasPrice: number;
-  maxSpend: number;
+  maxGas: Long;
+  gasPrice: Long;
+  maxSpend: Long;
   raw: Uint8Array;
 }
 
@@ -84,7 +84,7 @@ export interface LayerLimits {
 }
 
 export interface Nonce {
-  counter: number;
+  counter: Long;
   /** this is actually limited by uint8, but no type for that. */
   bitfield: number;
 }
@@ -211,12 +211,12 @@ export interface AppEvent {
 }
 
 function createBaseSimpleInt(): SimpleInt {
-  return { value: 0 };
+  return { value: Long.UZERO };
 }
 
 export const SimpleInt = {
   encode(message: SimpleInt, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.value !== 0) {
+    if (!message.value.isZero()) {
       writer.uint32(8).uint64(message.value);
     }
     return writer;
@@ -230,7 +230,7 @@ export const SimpleInt = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.value = longToNumber(reader.uint64() as Long);
+          message.value = reader.uint64() as Long;
           break;
         default:
           reader.skipType(tag & 7);
@@ -241,18 +241,18 @@ export const SimpleInt = {
   },
 
   fromJSON(object: any): SimpleInt {
-    return { value: isSet(object.value) ? Number(object.value) : 0 };
+    return { value: isSet(object.value) ? Long.fromValue(object.value) : Long.UZERO };
   },
 
   toJSON(message: SimpleInt): unknown {
     const obj: any = {};
-    message.value !== undefined && (obj.value = Math.round(message.value));
+    message.value !== undefined && (obj.value = (message.value || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SimpleInt>, I>>(object: I): SimpleInt {
     const message = createBaseSimpleInt();
-    message.value = object.value ?? 0;
+    message.value = (object.value !== undefined && object.value !== null) ? Long.fromValue(object.value) : Long.UZERO;
     return message;
   },
 };
@@ -305,12 +305,12 @@ export const SimpleString = {
 };
 
 function createBaseAmount(): Amount {
-  return { value: 0 };
+  return { value: Long.UZERO };
 }
 
 export const Amount = {
   encode(message: Amount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.value !== 0) {
+    if (!message.value.isZero()) {
       writer.uint32(8).uint64(message.value);
     }
     return writer;
@@ -324,7 +324,7 @@ export const Amount = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.value = longToNumber(reader.uint64() as Long);
+          message.value = reader.uint64() as Long;
           break;
         default:
           reader.skipType(tag & 7);
@@ -335,18 +335,18 @@ export const Amount = {
   },
 
   fromJSON(object: any): Amount {
-    return { value: isSet(object.value) ? Number(object.value) : 0 };
+    return { value: isSet(object.value) ? Long.fromValue(object.value) : Long.UZERO };
   },
 
   toJSON(message: Amount): unknown {
     const obj: any = {};
-    message.value !== undefined && (obj.value = Math.round(message.value));
+    message.value !== undefined && (obj.value = (message.value || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Amount>, I>>(object: I): Amount {
     const message = createBaseAmount();
-    message.value = object.value ?? 0;
+    message.value = (object.value !== undefined && object.value !== null) ? Long.fromValue(object.value) : Long.UZERO;
     return message;
   },
 };
@@ -658,9 +658,9 @@ function createBaseTransaction(): Transaction {
     method: 0,
     nonce: undefined,
     limits: undefined,
-    maxGas: 0,
-    gasPrice: 0,
-    maxSpend: 0,
+    maxGas: Long.UZERO,
+    gasPrice: Long.UZERO,
+    maxSpend: Long.UZERO,
     raw: new Uint8Array(),
   };
 }
@@ -685,13 +685,13 @@ export const Transaction = {
     if (message.limits !== undefined) {
       LayerLimits.encode(message.limits, writer.uint32(50).fork()).ldelim();
     }
-    if (message.maxGas !== 0) {
+    if (!message.maxGas.isZero()) {
       writer.uint32(56).uint64(message.maxGas);
     }
-    if (message.gasPrice !== 0) {
+    if (!message.gasPrice.isZero()) {
       writer.uint32(64).uint64(message.gasPrice);
     }
-    if (message.maxSpend !== 0) {
+    if (!message.maxSpend.isZero()) {
       writer.uint32(72).uint64(message.maxSpend);
     }
     if (message.raw.length !== 0) {
@@ -726,13 +726,13 @@ export const Transaction = {
           message.limits = LayerLimits.decode(reader, reader.uint32());
           break;
         case 7:
-          message.maxGas = longToNumber(reader.uint64() as Long);
+          message.maxGas = reader.uint64() as Long;
           break;
         case 8:
-          message.gasPrice = longToNumber(reader.uint64() as Long);
+          message.gasPrice = reader.uint64() as Long;
           break;
         case 9:
-          message.maxSpend = longToNumber(reader.uint64() as Long);
+          message.maxSpend = reader.uint64() as Long;
           break;
         case 10:
           message.raw = reader.bytes();
@@ -753,9 +753,9 @@ export const Transaction = {
       method: isSet(object.method) ? Number(object.method) : 0,
       nonce: isSet(object.nonce) ? Nonce.fromJSON(object.nonce) : undefined,
       limits: isSet(object.limits) ? LayerLimits.fromJSON(object.limits) : undefined,
-      maxGas: isSet(object.maxGas) ? Number(object.maxGas) : 0,
-      gasPrice: isSet(object.gasPrice) ? Number(object.gasPrice) : 0,
-      maxSpend: isSet(object.maxSpend) ? Number(object.maxSpend) : 0,
+      maxGas: isSet(object.maxGas) ? Long.fromValue(object.maxGas) : Long.UZERO,
+      gasPrice: isSet(object.gasPrice) ? Long.fromValue(object.gasPrice) : Long.UZERO,
+      maxSpend: isSet(object.maxSpend) ? Long.fromValue(object.maxSpend) : Long.UZERO,
       raw: isSet(object.raw) ? bytesFromBase64(object.raw) : new Uint8Array(),
     };
   },
@@ -770,9 +770,9 @@ export const Transaction = {
     message.method !== undefined && (obj.method = Math.round(message.method));
     message.nonce !== undefined && (obj.nonce = message.nonce ? Nonce.toJSON(message.nonce) : undefined);
     message.limits !== undefined && (obj.limits = message.limits ? LayerLimits.toJSON(message.limits) : undefined);
-    message.maxGas !== undefined && (obj.maxGas = Math.round(message.maxGas));
-    message.gasPrice !== undefined && (obj.gasPrice = Math.round(message.gasPrice));
-    message.maxSpend !== undefined && (obj.maxSpend = Math.round(message.maxSpend));
+    message.maxGas !== undefined && (obj.maxGas = (message.maxGas || Long.UZERO).toString());
+    message.gasPrice !== undefined && (obj.gasPrice = (message.gasPrice || Long.UZERO).toString());
+    message.maxSpend !== undefined && (obj.maxSpend = (message.maxSpend || Long.UZERO).toString());
     message.raw !== undefined &&
       (obj.raw = base64FromBytes(message.raw !== undefined ? message.raw : new Uint8Array()));
     return obj;
@@ -792,9 +792,15 @@ export const Transaction = {
     message.limits = (object.limits !== undefined && object.limits !== null)
       ? LayerLimits.fromPartial(object.limits)
       : undefined;
-    message.maxGas = object.maxGas ?? 0;
-    message.gasPrice = object.gasPrice ?? 0;
-    message.maxSpend = object.maxSpend ?? 0;
+    message.maxGas = (object.maxGas !== undefined && object.maxGas !== null)
+      ? Long.fromValue(object.maxGas)
+      : Long.UZERO;
+    message.gasPrice = (object.gasPrice !== undefined && object.gasPrice !== null)
+      ? Long.fromValue(object.gasPrice)
+      : Long.UZERO;
+    message.maxSpend = (object.maxSpend !== undefined && object.maxSpend !== null)
+      ? Long.fromValue(object.maxSpend)
+      : Long.UZERO;
     message.raw = object.raw ?? new Uint8Array();
     return message;
   },
@@ -856,12 +862,12 @@ export const LayerLimits = {
 };
 
 function createBaseNonce(): Nonce {
-  return { counter: 0, bitfield: 0 };
+  return { counter: Long.UZERO, bitfield: 0 };
 }
 
 export const Nonce = {
   encode(message: Nonce, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.counter !== 0) {
+    if (!message.counter.isZero()) {
       writer.uint32(8).uint64(message.counter);
     }
     if (message.bitfield !== 0) {
@@ -878,7 +884,7 @@ export const Nonce = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.counter = longToNumber(reader.uint64() as Long);
+          message.counter = reader.uint64() as Long;
           break;
         case 2:
           message.bitfield = reader.uint32();
@@ -893,21 +899,23 @@ export const Nonce = {
 
   fromJSON(object: any): Nonce {
     return {
-      counter: isSet(object.counter) ? Number(object.counter) : 0,
+      counter: isSet(object.counter) ? Long.fromValue(object.counter) : Long.UZERO,
       bitfield: isSet(object.bitfield) ? Number(object.bitfield) : 0,
     };
   },
 
   toJSON(message: Nonce): unknown {
     const obj: any = {};
-    message.counter !== undefined && (obj.counter = Math.round(message.counter));
+    message.counter !== undefined && (obj.counter = (message.counter || Long.UZERO).toString());
     message.bitfield !== undefined && (obj.bitfield = Math.round(message.bitfield));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Nonce>, I>>(object: I): Nonce {
     const message = createBaseNonce();
-    message.counter = object.counter ?? 0;
+    message.counter = (object.counter !== undefined && object.counter !== null)
+      ? Long.fromValue(object.counter)
+      : Long.UZERO;
     message.bitfield = object.bitfield ?? 0;
     return message;
   },
@@ -1450,20 +1458,14 @@ function base64FromBytes(arr: Uint8Array): string {
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends Long ? string | number | Long : T extends Array<infer U> ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
