@@ -1,17 +1,5 @@
-import { ChannelCredentials, createChannel, createClient } from 'nice-grpc';
+import { txChannel } from './channels';
 import { signTransaction, toHexString } from './crypto';
-import { TransactionServiceClient, TransactionServiceDefinition } from './proto/dist/spacemesh/v1/tx';
-
-let txChannel: TransactionServiceClient;
-
-export const createTransactionChannel = (channelUrl: string, channelPort: number, secure: boolean) => {
-  const channel = createChannel(
-    `${channelUrl}:${channelPort}`,
-    secure ? ChannelCredentials.createSsl() : ChannelCredentials.createInsecure(),
-  );
-  txChannel = createClient(TransactionServiceDefinition, channel);
-  return txChannel;
-};
 
 export const submitTransaction = async (
   accountNonce: number,

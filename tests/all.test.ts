@@ -2,6 +2,7 @@ import { Client } from '@grpc/grpc-js';
 import * as assert from 'assert';
 import * as bip39 from 'bip39';
 import exp from 'constants';
+import { createGlobalStateChannel } from '../src/channels';
 import {
   generatePrivateKey,
   generatePublicKey,
@@ -11,7 +12,7 @@ import {
   derivePublicKey,
   toHexString,
 } from '../src/crypto';
-import { accountDataQuery, createGlobalStateChannel, getAccountBalance, getAccountNonce } from '../src/global_state';
+import { accountDataQuery, getAccountBalance, getAccountNonce } from '../src/global_state';
 import { AccountDataFlag, AccountDataQueryResponse } from '../src/proto/dist/spacemesh/v1/global_state_types';
 import { GlobalStateServiceClient } from './../src/proto/dist/spacemesh/v1/global_state';
 

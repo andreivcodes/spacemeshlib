@@ -1,22 +1,10 @@
-import { GlobalStateServiceClient, GlobalStateServiceDefinition } from './proto/dist/spacemesh/v1/global_state';
-import { ChannelCredentials, createChannel, createClient } from 'nice-grpc';
 import {
   AccountDataFilter,
   AccountDataFlag,
   AccountDataQueryRequest,
 } from './proto/dist/spacemesh/v1/global_state_types';
 import { AccountId } from './proto/dist/spacemesh/v1/types';
-
-let globalStateClient: GlobalStateServiceClient;
-
-export const createGlobalStateChannel = (channelUrl: string, channelPort: number, secure: boolean) => {
-  const channel = createChannel(
-    `${channelUrl}:${channelPort}`,
-    secure ? ChannelCredentials.createSsl() : ChannelCredentials.createInsecure(),
-  );
-  globalStateClient = createClient(GlobalStateServiceDefinition, channel);
-  return globalStateClient;
-};
+import { globalStateClient } from './channels';
 
 export const accountDataQuery = async (pk: Uint8Array, flags: number) => {
   if (!globalStateClient) throw 'GlobalState channel not created';
