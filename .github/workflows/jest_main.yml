@@ -23,7 +23,7 @@ jobs:
         run: npx jest
 
       - name: Jest Coverage Comment (escaped pipes)
-        uses: andreivcodes/jest-coverage-comment@v1.0.0
+        uses: MishaKav/jest-coverage-comment@main
         id: coverageComment
         with:
           coverage-summary-path: ./tests/coverage/coverage-summary.json
@@ -40,8 +40,8 @@ jobs:
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          awk -v RS='<!-- Jest Summary Comment:End -->\\s*' -v ORS= '{sub(/<!-- Jest Summary Comment:Begin -->.*/,"<!-- Jest Summary Comment:Begin --> $steps.coverageComment.outputs.summaryHtml <!-- Jest Summary Comment:End -->")} 1' ./README.md
-          sed -i '/<!-- Jest Coverage Comment:Begin -->/,/<!-- Jest Coverage Comment:End -->/c\<!-- Jest Coverage Comment:Begin -->\n \${{ steps.coverageComment.outputs.coverageHtml }} \n<!-- Jest Coverage Comment:End -->' ./README.md
+
+          awk -v RS='<!-- Jest Coverage Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Coverage Comment:Begin -->","<!-- Jest Coverage Comment:Begin --> ${{ steps.coverageComment.outputs.coverageHtml }} <!-- Jest Coverage Comment:End -->")} 1' ./README.md
 
       - name: Commit & Push changes to Readme
         if: ${{ github.ref == 'refs/heads/main' }}
