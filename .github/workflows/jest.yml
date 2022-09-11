@@ -24,10 +24,22 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./tests/coverage/coverage-summary.json
-              title: Jest Coverage
-              badge-title: Coverage
-              hide-comment: false
-              create-new-comment: false
-              hide-summary: false
-              junitxml-path: ./tests/coverage/junit.xml
-              coverage-path: ./tests/coverage.txt
+          title: Jest Coverage
+          badge-title: Coverage
+          hide-comment: false
+          create-new-comment: false
+          hide-summary: true
+          junitxml-path: ./tests/coverage/junit.xml
+          coverage-path: ./tests/coverage.txt
+
+      - name: Update Readme with Coverage Html
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          sed -i '/<!-- Jest Coverage Comment:Begin -->/,/<!-- Jest Coverage Comment:End -->/c\<!-- Jest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.summaryHtml }}\n<!-- Jest Coverage Comment:End -->' ./README.md
+
+      - name: Commit & Push changes to Readme
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions-js/push@master
+        with:
+          message: Update coverage on Readme
+          github_token: ${{ secrets.GITHUB_TOKEN }}
