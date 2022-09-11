@@ -13,9 +13,9 @@ jobs:
         run: npm install
 
       - name: Run tests
+        run: npx jest --coverage --coverageReporters json-summary
         with:
           MNEMONIC: ${{secrets.MNEMONIC}}
-        run: npx jest --coverage --coverageReporters json-summary
 
       - name: Jest coverage comment
         id: coverageComment
