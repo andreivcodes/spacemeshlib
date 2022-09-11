@@ -11,12 +11,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install yarn
+        run: npm install yarn -g
+
+      - name: Install deps
+        run: yarn
 
       - name: Run tests
-        run: |
-          npx jest | tee ./coverage.txt
+        run: npx jest | tee ./coverage.txt | tee ./coverage.txt
 
       - name: Jest coverage comment
         id: coverageComment
