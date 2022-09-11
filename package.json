@@ -1,6 +1,6 @@
 {
   "name": "@andreivcodes/spacemeshlib",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Utility lib for Spacemesh network",
   "main": "src/index",
   "author": "andreivcodes",
