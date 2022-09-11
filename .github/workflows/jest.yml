@@ -22,7 +22,7 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         with:
           hide-comment: true
-          coverage-summary-path: ./test/coverage/coverage-summary.json
+          coverage-summary-path: ./tests/coverage/coverage-summary.json
 
       - name: Check the output coverage
         run: |
