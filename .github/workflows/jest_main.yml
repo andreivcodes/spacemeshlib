@@ -40,7 +40,7 @@ jobs:
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-
+          awk -v RS='<!-- Jest Summary Comment:End -->\\s*' -v ORS= '{sub(/<!-- Jest Summary Comment:Begin -->.*/,"<!-- Jest Summary Comment:Begin --> $steps.coverageComment.outputs.summaryHtml <!-- Jest Summary Comment:End -->")} 1' ./README.md
           sed -i '/<!-- Jest Coverage Comment:Begin -->/,/<!-- Jest Coverage Comment:End -->/c\<!-- Jest Coverage Comment:Begin -->\n \${{ steps.coverageComment.outputs.coverageHtml }} \n<!-- Jest Coverage Comment:End -->' ./README.md
 
       - name: Commit & Push changes to Readme
