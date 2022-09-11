@@ -7,6 +7,7 @@ env:
 
 jobs:
   build:
+    name: 'pr check'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,9 +21,9 @@ jobs:
       - name: Run tests
         run: npx jest
 
-      - name: Jest coverage comment
-        id: coverageComment
+      - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
+        id: coverageComment
         with:
           coverage-summary-path: ./tests/coverage/coverage-summary.json
           title: Jest Coverage
