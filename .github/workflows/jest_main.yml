@@ -34,8 +34,6 @@ jobs:
           hide-summary: false
           junitxml-path: ./tests/coverage/junit.xml
           coverage-path: ./tests/coverage/coverage.txt
-          remove-links-to-files: true
-          remove-links-to-lines: true
 
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
