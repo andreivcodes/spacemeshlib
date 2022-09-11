@@ -9,6 +9,7 @@ const { config, UnsignedHyper } = xdr;
 import path from 'path';
 import fs from 'fs';
 
+exec();
 declare global {
   var Go: any;
 }
@@ -18,14 +19,13 @@ const wasmFile = path.join(path.dirname(fs.realpathSync(__filename)), './wasm/ed
 export const generatePrivateKey = async (mnemonic: string) => {
   const seed = bip39.mnemonicToSeedSync(mnemonic);
   return new Promise(async (resolve) => {
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__generatePrivateKey(seed));
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };
@@ -33,14 +33,13 @@ export const generatePrivateKey = async (mnemonic: string) => {
 export const generatePublicKey = async (mnemonic: string) => {
   const seed = bip39.mnemonicToSeedSync(mnemonic);
   return new Promise(async (resolve) => {
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__generatePublicKey(seed));
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };
@@ -50,14 +49,13 @@ export const derivePrivateKey = async (mnemonic: string, index: number) => {
   const enc = new TextEncoder();
   const saltAsUint8Array = enc.encode('Spacemesh blockmesh');
   return new Promise(async (resolve) => {
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__derivePrivateKey(seed.slice(32), index, saltAsUint8Array));
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };
@@ -67,14 +65,13 @@ export const derivePublicKey = async (mnemonic: string, index: number) => {
   const enc = new TextEncoder();
   const saltAsUint8Array = enc.encode('Spacemesh blockmesh');
   return new Promise(async (resolve) => {
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__derivePublicKey(seed.slice(32), index, saltAsUint8Array));
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };
@@ -85,7 +82,6 @@ export const signMessage = async (message: string, secretKey: string) => {
     const enc = new TextEncoder();
     const messageAsUint8Array = enc.encode(message);
 
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         // @ts-ignore
@@ -93,7 +89,7 @@ export const signMessage = async (message: string, secretKey: string) => {
         resolve(sig);
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };
@@ -105,7 +101,6 @@ export const verifyMessage = async (publicKey: string, message: string, signatur
     const enc = new TextEncoder();
     const messageAsUint8Array = enc.encode(message);
 
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         // @ts-ignore
@@ -113,7 +108,7 @@ export const verifyMessage = async (publicKey: string, message: string, signatur
         resolve(verify);
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };
@@ -158,7 +153,6 @@ export const signTransaction = ({
   return new Promise(async (resolve) => {
     const bufMessageAsUint8Array = new Uint8Array(bufMessage);
 
-    exec();
     await loadWasm(wasmFile)
       .then(() => {
         let sig =
@@ -171,7 +165,7 @@ export const signTransaction = ({
         resolve(tx.toXDR());
       })
       .catch((e: any) => {
-        console.log('ouch', e);
+        throw e;
       });
   });
 };

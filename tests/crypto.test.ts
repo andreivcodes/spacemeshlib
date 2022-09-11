@@ -1,25 +1,18 @@
-import { Client } from '@grpc/grpc-js';
-import * as assert from 'assert';
-import * as bip39 from 'bip39';
-import exp from 'constants';
-import { createGlobalStateChannel } from '../src/channels';
+import assert from 'assert';
 import {
   generatePrivateKey,
+  toHexString,
   generatePublicKey,
+  derivePublicKey,
   signMessage,
   verifyMessage,
   signTransaction,
-  derivePublicKey,
-  toHexString,
 } from '../src/crypto';
-import { accountDataQuery, getAccountBalance, getAccountNonce } from '../src/global_state';
-import { AccountDataFlag, AccountDataQueryResponse } from '../src/proto/dist/spacemesh/v1/global_state_types';
-import { GlobalStateServiceClient } from './../src/proto/dist/spacemesh/v1/global_state';
 
-const MNEMONIC = 'wing second among day sun vote nice fortune siren smart holiday video';
+import * as bip39 from 'bip39';
+
+const MNEMONIC: string = process.env.MNEMONIC!;
 const ADDRESS = '0x38db093ce43fe3db88d89568baaeb68a6b5e74a6';
-const NETWORK_URL = 'api-devnet226.spacemesh.io';
-const NETWORK_PORT = 443;
 
 describe('Create', function () {
   it('should create private key with length 128', async function () {
@@ -137,45 +130,5 @@ describe('Transaction', function () {
     let sign = (await signMessage(toHexString(tx), toHexString(prvk))) as Uint8Array;
     let verify = await verifyMessage(toHexString(pubk), toHexString(badtx), toHexString(sign));
     assert.equal(verify, false);
-  });
-});
-
-describe('Global State', function () {
-  it('can create channel', async function () {
-    const channel = createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
-
-    expect(channel).not.toBeNull();
-  });
-  it('should return account data query result', async function () {
-    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
-    let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
-
-    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
-    let result = await accountDataQuery(pubk, AccountDataFlag.ACCOUNT_DATA_FLAG_ACCOUNT);
-
-    expect(result).not.toBeNull();
-    expect(result.totalResults).not.toBeNull();
-  });
-
-  it('should return account nonce', async function () {
-    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
-    let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
-
-    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
-    let result = Number(await getAccountNonce(pubk));
-
-    expect(result).not.toBeNull();
-    expect(result).toBeGreaterThanOrEqual(0);
-  });
-
-  it('should return account balance', async function () {
-    let mnemonic = 'wing second among day sun vote nice fortune siren smart holiday video';
-    let pubk = (await derivePublicKey(mnemonic, 0)) as Uint8Array;
-
-    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true);
-    let result = Number(await getAccountBalance(pubk));
-
-    expect(result).not.toBeNull();
-    expect(result).toBeGreaterThanOrEqual(0);
   });
 });
