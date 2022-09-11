@@ -3,6 +3,10 @@
 name: Jest coverage comment
 on:
   pull_request:
+
+env:
+  MNEMONIC: ${{secrets.MNEMONIC}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
