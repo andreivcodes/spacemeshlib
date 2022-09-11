@@ -9,6 +9,7 @@ module.exports = {
   setupFiles: ['dotenv/config'],
   testPathIgnorePatterns: ['./lib'],
   collectCoverage: true,
+  coverageDirectory: './tests/coverage',
   collectCoverageFrom: ['./src/*.ts', './src/**/*.ts', '!./src/proto/**/*.ts', '!./src/wasm/*.ts'],
   coverageThreshold: {
     global: {
