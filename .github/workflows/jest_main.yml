@@ -22,7 +22,7 @@ jobs:
       - name: Run tests
         run: npx jest
 
-      - name: Jest Coverage Comment (escaped pipes)
+      - name: Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         id: coverageComment
         with:
@@ -40,8 +40,8 @@ jobs:
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          awk -v awkvar='${{ steps.coverageComment.outputs.junitHtml }}' -v RS="<!-- Jest Junit Comment:End -->\\s*" -v ORS= '{sub("<!-- Jest Junit Comment:Begin -->", awkvar)} 1' ./README.md
           awk -v awkvar='${{ steps.coverageComment.outputs.summaryHtml }}' -v RS='<!-- Jest Summary Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Summary Comment:Begin -->", awkvar)} 1' ./README.md
+          awk -v awkvar='${{ steps.coverageComment.outputs.junitHtml }}' -v RS='<!-- Jest Junit Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Junit Comment:Begin -->", awkvar)} 1' ./README.md
           awk -v RS='<!-- Jest Coverage Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Coverage Comment:Begin -->","<!-- Jest Coverage Comment:Begin --> ${{ steps.coverageComment.outputs.coverageHtml }} <!-- Jest Coverage Comment:End -->")} 1' ./README.md
 
       - name: Commit & Push changes to Readme
