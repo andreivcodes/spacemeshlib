@@ -39,9 +39,9 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           rm README.md
-          awk -v input='${{ steps.coverageComment.outputs.summaryHtml }}' '{ sub(/&nbsp;/,/\&nbsp;/,input); sub(/nbsp;/,/\&nbsp;/,input); sub(/&ndash;/,/\&ndash;/,input); sub(/ndash;/,/\&ndash;/,input); sub(/<!-- Jest Summary Comment -->/, input); print }' README_template.md > README.tmp                             
-          awk -v input='${{ steps.coverageComment.outputs.junitHtml }}' '{ sub(/&nbsp;/,/\&nbsp;/,input); sub(/nbsp;/,/\&nbsp;/,input); sub(/&ndash;/,/\&ndash;/,input); sub(/ndash;/,/\&ndash;/,input); sub(/<!-- Jest Junit Comment -->/, input); print }' README.tmp > README.tmp2
-          awk -v input='${{ steps.coverageComment.outputs.coverageHtml }}' '{ sub(/&nbsp;/,/\&nbsp;/,input); sub(/nbsp;/,/\&nbsp;/,input); sub(/&ndash;/,/\&ndash;/,input); sub(/ndash;/,/\&ndash;/,input); sub(/<!-- Jest Coverage Comment -->/, input); print }' README.tmp2 > README.md
+          awk -v input='${{ steps.coverageComment.outputs.summaryHtml }}' '{ sub(/\%/,"%",input); sub(/\&nbsp;/,"",input); sub(/nbsp;/,"",input); sub(/&ndash;/,"",input); sub(/ndash;/,"",input);  sub(/<!-- Jest Summary Comment -->/, input); print }' README_template.md > README.tmp                             
+          awk -v input='${{ steps.coverageComment.outputs.junitHtml }}' '{ sub(/\%/,"%",input); sub(/\&nbsp;/,"",input); sub(/nbsp;/,"",input); sub(/&ndash;/,"",input); sub(/ndash;/,"",input);  sub(/<!-- Jest Junit Comment -->/, input); print }' README.tmp > README.tmp2
+          awk -v input='${{ steps.coverageComment.outputs.coverageHtml }}' '{ sub(/\%/,"%",input); sub(/\&nbsp;/,"",input); sub(/nbsp;/,"",input); sub(/&ndash;/,"",input); sub(/ndash;/,"",input);  sub(/<!-- Jest Coverage Comment -->/, input); print }' README.tmp2 > README.md
           rm README.tmp
           rm README.tmp2
 
