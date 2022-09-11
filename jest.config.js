@@ -5,9 +5,6 @@
 
 module.exports = {
   preset: 'ts-jest',
-  colors: true,
-  verbose: true,
-  runInBand: true,
   testEnvironment: 'node',
   setupFiles: ['dotenv/config'],
   testPathIgnorePatterns: ['./lib'],

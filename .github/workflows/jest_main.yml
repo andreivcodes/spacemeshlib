@@ -17,7 +17,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npx jest | tee ./tests/coverage.txt
+        run: npx jest | tee ./tests/coverage/coverage.txt
 
       - name: Jest coverage comment
         id: coverageComment
@@ -30,7 +30,7 @@ jobs:
           create-new-comment: false
           hide-summary: false
           junitxml-path: ./tests/coverage/junit.xml
-          coverage-path: ./tests/coverage.txt
+          coverage-path: ./tests/coverage/coverage.txt
 
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
