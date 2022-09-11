@@ -40,9 +40,9 @@ jobs:
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          awk -v awkvar='${{ steps.coverageComment.outputs.summaryHtml }}' -v RS='<!-- Jest Summary Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Summary Comment:Begin -->", awkvar)} 1' ./README.md
-          awk -v awkvar='${{ steps.coverageComment.outputs.junitHtml }}' -v RS='<!-- Jest Junit Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Junit Comment:Begin -->", awkvar)} 1' ./README.md
-          awk -v RS='<!-- Jest Coverage Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Coverage Comment:Begin -->","<!-- Jest Coverage Comment:Begin --> ${{ steps.coverageComment.outputs.coverageHtml }} <!-- Jest Coverage Comment:End -->")} 1' ./README.md
+          awk -v awkvar='${{ steps.coverageComment.outputs.summaryHtml }}' -v RS='<!-- Jest Summary Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Summary Comment:Begin -->", awkvar)} 1' ./README.md > ./README.md
+          awk -v awkvar='${{ steps.coverageComment.outputs.junitHtml }}' -v RS='<!-- Jest Junit Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Junit Comment:Begin -->", awkvar)} 1' ./README.md > ./README.md
+          awk -v RS='<!-- Jest Coverage Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Coverage Comment:Begin -->","<!-- Jest Coverage Comment:Begin --> ${{ steps.coverageComment.outputs.coverageHtml }} <!-- Jest Coverage Comment:End -->")} 1' ./README.md > ./README.md
 
       - name: Commit & Push changes to Readme
         if: ${{ github.ref == 'refs/heads/main' }}
