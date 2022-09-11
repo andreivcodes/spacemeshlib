@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="19" failures="0" errors="0" time="3.988">
+  <testsuite name="Channels" errors="0" failures="0" skipped="0" timestamp="2022-09-11T10:30:21" time="2.053" tests="3">
+    <testcase classname="Channels can create global state channel" name="Channels can create global state channel" time="0.085">
+    </testcase>
+    <testcase classname="Channels can create transaction channel" name="Channels can create transaction channel" time="0.001">
+    </testcase>
+    <testcase classname="Channels can create all channels" name="Channels can create all channels" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Create" errors="0" failures="0" skipped="0" timestamp="2022-09-11T10:30:21" time="2.734" tests="10">
+    <testcase classname="Create should create private key with length 128" name="Create should create private key with length 128" time="0.122">
+    </testcase>
+    <testcase classname="Create should create public key with length 64" name="Create should create public key with length 64" time="0.364">
+    </testcase>
+    <testcase classname="Restore should restore correct public key" name="Restore should restore correct public key" time="0.012">
+    </testcase>
+    <testcase classname="Sign messages should create signature with length 128" name="Sign messages should create signature with length 128" time="0.063">
+    </testcase>
+    <testcase classname="Sign messages should verify signature" name="Sign messages should verify signature" time="0.051">
+    </testcase>
+    <testcase classname="Sign messages should not verify bad signature" name="Sign messages should not verify bad signature" time="0.026">
+    </testcase>
+    <testcase classname="Sign messages should not verify bad message" name="Sign messages should not verify bad message" time="0.048">
+    </testcase>
+    <testcase classname="Transaction should create transaction with length 232" name="Transaction should create transaction with length 232" time="0.044">
+    </testcase>
+    <testcase classname="Transaction should verify transaction" name="Transaction should verify transaction" time="0.055">
+    </testcase>
+    <testcase classname="Transaction should not verify bad transaction" name="Transaction should not verify bad transaction" time="0.068">
+    </testcase>
+  </testsuite>
+  <testsuite name="Transaction" errors="0" failures="0" skipped="0" timestamp="2022-09-11T10:30:21" time="3.288" tests="2">
+    <testcase classname="Transaction can create channel" name="Transaction can create channel" time="0.062">
+    </testcase>
+    <testcase classname="Transaction can submit transaction" name="Transaction can submit transaction" time="1.239">
+    </testcase>
+  </testsuite>
+  <testsuite name="Global State" errors="0" failures="0" skipped="0" timestamp="2022-09-11T10:30:21" time="3.293" tests="4">
+    <testcase classname="Global State can create channel" name="Global State can create channel" time="0.028">
+    </testcase>
+    <testcase classname="Global State should return account data query result" name="Global State should return account data query result" time="0.551">
+    </testcase>
+    <testcase classname="Global State should return account nonce" name="Global State should return account nonce" time="0.446">
+    </testcase>
+    <testcase classname="Global State should return account balance" name="Global State should return account balance" time="0.437">
+    </testcase>
+  </testsuite>
+</testsuites>
