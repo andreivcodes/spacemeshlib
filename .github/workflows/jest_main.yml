@@ -42,6 +42,8 @@ jobs:
           awk -v awkvar='${{ steps.coverageComment.outputs.summaryHtml }}' -v RS='<!-- Jest Summary Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Summary Comment:Begin -->", awkvar)} {print}' README_template.md > README.tmp
           awk -v awkvar='${{ steps.coverageComment.outputs.junitHtml }}' -v RS='<!-- Jest Junit Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Junit Comment:Begin -->", awkvar)} {print}' README.tmp > README.tmp2
           awk -v awkvar='${{ steps.coverageComment.outputs.coverageHtml }}' -v RS='<!-- Jest Coverage Comment:End -->\\s*' -v ORS= '{sub("<!-- Jest Coverage Comment:Begin -->", awkvar)} {print}' README.tmp2 > README.md
+          sed -i 's/nbsp;/&nbsp;/g' README.md
+          sed -i 's/ndash;/&ndash;/g' README.md
           rm README.tmp
           rm README.tmp2
 
