@@ -1,42 +1,22 @@
-name: Update Coverage on Readme
+# This workflow will install dependencies, create coverage tests and run Jest Coverage Comment
+# For more information see: https://github.com/MishaKav/jest-coverage-comment/
+name: Jest coverage comment
 on:
-  push:
-
+  pull_request:
 jobs:
-  update-coverage-on-readme:
-    name: Update Coverage on Readme
+  build:
     runs-on: ubuntu-latest
-    env:
-      MNEMONIC: ${{secrets.MNEMONIC}}
     steps:
       - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run tests
-        run: npx jest --coverage --coverageReporters json-summary
+        run: |
+          npx jest --coverage --coverageReporters json-summary
 
       - name: Jest coverage comment
-        id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
-          hide-comment: true
           coverage-summary-path: ./tests/coverage/coverage-summary.json
-
-      - name: Check the output coverage
-        run: |
-          echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
-          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
-          echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
-
-      - name: Create the Badge
-        uses: schneegans/dynamic-badges-action@v1.0.0
-        with:
-          auth: ${{ secrets.JEST_COVERAGE_COMMENT }}
-          gistID: 5e90d640f8c212ab7bbac38f72323f80
-          filename: jest-coverage-comment__main.json
-          label: Coverage
-          message: ${{ steps.coverageComment.outputs.coverage }}%
-          color: ${{ steps.coverageComment.outputs.color }}
-          namedLogo: typescript
