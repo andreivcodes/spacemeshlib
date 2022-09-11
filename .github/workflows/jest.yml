@@ -9,12 +9,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npx jest --coverage --coverageReporters json-summary
+
       - name: Jest coverage comment
         id: coverageComment
         uses: MishaKav/jest-coverage-comment@main
         with:
           hide-comment: true
-          coverage-summary-path: ./coverage/coverage-summary.json
+          coverage-summary-path: ./test/coverage/coverage-summary.json
 
       - name: Check the output coverage
         run: |
