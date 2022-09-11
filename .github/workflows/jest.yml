@@ -18,9 +18,16 @@ jobs:
 
       - name: Run tests
         run: |
-          npx jest --coverage --coverageReporters json-summary
+          npx jest
 
       - name: Jest coverage comment
         uses: MishaKav/jest-coverage-comment@main
         with:
           coverage-summary-path: ./tests/coverage/coverage-summary.json
+              title: Jest Coverage
+              badge-title: Coverage
+              hide-comment: false
+              create-new-comment: false
+              hide-summary: false
+              junitxml-path: ./tests/coverage/junit.xml
+              coverage-path: ./tests/coverage.txt
