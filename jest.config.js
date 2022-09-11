@@ -11,7 +11,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: './tests/coverage',
   collectCoverageFrom: ['./src/*.ts', './src/**/*.ts', '!./src/proto/**/*.ts', '!./src/wasm/*.ts'],
-  coverageReporters: ['json', 'json-summary', 'text'],
+  coverageReporters: ['json', 'json-summary', ['text', { file: 'coverage.txt' }]],
   reporters: [
     'default',
     [

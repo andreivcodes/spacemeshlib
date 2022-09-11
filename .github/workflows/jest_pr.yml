@@ -18,7 +18,7 @@ jobs:
         run: yarn
 
       - name: Run tests
-        run: npx jest | tee ./coverage.txt | tee ./coverage.txt
+        run: npx jest
 
       - name: Jest coverage comment
         id: coverageComment
@@ -31,4 +31,4 @@ jobs:
           create-new-comment: false
           hide-summary: false
           junitxml-path: ./tests/coverage/junit.xml
-          coverage-path: ./coverage.txt
+          coverage-path: ./tests/coverage/coverage.txt
