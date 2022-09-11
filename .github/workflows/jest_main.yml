@@ -17,7 +17,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npx jest | tee ./tests/coverage/coverage.txt
+        run: npx jest | tee ./coverage.txt
 
       - name: Jest coverage comment
         id: coverageComment
@@ -30,11 +30,12 @@ jobs:
           create-new-comment: false
           hide-summary: false
           junitxml-path: ./tests/coverage/junit.xml
-          coverage-path: ./tests/coverage/coverage.txt
+          coverage-path: ./coverage.txt
 
       - name: Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: sed -i '/<!-- Jest Coverage Comment:Begin -->/,/<!-- Jest Coverage Comment:End -->/c\<!-- Jest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.summaryHtml }}\n<!-- Jest Coverage Comment:End -->' ./README.md
+        run: |
+          sed -i '/<!-- Jest Coverage Comment:Begin -->/,/<!-- Jest Coverage Comment:End -->/c\<!-- Jest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.finalHtml }}\n<!-- Jest Coverage Comment:End -->' ./README.md
 
       - name: Commit & Push changes to Readme
         if: ${{ github.ref == 'refs/heads/main' }}
