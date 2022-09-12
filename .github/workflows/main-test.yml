@@ -62,4 +62,5 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: actions-js/push@master
         with:
+          github_token: ${{ env.GH_TOKEN }}
           message: Update coverage on Readme
