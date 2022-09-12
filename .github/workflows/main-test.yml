@@ -1,35 +1,44 @@
-name: Update Coverage on Readme
+name: Test and update results on README
 on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
 
 env:
   MNEMONIC: ${{secrets.MNEMONIC}}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   build:
-    name: main qa
+    name: Main QA
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.ALLMIGHTY_TOKEN }}
+      - name: 🔍 GH_TOKEN
+        if: env.GH_TOKEN == ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "GH_TOKEN=${GITHUB_TOKEN}" >> $GITHUB_ENV
 
-      - name: Install yarn
+      - name: 🤘 checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+          token: ${{ env.GH_TOKEN }
+
+      - name: 🧱 Install yarn
         run: npm install yarn -g
 
-      - name: Install deps
+      - name: 🧱 Install deps
         run: yarn
 
-      - name: Run tests
+      - name: 🔎 Run tests
         run: npx jest
 
-      - name: Jest Coverage Comment
+      - name: ✍🏻 Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
         id: coverageComment
         with:
-          github-token: ${{ secrets.ALLMIGHTY_TOKEN }}
           coverage-summary-path: ./tests/coverage/coverage-summary.json
           title: Jest Coverage
           badge-title: Coverage
@@ -39,7 +48,7 @@ jobs:
           junitxml-path: ./tests/coverage/junit.xml
           coverage-path: ./tests/coverage/coverage.txt
 
-      - name: Update Readme with Coverage Html
+      - name: 🚀 Update Readme with Coverage Html
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           rm README.md
@@ -49,12 +58,8 @@ jobs:
           rm README.tmp
           rm README.tmp2
 
-      - name: GIT Commit new README
-        if: github.event_name == 'push'
-        run: |
-          git config --global user.name "Readme bot"
-          git config --global user.email "username@users.noreply.github.com"
-          git pull
-          git add coverage devdist dist docs
-          git commit -m Update README tests section
-          git push
+      - name: 📌 Commit & Push changes to Readme
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions-js/push@master
+        with:
+          message: Update coverage on Readme
