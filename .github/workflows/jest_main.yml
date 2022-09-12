@@ -27,7 +27,7 @@ jobs:
         uses: MishaKav/jest-coverage-comment@main
         id: coverageComment
         with:
-          github_token: ${{ secrets.ALLMIGHTY_TOKEN }}
+          github-token: ${{ secrets.ALLMIGHTY_TOKEN }}
           coverage-summary-path: ./tests/coverage/coverage-summary.json
           title: Jest Coverage
           badge-title: Coverage
