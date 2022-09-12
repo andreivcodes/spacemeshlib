@@ -1,8 +1,8 @@
 name: Update Coverage on Readme
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '0 0 * * *'
 
 env:
   MNEMONIC: ${{secrets.MNEMONIC}}
@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ALLMIGHTY_TOKEN }}
 
       - name: Install yarn
         run: npm install yarn -g
@@ -47,10 +49,12 @@ jobs:
           rm README.tmp
           rm README.tmp2
 
-      - name: Commit & Push changes to Readme
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: actions-js/push@master
-        with:
-          message: Update coverage on Readme
-          github_token: ${{ secrets.ALLMIGHTY_TOKEN }}
-          force: true
+      - name: GIT Commit new README
+        if: github.event_name == 'push'
+        run: |
+          git config --global user.name "Readme bot"
+          git config --global user.email "username@users.noreply.github.com"
+          git pull
+          git add coverage devdist dist docs
+          git commit -m Update README tests section
+          git push
