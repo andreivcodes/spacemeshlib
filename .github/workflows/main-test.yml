@@ -24,7 +24,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
-          token: ${{ env.GH_TOKEN }
+          token: ${{ env.GH_TOKEN }}
 
       - name: 🧱 Install yarn
         run: npm install yarn -g
