@@ -49,13 +49,10 @@ jobs:
           rm README.tmp
           rm README.tmp2
 
-      # Commit and push all changed files.
-      # Must only affect files that are listed in "paths-ignore".
-      - name: GIT Commit Build Artifacts (coverage, dist, devdist, docs)
-        # Only run on main branch push (e.g. pull request merge).
+      - name: GIT Commit new README
         if: github.event_name == 'push'
         run: |
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+          git config --global user.name "Readme bot"
           git config --global user.email "username@users.noreply.github.com"
           git pull
           git add coverage devdist dist docs
