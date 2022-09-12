@@ -48,9 +48,8 @@ jobs:
 
       - name: Commit & Push changes to Readme
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: colmose/push-bot@v1.0.0
+        uses: actions-js/push@master
         with:
           message: Update coverage on Readme
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch_name: 'main'
-          bot_name: 'admin-machine'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
