@@ -27,6 +27,7 @@ import {
 } from '@andreivcodes/spacemeshlib'
 
 const NETWORK_URL = 'https://api-devnet226.spacemesh.io/'
+
 const SEED: string = process.env.SEEDPHRASE!
 
 const RECIPIENT: string = '0x38DB093Ce43Fe3dB88D89568bAAeB68A6b5E74a6'.slice(2)
@@ -69,6 +70,10 @@ submitTransaction({
     console.log(err)
   })
 ```
+
+## Docs
+
+Typedoc generated docs are available [here](https://andreivcodes.github.io/spacemeshlib/).
 
 ## Contributing
 

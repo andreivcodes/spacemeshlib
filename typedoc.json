@@ -2,5 +2,7 @@
   "entryPoints": ["src/index.ts"],
   "out": "docs",
   "searchInComments": true,
-  "exclude": "./src/proto/**/*.ts"
+  "exclude": "./src/proto/**/*.ts",
+  "hideGenerator": true,
+  "disableSources":true
 }
