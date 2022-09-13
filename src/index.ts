@@ -10,7 +10,15 @@ export {
   verifyMessage,
   signTransaction,
 } from './crypto'
-export { globalStateClient, txClient, createGlobalStateClient, createTransactionClient, createClients } from './clients'
+export {
+  globalStateClient,
+  txClient,
+  meshClient,
+  createGlobalStateClient,
+  createTransactionClient,
+  createMeshClient,
+  createClients,
+} from './clients'
 export { submitTransaction } from './tx'
 export { toHexString, fromHexString } from './utils'
 export * from './proto/dist/google/protobuf'
