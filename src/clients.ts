@@ -2,10 +2,12 @@ import { createChannel, ChannelCredentials, createClient } from 'nice-grpc'
 import { GlobalStateServiceClient, GlobalStateServiceDefinition } from './proto/dist/spacemesh/v1/global_state'
 import { TransactionServiceClient, TransactionServiceDefinition } from './proto/dist/spacemesh/v1/tx'
 
+/** @ignore */
 export let globalStateClient: GlobalStateServiceClient
-export let txChannel: TransactionServiceClient
+/** @ignore */
+export let txClient: TransactionServiceClient
 
-export const createGlobalStateChannel = (channelUrl: string, channelPort: number, secure: boolean) => {
+export const createGlobalStateClient = (channelUrl: string, channelPort: number, secure: boolean) => {
   const channel = createChannel(
     `${channelUrl}:${channelPort}`,
     secure ? ChannelCredentials.createSsl() : ChannelCredentials.createInsecure(),
@@ -14,16 +16,17 @@ export const createGlobalStateChannel = (channelUrl: string, channelPort: number
   return globalStateClient
 }
 
-export const createTransactionChannel = (channelUrl: string, channelPort: number, secure: boolean) => {
+export const createTransactionClient = (channelUrl: string, channelPort: number, secure: boolean) => {
   const channel = createChannel(
     `${channelUrl}:${channelPort}`,
     secure ? ChannelCredentials.createSsl() : ChannelCredentials.createInsecure(),
   )
-  txChannel = createClient(TransactionServiceDefinition, channel)
-  return txChannel
+  txClient = createClient(TransactionServiceDefinition, channel)
+  return txClient
 }
 
-export const createChannels = (channelUrl: string, channelPort: number, secure: boolean) => {
-  createGlobalStateChannel(channelUrl, channelPort, secure)
-  createTransactionChannel(channelUrl, channelPort, secure)
+export const createClients = (channelUrl: string, channelPort: number, secure: boolean) => {
+  const gsc = createGlobalStateClient(channelUrl, channelPort, secure)
+  const txc = createTransactionClient(channelUrl, channelPort, secure)
+  return { gsc, txc }
 }

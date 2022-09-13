@@ -4,7 +4,7 @@ import {
   AccountDataQueryRequest,
 } from './proto/dist/spacemesh/v1/global_state_types'
 import { AccountId } from './proto/dist/spacemesh/v1/types'
-import { globalStateClient } from './channels'
+import { globalStateClient } from './clients'
 
 export const accountDataQuery = async (pk: Uint8Array, flags: number) => {
   if (!globalStateClient) throw 'GlobalState channel not created'
@@ -43,7 +43,7 @@ export const getAccountNonce = async (pk: Uint8Array) => {
 
   const accountQueryResponse = await globalStateClient.accountDataQuery(accountQuery)
 
-  return accountQueryResponse.accountItem[0].accountWrapper?.stateProjected?.counter
+  return Number(accountQueryResponse.accountItem[0].accountWrapper?.stateProjected?.counter)
 }
 
 export const getAccountBalance = async (pk: Uint8Array) => {
@@ -64,5 +64,5 @@ export const getAccountBalance = async (pk: Uint8Array) => {
 
   const accountQueryResponse = await globalStateClient.accountDataQuery(accountQuery)
 
-  return accountQueryResponse.accountItem[0].accountWrapper?.stateProjected?.balance?.value
+  return Number(accountQueryResponse.accountItem[0].accountWrapper?.stateProjected?.balance?.value)
 }
