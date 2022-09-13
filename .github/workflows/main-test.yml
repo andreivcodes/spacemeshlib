@@ -33,7 +33,7 @@ jobs:
         run: yarn
 
       - name: 🔎 Run tests
-        run: npx jest
+        run: yarn test
 
       - name: ✍🏻 Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
