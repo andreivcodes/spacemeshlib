@@ -10,5 +10,5 @@
   "output": "./src",
   "useRootDir": true,
   "includeBackup": false,
-  "startAt": "/Users/andreiv/git/spacemeshlib/src"
+  "startAt": "./src"
 }
