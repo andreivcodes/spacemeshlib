@@ -19,7 +19,7 @@ jobs:
         run: yarn
 
       - name: Run tests
-        run: npx jest
+        run: yarn test
 
       - name: PR Test
         uses: MishaKav/jest-coverage-comment@main
