@@ -23,7 +23,14 @@ describe('Transaction', function () {
 
     const accountNonce = await getAccountNonce(pk)
 
-    const tx = await submitTransaction(accountNonce, ADDRESS.slice(2), 1, 1, 100, sk)
+    const tx = await submitTransaction({
+      accountNonce: accountNonce,
+      receiver: ADDRESS.slice(2),
+      gasLimit: 1,
+      fee: 1,
+      amount: 100,
+      secretKey: sk,
+    })
     expect(tx.status?.code).toBe(0)
   })
 })

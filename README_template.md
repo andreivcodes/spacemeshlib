@@ -46,7 +46,20 @@ if (accountBalance < amount) {
   return
 }
 
-submitTransaction(accountNonce, to, 1, 1, 100, sk)
+//changing state of the mesh requires a private key, so we load that
+//same as we did with public key, but using derivePrivateKey
+const pk = (await derivePrivateKey(SEED, 0)) as Uint8Array
+
+//submit a transaction
+submitTransaction({
+  accountNonce: accountNonce,
+  receiver: RECIPIENT
+  gasLimit: 1,
+  fee: 1,
+  amount: 100,
+  secretKey: sk,
+})
+  //and get a response back
   .then((response: SubmitTransactionResponse) => {
     console.log(`just 💸  transferred funds to ${RECIPIENT}.`)
     console.log(`Tx ID: 0x${toHexString(response.txstate?.id?.id!)}`)
