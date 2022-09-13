@@ -1,16 +1,23 @@
 {
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
-    "incremental": true /* Enable incremental compilation */,
-    "target": "es5" /* Specify ECMAScript target version: */,
-    "module": "commonjs" /* 'none', 'commonjs', 'amd', 'system', etc */,
-    "declaration": true /* Concatenate & emit output to single file.*/,
-    "outDir": "lib" /* Redirect output to the directory. */,
-    "esModuleInterop": true /* Enables intero between CommonJS and ES */,
-    "skipLibCheck": true /* Skip type checking of declaration files. */,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently */,
-    "allowJs": true,
-    "declaration": true
-  },
-  "include": ["./**/*.ts", "./**/*.wasm", "src/wasm/wasm_exec.js", "jest.config.cjs"],
-  "exclude": ["./node_modules/", "./lib/"]
+    "module": "esnext",
+    "lib": ["esnext"],
+    "importHelpers": true,
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "sourceMap": true,
+    "rootDir": "./src",
+    "outDir": "./dist/esm",
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
 }

@@ -1,0 +1,14 @@
+{
+  "project": "./tsconfig.json",
+  "useSemicolon": false,
+  "useTimestamp": false,
+  "useComment": false,
+  "quote": "'",
+  "overwrite": true,
+  "keepFileExt": false,
+  "skipEmptyDir": true,
+  "output": "./src",
+  "useRootDir": true,
+  "includeBackup": false,
+  "startAt": "/Users/andreiv/git/spacemeshlib/src"
+}

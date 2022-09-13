@@ -1,6 +1,7 @@
 node_modules
 .DS_Store
-lib
+dist
 .env
 tests/coverage
 coverage.txt
+yarn-error.log
