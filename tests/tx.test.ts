@@ -1,4 +1,4 @@
-import { createChannels, createTransactionChannel } from '../src/index'
+import { createClients, createTransactionClient } from '../src/index'
 import { derivePrivateKey, derivePublicKey } from '../src/index'
 import { getAccountNonce } from '../src/index'
 import { submitTransaction } from '../src/index'
@@ -10,7 +10,7 @@ const ADDRESS = '0x38db093ce43fe3db88d89568baaeb68a6b5e74a6'
 
 describe('Transaction', function () {
   it('can create channel', async function () {
-    const channel = createTransactionChannel(NETWORK_URL, NETWORK_PORT, true)
+    const channel = createTransactionClient(NETWORK_URL, NETWORK_PORT, true)
 
     expect(channel).not.toBeNull()
   })
@@ -19,11 +19,18 @@ describe('Transaction', function () {
     const sk = (await derivePrivateKey(MNEMONIC, 0)) as Uint8Array
     const pk = (await derivePublicKey(MNEMONIC, 0)) as Uint8Array
 
-    await createChannels(NETWORK_URL, 443, true)
+    await createClients(NETWORK_URL, 443, true)
 
     const accountNonce = await getAccountNonce(pk)
 
-    const tx = await submitTransaction(Number(accountNonce), ADDRESS.slice(2), 1, 1, 100, sk)
+    const tx = await submitTransaction({
+      accountNonce: accountNonce,
+      receiver: ADDRESS.slice(2),
+      gasLimit: 1,
+      fee: 1,
+      amount: 100,
+      secretKey: sk,
+    })
     expect(tx.status?.code).toBe(0)
   })
 })

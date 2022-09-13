@@ -1,4 +1,4 @@
-import { createGlobalStateChannel } from '../src/index'
+import { createGlobalStateClient } from '../src/index'
 import { derivePublicKey } from '../src/index'
 import { accountDataQuery, getAccountBalance, getAccountNonce } from '../src/index'
 import { AccountDataFlag } from '../src/index'
@@ -9,14 +9,14 @@ const MNEMONIC: string = process.env.MNEMONIC!
 
 describe('Global State', function () {
   it('can create channel', async function () {
-    const channel = createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true)
+    const channel = createGlobalStateClient(NETWORK_URL, NETWORK_PORT, true)
 
     expect(channel).not.toBeNull()
   })
   it('should return account data query result', async function () {
     const pubk = (await derivePublicKey(MNEMONIC, 0)) as Uint8Array
 
-    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true)
+    createGlobalStateClient(NETWORK_URL, NETWORK_PORT, true)
     const result = await accountDataQuery(pubk, AccountDataFlag.ACCOUNT_DATA_FLAG_ACCOUNT)
 
     expect(result).not.toBeNull()
@@ -26,8 +26,8 @@ describe('Global State', function () {
   it('should return account nonce', async function () {
     const pubk = (await derivePublicKey(MNEMONIC, 0)) as Uint8Array
 
-    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true)
-    const result = Number(await getAccountNonce(pubk))
+    createGlobalStateClient(NETWORK_URL, NETWORK_PORT, true)
+    const result = await getAccountNonce(pubk)
 
     expect(result).not.toBeNull()
     expect(result).toBeGreaterThanOrEqual(0)
@@ -36,8 +36,8 @@ describe('Global State', function () {
   it('should return account balance', async function () {
     const pubk = (await derivePublicKey(MNEMONIC, 0)) as Uint8Array
 
-    createGlobalStateChannel(NETWORK_URL, NETWORK_PORT, true)
-    const result = Number(await getAccountBalance(pubk))
+    createGlobalStateClient(NETWORK_URL, NETWORK_PORT, true)
+    const result = await getAccountBalance(pubk)
 
     expect(result).not.toBeNull()
     expect(result).toBeGreaterThanOrEqual(0)

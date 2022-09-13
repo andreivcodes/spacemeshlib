@@ -1,6 +1,6 @@
-import { loadWasm } from './wasm/wasm_loader'
+import { execWasm } from './wasm/wasm_executor'
 // @ts-ignore
-import { exec } from './wasm/wasm_exec'
+import { loadWasm } from './wasm/wasm_loader'
 import * as bip39 from 'bip39'
 // @ts-ignore
 import * as xdr from 'js-xdr'
@@ -9,8 +9,9 @@ const { config, UnsignedHyper } = xdr
 import path from 'path'
 import fs from 'fs'
 import { TextEncoder } from 'util'
+import { fromHexString } from '.'
 
-exec()
+loadWasm()
 declare global {
   // eslint-disable-next-line no-var
   var Go: any
@@ -18,10 +19,11 @@ declare global {
 
 const wasmFile = path.join(path.dirname(fs.realpathSync(__filename)), './wasm/ed25519.wasm')
 
+/** @throws error if wasm does not execute __generatePrivateKey */
 export const generatePrivateKey = async (mnemonic: string) => {
   const seed = bip39.mnemonicToSeedSync(mnemonic)
   return new Promise((resolve) => {
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__generatePrivateKey(seed))
@@ -32,10 +34,11 @@ export const generatePrivateKey = async (mnemonic: string) => {
   })
 }
 
+/** @throws error if wasm does not execute __generatePublicKey */
 export const generatePublicKey = async (mnemonic: string) => {
   const seed = bip39.mnemonicToSeedSync(mnemonic)
   return new Promise((resolve) => {
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__generatePublicKey(seed))
@@ -46,12 +49,13 @@ export const generatePublicKey = async (mnemonic: string) => {
   })
 }
 
+/** @throws error if wasm does not execute __derivePrivateKey */
 export const derivePrivateKey = async (mnemonic: string, index: number) => {
   const seed = bip39.mnemonicToSeedSync(mnemonic)
   const enc = new TextEncoder()
   const saltAsUint8Array = enc.encode('Spacemesh blockmesh')
   return new Promise((resolve) => {
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__derivePrivateKey(seed.slice(32), index, saltAsUint8Array))
@@ -62,12 +66,13 @@ export const derivePrivateKey = async (mnemonic: string, index: number) => {
   })
 }
 
+/** @throws error if wasm does not execute __derivePublicKey */
 export const derivePublicKey = async (mnemonic: string, index: number) => {
   const seed = bip39.mnemonicToSeedSync(mnemonic)
   const enc = new TextEncoder()
   const saltAsUint8Array = enc.encode('Spacemesh blockmesh')
   return new Promise((resolve) => {
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         resolve(__derivePublicKey(seed.slice(32), index, saltAsUint8Array))
@@ -78,13 +83,13 @@ export const derivePublicKey = async (mnemonic: string, index: number) => {
   })
 }
 
+/** @throws error if wasm does not execute __signTransaction */
 export const signMessage = async (message: string, secretKey: string) => {
   const sk = fromHexString(secretKey)
   return new Promise((resolve) => {
     const enc = new TextEncoder()
     const messageAsUint8Array = enc.encode(message)
-
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         const sig = __signTransaction(sk, messageAsUint8Array)
@@ -96,14 +101,14 @@ export const signMessage = async (message: string, secretKey: string) => {
   })
 }
 
+/** @throws error if wasm does not execute __verifyTransaction */
 export const verifyMessage = async (publicKey: string, message: string, signature: string) => {
   const pk = fromHexString(publicKey)
   const sig = fromHexString(signature)
   return new Promise((resolve) => {
     const enc = new TextEncoder()
     const messageAsUint8Array = enc.encode(message)
-
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
         const verify = __verifyTransaction(pk, messageAsUint8Array, sig)
@@ -115,6 +120,7 @@ export const verifyMessage = async (publicKey: string, message: string, signatur
   })
 }
 
+/** @throws error if wasm does not execute __signTransaction */
 export const signTransaction = ({
   accountNonce,
   receiver,
@@ -154,8 +160,7 @@ export const signTransaction = ({
   const bufMessage = message.toXDR()
   return new Promise((resolve) => {
     const bufMessageAsUint8Array = new Uint8Array(bufMessage)
-
-    loadWasm(wasmFile)
+    execWasm(wasmFile)
       .then(() => {
         const sig =
           // @ts-ignore
@@ -172,19 +177,7 @@ export const signTransaction = ({
   })
 }
 
-export const toHexString = (bytes: Uint8Array) =>
-  bytes instanceof Buffer
-    ? bytes.toString('hex')
-    : bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '')
-
-export const fromHexString = (hexString: string) => {
-  const bytes = []
-  for (let i = 0; i < hexString.length; i += 2) {
-    bytes.push(parseInt(hexString.slice(i, i + 2), 16))
-  }
-  return Uint8Array.from(bytes)
-}
-
+/** @ignore */
 export default {
   generatePrivateKey,
   generatePublicKey,
@@ -193,6 +186,4 @@ export default {
   signTransaction,
   derivePrivateKey,
   derivePublicKey,
-  toHexString,
-  fromHexString,
 }

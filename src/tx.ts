@@ -1,15 +1,23 @@
-import { txChannel } from './channels'
-import { signTransaction, toHexString } from './crypto'
+import { txClient } from './clients'
+import { signTransaction } from './crypto'
+import { toHexString } from './utils'
 
-export const submitTransaction = async (
-  accountNonce: number,
-  receiver: string,
-  gasLimit: number,
-  fee: number,
-  amount: number,
-  secretKey: Uint8Array,
-) => {
-  if (!txChannel) throw 'Transaction channel not created'
+export const submitTransaction = async ({
+  accountNonce,
+  receiver,
+  gasLimit,
+  fee,
+  amount,
+  secretKey,
+}: {
+  accountNonce: number
+  receiver: string
+  gasLimit: number
+  fee: number
+  amount: number
+  secretKey: Uint8Array
+}) => {
+  if (!txClient) throw 'Transaction channel not created'
 
   const tx = await signTransaction({
     accountNonce: Number(accountNonce),
@@ -20,7 +28,7 @@ export const submitTransaction = async (
     secretKey: toHexString(secretKey),
   })
 
-  return await txChannel.submitTransaction({
+  return await txClient.submitTransaction({
     transaction: tx as Uint8Array,
   })
 }
