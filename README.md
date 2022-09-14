@@ -89,6 +89,7 @@ Typedoc generated docs are available [here](https://andreivcodes.github.io/space
 ### Requirements
 
 - protobuf
+- golang
 
 ---
 
@@ -101,10 +102,10 @@ Installs all dependencies
 ---
 
 ```bash
-yarn build:all
+yarn build:node
 ```
 
-Cleans old files, compiles new proto files, generates new index files, lints and builds
+Cleans old files, generates new index files, lints and builds using current protoc and wasm files
 
 ESM build is stored in `/dist/esm`
 
@@ -115,12 +116,34 @@ Types are stored in `/dist/types`
 ---
 
 ```bash
-yarn build:all:withwasm
+yarn build:wasm
 ```
 
-`build:all` but in addition it compiles a new `ed25519.wasm` from `/src/wasm/ed25519-WASM`
+compiles a new `src/wasm/ed25519.wasm` from `/src/wasm/ed25519-WASM/`
 
 go1.19.1 is required!
+
+---
+
+```bash
+yarn build:protoc
+```
+
+Compiles proto files from `/src/proto/api` and stores result in `/src/proto/dist`
+
+protobuf is required!
+
+---
+
+```bash
+yarn build:all
+```
+
+`build:node`, `build:wasm` and `build:protoc`.
+
+Builds everything.
+
+protobuf and go1.19.1 are required!
 
 ---
 
@@ -131,12 +154,6 @@ yarn gen-index
 Generates index.js for exports automatically using [ctix](https://imjuni.github.io/ctix/)
 
 ---
-
-```bash
-yarn proto:compile
-```
-
-Compiles proto files from `/src/proto/api` and stores result in `/src/proto/dist`
 
 ```bash
 yarn proto:watch
