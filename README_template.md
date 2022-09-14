@@ -62,7 +62,7 @@ submitTransaction({
 })
   //and get a response back
   .then((response: SubmitTransactionResponse) => {
-    console.log(`just 💸  transferred funds to ${RECIPIENT}.`)
+    console.log(`💸 just transferred funds to ${RECIPIENT}.`)
     console.log(`Tx ID: 0x${toHexString(response.txstate?.id?.id!)}`)
   })
   .catch((err: any) => {
@@ -75,11 +75,79 @@ submitTransaction({
 
 Typedoc generated docs are available [here](https://andreivcodes.github.io/spacemeshlib/).
 
+## Build
+
+```bash
+yarn
+```
+
+Installs all dependencies
+
+---
+
+```bash
+yarn build:all
+```
+
+Cleans old files, compiles new proto files, lints and builds
+
+ESM build is stored in `/dist/esm`
+
+CommonJS build is stored in `dist/cjs`
+
+Types are stored in `./dist/types`
+
+---
+
+```bash
+yarn gen-index
+```
+
+Generates index.js for exports automatically using [ctix](https://imjuni.github.io/ctix/)
+
+---
+
+```bash
+yarn proto:compile
+```
+
+Compiles proto files from `/src/proto/api` and stores result in `/src/proto/dist`
+
+```bash
+yarn proto:watch
+```
+
+---
+
+Compiles proto files on any file change
+
+```bash
+yarn lint
+```
+
+Runs ESLint
+
+---
+
+```bash
+yarn prettier
+```
+
+Runs prettier
+
+---
+
+```bash
+yarn docs
+```
+
+Generates docs using [Typedoc](https://typedoc.org) and stores results in `/docs`
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
+Please make sure to update tests and docs as appropriate.
 
 ## License
 
