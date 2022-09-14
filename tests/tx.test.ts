@@ -16,6 +16,8 @@ describe('Transaction', function () {
   })
 
   it('can submit transaction', async function () {
+    jest.setTimeout(30000)
+
     const sk = (await derivePrivateKey(MNEMONIC, 0)) as Uint8Array
     const pk = (await derivePublicKey(MNEMONIC, 0)) as Uint8Array
 
