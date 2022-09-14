@@ -16,7 +16,6 @@ jobs:
           scope: '@andreivcodes'
       - run: npm i yarn -g
       - run: yarn
-      - run: yarn test
       - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
