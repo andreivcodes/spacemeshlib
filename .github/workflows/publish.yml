@@ -2,6 +2,11 @@ name: Publish Package to npmjs
 on:
   release:
     types: [created]
+
+env:
+  MNEMONIC: ${{secrets.MNEMONIC}}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
