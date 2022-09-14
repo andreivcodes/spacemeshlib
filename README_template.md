@@ -77,6 +77,13 @@ Typedoc generated docs are available [here](https://andreivcodes.github.io/space
 
 ## Build
 
+### Requirements
+
+- golang
+- protobuf
+
+---
+
 ```bash
 yarn
 ```
@@ -89,7 +96,7 @@ Installs all dependencies
 yarn build:all
 ```
 
-Cleans old files, compiles new proto files, lints and builds
+Cleans old files, compiles new proto files, generates new index files, lints and builds
 
 ESM build is stored in `/dist/esm`
 

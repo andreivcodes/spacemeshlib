@@ -83,7 +83,7 @@ export const derivePublicKey = async (mnemonic: string, index: number) => {
   })
 }
 
-/** @throws error if wasm does not execute __signTransaction */
+/** @throws error if wasm does not execute __sign */
 export const signMessage = async (message: string, secretKey: string) => {
   const sk = fromHexString(secretKey)
   return new Promise((resolve) => {
@@ -92,7 +92,7 @@ export const signMessage = async (message: string, secretKey: string) => {
     execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
-        const sig = __signTransaction(sk, messageAsUint8Array)
+        const sig = __sign(sk, messageAsUint8Array)
         resolve(sig)
       })
       .catch((e: any) => {
@@ -101,7 +101,7 @@ export const signMessage = async (message: string, secretKey: string) => {
   })
 }
 
-/** @throws error if wasm does not execute __verifyTransaction */
+/** @throws error if wasm does not execute __verify */
 export const verifyMessage = async (publicKey: string, message: string, signature: string) => {
   const pk = fromHexString(publicKey)
   const sig = fromHexString(signature)
@@ -111,7 +111,7 @@ export const verifyMessage = async (publicKey: string, message: string, signatur
     execWasm(wasmFile)
       .then(() => {
         // @ts-ignore
-        const verify = __verifyTransaction(pk, messageAsUint8Array, sig)
+        const verify = __verify(pk, messageAsUint8Array, sig)
         resolve(verify)
       })
       .catch((e: any) => {
@@ -120,7 +120,7 @@ export const verifyMessage = async (publicKey: string, message: string, signatur
   })
 }
 
-/** @throws error if wasm does not execute __signTransaction */
+/** @throws error if wasm does not execute __sign */
 export const signTransaction = ({
   accountNonce,
   receiver,
@@ -164,7 +164,7 @@ export const signTransaction = ({
       .then(() => {
         const sig =
           // @ts-ignore
-          __signTransaction(sk, bufMessageAsUint8Array)
+          __sign(sk, bufMessageAsUint8Array)
         const tx = new types.SerializableSignedTransaction({
           InnerSerializableSignedTransaction: message,
           Signature: sig,
