@@ -117,9 +117,9 @@ Compiles proto files from `/src/proto/api` and stores result in `/src/proto/dist
 yarn proto:watch
 ```
 
----
-
 Compiles proto files on any file change
+
+---
 
 ```bash
 yarn lint
@@ -153,7 +153,7 @@ Please make sure to update tests and docs as appropriate.
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-# Tests
+## Tests
 
 [![CodeQL](https://github.com/andreivcodes/spacemeshlib/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/andreivcodes/spacemeshlib/actions/workflows/codeql-analysis.yml)
 
