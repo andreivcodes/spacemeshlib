@@ -36,7 +36,7 @@ const RECIPIENT: string = '0x38DB093Ce43Fe3dB88D89568bAAeB68A6b5E74a6'.slice(2)
 const pk = (await derivePublicKey(SEED, 0)) as Uint8Array
 
 //connects to network and returns nice-grpc clients
-createClients(networkUrl, 443, true)
+createClients(NETWORK_URL, 443, true)
 
 //gets account nonce and balance
 const accountNonce = await getAccountNonce(pk)
