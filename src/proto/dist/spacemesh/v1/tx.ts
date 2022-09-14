@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from 'nice-grpc-common'
+import { CallContext, CallOptions } from "nice-grpc-common";
 import {
   SubmitTransactionRequest,
   SubmitTransactionResponse,
@@ -7,9 +7,9 @@ import {
   TransactionsStateResponse,
   TransactionsStateStreamRequest,
   TransactionsStateStreamResponse,
-} from './tx_types'
+} from "./tx_types";
 
-export const protobufPackage = 'spacemesh.v1'
+export const protobufPackage = "spacemesh.v1";
 
 /**
  * Provides clients a way to submit a tx to the network for processing, and to
@@ -17,10 +17,10 @@ export const protobufPackage = 'spacemesh.v1'
  * mesh to STF processing. This service is separate from the Mesh and
  * GlobalState services because txs move across both.
  */
-export type TransactionServiceDefinition = typeof TransactionServiceDefinition
+export type TransactionServiceDefinition = typeof TransactionServiceDefinition;
 export const TransactionServiceDefinition = {
-  name: 'TransactionService',
-  fullName: 'spacemesh.v1.TransactionService',
+  name: "TransactionService",
+  fullName: "spacemesh.v1.TransactionService",
   methods: {
     /**
      * Submit a new tx to the node for processing. The response
@@ -28,7 +28,7 @@ export const TransactionServiceDefinition = {
      * as whether or not it was admitted into the mempool.
      */
     submitTransaction: {
-      name: 'SubmitTransaction',
+      name: "SubmitTransaction",
       requestType: SubmitTransactionRequest,
       requestStream: false,
       responseType: SubmitTransactionResponse,
@@ -41,7 +41,7 @@ export const TransactionServiceDefinition = {
      * to the mesh
      */
     transactionsState: {
-      name: 'TransactionsState',
+      name: "TransactionsState",
       requestType: TransactionsStateRequest,
       requestStream: false,
       responseType: TransactionsStateResponse,
@@ -53,7 +53,7 @@ export const TransactionServiceDefinition = {
      * one of these txs
      */
     transactionsStateStream: {
-      name: 'TransactionsStateStream',
+      name: "TransactionsStateStream",
       requestType: TransactionsStateStreamRequest,
       requestStream: false,
       responseType: TransactionsStateStreamResponse,
@@ -61,7 +61,7 @@ export const TransactionServiceDefinition = {
       options: {},
     },
   },
-} as const
+} as const;
 
 export interface TransactionServiceServiceImplementation<CallContextExt = {}> {
   /**
@@ -72,7 +72,7 @@ export interface TransactionServiceServiceImplementation<CallContextExt = {}> {
   submitTransaction(
     request: SubmitTransactionRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<SubmitTransactionResponse>>
+  ): Promise<DeepPartial<SubmitTransactionResponse>>;
   /**
    * Returns current tx state for one or more txs which indicates if a tx is
    * on the mesh, on its way to the mesh or was rejected and will never get
@@ -81,7 +81,7 @@ export interface TransactionServiceServiceImplementation<CallContextExt = {}> {
   transactionsState(
     request: TransactionsStateRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<TransactionsStateResponse>>
+  ): Promise<DeepPartial<TransactionsStateResponse>>;
   /**
    * Returns tx state for one or more txs every time the tx state changes for
    * one of these txs
@@ -89,7 +89,7 @@ export interface TransactionServiceServiceImplementation<CallContextExt = {}> {
   transactionsStateStream(
     request: TransactionsStateStreamRequest,
     context: CallContext & CallContextExt,
-  ): ServerStreamingMethodResult<DeepPartial<TransactionsStateStreamResponse>>
+  ): ServerStreamingMethodResult<DeepPartial<TransactionsStateStreamResponse>>;
 }
 
 export interface TransactionServiceClient<CallOptionsExt = {}> {
@@ -101,7 +101,7 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
   submitTransaction(
     request: DeepPartial<SubmitTransactionRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<SubmitTransactionResponse>
+  ): Promise<SubmitTransactionResponse>;
   /**
    * Returns current tx state for one or more txs which indicates if a tx is
    * on the mesh, on its way to the mesh or was rejected and will never get
@@ -110,7 +110,7 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
   transactionsState(
     request: DeepPartial<TransactionsStateRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<TransactionsStateResponse>
+  ): Promise<TransactionsStateResponse>;
   /**
    * Returns tx state for one or more txs every time the tx state changes for
    * one of these txs
@@ -118,19 +118,14 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
   transactionsStateStream(
     request: DeepPartial<TransactionsStateStreamRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): AsyncIterable<TransactionsStateStreamResponse>
+  ): AsyncIterable<TransactionsStateStreamResponse>;
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : Partial<T>;
 
-export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> }
+export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };

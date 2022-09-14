@@ -77,6 +77,12 @@ Typedoc generated docs are available [here](https://andreivcodes.github.io/space
 
 ## Build
 
+### Requirements
+
+- protobuf
+
+---
+
 ```bash
 yarn
 ```
@@ -96,6 +102,16 @@ ESM build is stored in `/dist/esm`
 CommonJS build is stored in `/dist/cjs`
 
 Types are stored in `/dist/types`
+
+---
+
+```bash
+yarn build:all:withwasm
+```
+
+`build:all` but in addition it compiles a new `ed25519.wasm` from `/src/wasm/ed25519-WASM`
+
+go1.19.1 is required!
 
 ---
 

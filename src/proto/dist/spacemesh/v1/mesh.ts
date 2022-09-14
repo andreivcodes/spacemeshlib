@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from 'nice-grpc-common'
+import { CallContext, CallOptions } from "nice-grpc-common";
 import {
   AccountMeshDataQueryRequest,
   AccountMeshDataQueryResponse,
@@ -23,19 +23,19 @@ import {
   MaxTransactionsPerSecondResponse,
   NetIDRequest,
   NetIDResponse,
-} from './mesh_types'
+} from "./mesh_types";
 
-export const protobufPackage = 'spacemesh.v1'
+export const protobufPackage = "spacemesh.v1";
 
 /** Readonly API for basic mesh info */
-export type MeshServiceDefinition = typeof MeshServiceDefinition
+export type MeshServiceDefinition = typeof MeshServiceDefinition;
 export const MeshServiceDefinition = {
-  name: 'MeshService',
-  fullName: 'spacemesh.v1.MeshService',
+  name: "MeshService",
+  fullName: "spacemesh.v1.MeshService",
   methods: {
     /** Network genesis time as unix epoch time */
     genesisTime: {
-      name: 'GenesisTime',
+      name: "GenesisTime",
       requestType: GenesisTimeRequest,
       requestStream: false,
       responseType: GenesisTimeResponse,
@@ -44,7 +44,7 @@ export const MeshServiceDefinition = {
     },
     /** Current layer number */
     currentLayer: {
-      name: 'CurrentLayer',
+      name: "CurrentLayer",
       requestType: CurrentLayerRequest,
       requestStream: false,
       responseType: CurrentLayerResponse,
@@ -53,7 +53,7 @@ export const MeshServiceDefinition = {
     },
     /** Current epoch number */
     currentEpoch: {
-      name: 'CurrentEpoch',
+      name: "CurrentEpoch",
       requestType: CurrentEpochRequest,
       requestStream: false,
       responseType: CurrentEpochResponse,
@@ -62,7 +62,7 @@ export const MeshServiceDefinition = {
     },
     /** Network ID */
     netID: {
-      name: 'NetID',
+      name: "NetID",
       requestType: NetIDRequest,
       requestStream: false,
       responseType: NetIDResponse,
@@ -71,7 +71,7 @@ export const MeshServiceDefinition = {
     },
     /** Number of layers per epoch (a network parameter) */
     epochNumLayers: {
-      name: 'EpochNumLayers',
+      name: "EpochNumLayers",
       requestType: EpochNumLayersRequest,
       requestStream: false,
       responseType: EpochNumLayersResponse,
@@ -80,7 +80,7 @@ export const MeshServiceDefinition = {
     },
     /** Layer duration (a network parameter) */
     layerDuration: {
-      name: 'LayerDuration',
+      name: "LayerDuration",
       requestType: LayerDurationRequest,
       requestStream: false,
       responseType: LayerDurationResponse,
@@ -89,7 +89,7 @@ export const MeshServiceDefinition = {
     },
     /** Number of transactions per second (a network parameter) */
     maxTransactionsPerSecond: {
-      name: 'MaxTransactionsPerSecond',
+      name: "MaxTransactionsPerSecond",
       requestType: MaxTransactionsPerSecondRequest,
       requestStream: false,
       responseType: MaxTransactionsPerSecondResponse,
@@ -98,7 +98,7 @@ export const MeshServiceDefinition = {
     },
     /** Get account data query */
     accountMeshDataQuery: {
-      name: 'AccountMeshDataQuery',
+      name: "AccountMeshDataQuery",
       requestType: AccountMeshDataQueryRequest,
       requestStream: false,
       responseType: AccountMeshDataQueryResponse,
@@ -107,7 +107,7 @@ export const MeshServiceDefinition = {
     },
     /** Layers data query */
     layersQuery: {
-      name: 'LayersQuery',
+      name: "LayersQuery",
       requestType: LayersQueryRequest,
       requestStream: false,
       responseType: LayersQueryResponse,
@@ -119,7 +119,7 @@ export const MeshServiceDefinition = {
      * Includes simple coin transactions with the account as the destination.
      */
     accountMeshDataStream: {
-      name: 'AccountMeshDataStream',
+      name: "AccountMeshDataStream",
       requestType: AccountMeshDataStreamRequest,
       requestStream: false,
       responseType: AccountMeshDataStreamResponse,
@@ -131,7 +131,7 @@ export const MeshServiceDefinition = {
      * Sent each time layer data changes. Designed for heavy-duty clients.
      */
     layerStream: {
-      name: 'LayerStream',
+      name: "LayerStream",
       requestType: LayerStreamRequest,
       requestStream: false,
       responseType: LayerStreamResponse,
@@ -139,51 +139,51 @@ export const MeshServiceDefinition = {
       options: {},
     },
   },
-} as const
+} as const;
 
 export interface MeshServiceServiceImplementation<CallContextExt = {}> {
   /** Network genesis time as unix epoch time */
   genesisTime(
     request: GenesisTimeRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<GenesisTimeResponse>>
+  ): Promise<DeepPartial<GenesisTimeResponse>>;
   /** Current layer number */
   currentLayer(
     request: CurrentLayerRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<CurrentLayerResponse>>
+  ): Promise<DeepPartial<CurrentLayerResponse>>;
   /** Current epoch number */
   currentEpoch(
     request: CurrentEpochRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<CurrentEpochResponse>>
+  ): Promise<DeepPartial<CurrentEpochResponse>>;
   /** Network ID */
-  netID(request: NetIDRequest, context: CallContext & CallContextExt): Promise<DeepPartial<NetIDResponse>>
+  netID(request: NetIDRequest, context: CallContext & CallContextExt): Promise<DeepPartial<NetIDResponse>>;
   /** Number of layers per epoch (a network parameter) */
   epochNumLayers(
     request: EpochNumLayersRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<EpochNumLayersResponse>>
+  ): Promise<DeepPartial<EpochNumLayersResponse>>;
   /** Layer duration (a network parameter) */
   layerDuration(
     request: LayerDurationRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<LayerDurationResponse>>
+  ): Promise<DeepPartial<LayerDurationResponse>>;
   /** Number of transactions per second (a network parameter) */
   maxTransactionsPerSecond(
     request: MaxTransactionsPerSecondRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<MaxTransactionsPerSecondResponse>>
+  ): Promise<DeepPartial<MaxTransactionsPerSecondResponse>>;
   /** Get account data query */
   accountMeshDataQuery(
     request: AccountMeshDataQueryRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<AccountMeshDataQueryResponse>>
+  ): Promise<DeepPartial<AccountMeshDataQueryResponse>>;
   /** Layers data query */
   layersQuery(
     request: LayersQueryRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<LayersQueryResponse>>
+  ): Promise<DeepPartial<LayersQueryResponse>>;
   /**
    * A stream of transactions and activations from an account.
    * Includes simple coin transactions with the account as the destination.
@@ -191,7 +191,7 @@ export interface MeshServiceServiceImplementation<CallContextExt = {}> {
   accountMeshDataStream(
     request: AccountMeshDataStreamRequest,
     context: CallContext & CallContextExt,
-  ): ServerStreamingMethodResult<DeepPartial<AccountMeshDataStreamResponse>>
+  ): ServerStreamingMethodResult<DeepPartial<AccountMeshDataStreamResponse>>;
   /**
    * Layer with blocks, transactions and activations
    * Sent each time layer data changes. Designed for heavy-duty clients.
@@ -199,7 +199,7 @@ export interface MeshServiceServiceImplementation<CallContextExt = {}> {
   layerStream(
     request: LayerStreamRequest,
     context: CallContext & CallContextExt,
-  ): ServerStreamingMethodResult<DeepPartial<LayerStreamResponse>>
+  ): ServerStreamingMethodResult<DeepPartial<LayerStreamResponse>>;
 }
 
 export interface MeshServiceClient<CallOptionsExt = {}> {
@@ -207,44 +207,44 @@ export interface MeshServiceClient<CallOptionsExt = {}> {
   genesisTime(
     request: DeepPartial<GenesisTimeRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<GenesisTimeResponse>
+  ): Promise<GenesisTimeResponse>;
   /** Current layer number */
   currentLayer(
     request: DeepPartial<CurrentLayerRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<CurrentLayerResponse>
+  ): Promise<CurrentLayerResponse>;
   /** Current epoch number */
   currentEpoch(
     request: DeepPartial<CurrentEpochRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<CurrentEpochResponse>
+  ): Promise<CurrentEpochResponse>;
   /** Network ID */
-  netID(request: DeepPartial<NetIDRequest>, options?: CallOptions & CallOptionsExt): Promise<NetIDResponse>
+  netID(request: DeepPartial<NetIDRequest>, options?: CallOptions & CallOptionsExt): Promise<NetIDResponse>;
   /** Number of layers per epoch (a network parameter) */
   epochNumLayers(
     request: DeepPartial<EpochNumLayersRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<EpochNumLayersResponse>
+  ): Promise<EpochNumLayersResponse>;
   /** Layer duration (a network parameter) */
   layerDuration(
     request: DeepPartial<LayerDurationRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<LayerDurationResponse>
+  ): Promise<LayerDurationResponse>;
   /** Number of transactions per second (a network parameter) */
   maxTransactionsPerSecond(
     request: DeepPartial<MaxTransactionsPerSecondRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<MaxTransactionsPerSecondResponse>
+  ): Promise<MaxTransactionsPerSecondResponse>;
   /** Get account data query */
   accountMeshDataQuery(
     request: DeepPartial<AccountMeshDataQueryRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<AccountMeshDataQueryResponse>
+  ): Promise<AccountMeshDataQueryResponse>;
   /** Layers data query */
   layersQuery(
     request: DeepPartial<LayersQueryRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<LayersQueryResponse>
+  ): Promise<LayersQueryResponse>;
   /**
    * A stream of transactions and activations from an account.
    * Includes simple coin transactions with the account as the destination.
@@ -252,7 +252,7 @@ export interface MeshServiceClient<CallOptionsExt = {}> {
   accountMeshDataStream(
     request: DeepPartial<AccountMeshDataStreamRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): AsyncIterable<AccountMeshDataStreamResponse>
+  ): AsyncIterable<AccountMeshDataStreamResponse>;
   /**
    * Layer with blocks, transactions and activations
    * Sent each time layer data changes. Designed for heavy-duty clients.
@@ -260,19 +260,14 @@ export interface MeshServiceClient<CallOptionsExt = {}> {
   layerStream(
     request: DeepPartial<LayerStreamRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): AsyncIterable<LayerStreamResponse>
+  ): AsyncIterable<LayerStreamResponse>;
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends Array<infer U>
-  ? Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : Partial<T>;
 
-export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> }
+export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };

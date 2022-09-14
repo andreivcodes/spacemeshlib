@@ -5,3 +5,4 @@ dist
 tests/coverage
 coverage.txt
 yarn-error.log
+src/wasm/ed25519-WASM/wasm_exec.js
