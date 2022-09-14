@@ -1,6 +1,6 @@
 {
   "name": "@andreivcodes/spacemeshlib",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "description": "Utility lib for Spacemesh network",
   "author": "andreivcodes",
   "license": "MIT",
@@ -17,8 +17,9 @@
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "build:wasm": "GOOS=js GOARCH=wasm go build ./src/wasm/ed25519-wasm -o ./src/wasm/ed25519.wasm",
+    "build:wasm": "cd ./src/wasm/ed25519-WASM && GOOS=js GOARCH=wasm go build -o ./../ed25519.wasm",
     "build:all": "yarn clean && yarn gen-index && yarn proto:compile && yarn prettier && yarn lint && yarn build && yarn copy-wasm && yarn docs",
+    "build:all:withwasm": "yarn clean && yarn gen-index && yarn proto:compile && yarn prettier && yarn lint && yarn build && yarn build:wasm && yarn copy-wasm && yarn docs",
     "clean": "rm -fr dist/* && yarn ctix remove",
     "gen-index": "yarn ctix create",
     "copy-wasm": "cp ./src/wasm/ed25519.wasm ./dist/esm/wasm/ && cp ./src/wasm/ed25519.wasm ./dist/cjs/wasm/",
@@ -36,7 +37,6 @@
     "nice-grpc-common": "^2.0.0"
   },
   "devDependencies": {
-    "ts-proto": "^1.125.0",
     "@types/jest": "^29.0.2",
     "@types/node": "^18.7.18",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
@@ -53,6 +53,7 @@
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.1",
     "ts-node": "^10.9.1",
+    "ts-proto": "^1.125.0",
     "typedoc": "^0.23.14",
     "typescript": "^4.8.3"
   }
