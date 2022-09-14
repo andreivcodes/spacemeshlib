@@ -1,8 +1,12 @@
 {
   "name": "@andreivcodes/spacemeshlib",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "Utility lib for Spacemesh network",
   "author": "andreivcodes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andreivcodes/spacemeshlib.git"
+  },
   "license": "MIT",
   "files": [
     "dist",

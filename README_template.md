@@ -12,6 +12,15 @@ npm install @andreivcodes/spacemeshlib
 yarn add @andreivcodes/spacemeshlib
 ```
 
+## Features
+
+- Imports [Spacemesh API](https://github.com/spacemeshos/api), builds it to typescript using [ts-proto](https://github.com/stephenh/ts-proto)
+- Imports [a modified fork](https://github.com/andreivcodes/ed25519-WASM) of [ed25519-WASM](https://github.com/spacemeshos/ed25519-WASM), and builds a `.wasm` file
+- Exports grpc clients using [nice-grpc](https://www.npmjs.com/package/nice-grpc#client)
+- Exports functions of `ed25519.wasm` through a TypeScript version of `wasm_exex.js`
+- Abstracts away a lot of the boilerplate of grpc and wasm.
+- Exports easy to work with functions as `createClients(NETWORK_URL, 443, true)` or `derivePublicKey(SEED, 0)`
+
 ## Usage
 
 ```typescript
