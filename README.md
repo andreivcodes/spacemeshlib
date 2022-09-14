@@ -93,9 +93,9 @@ Cleans old files, compiles new proto files, lints and builds
 
 ESM build is stored in `/dist/esm`
 
-CommonJS build is stored in `dist/cjs`
+CommonJS build is stored in `/dist/cjs`
 
-Types are stored in `./dist/types`
+Types are stored in `/dist/types`
 
 ---
 
