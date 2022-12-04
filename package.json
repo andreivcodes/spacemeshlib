@@ -1,6 +1,6 @@
 {
   "name": "@andreivcodes/spacemeshlib",
-  "version": "1.0.36",
+  "version": "1.0.40",
   "description": "Utility lib for Spacemesh network",
   "author": "andreivcodes",
   "repository": {
@@ -23,7 +23,7 @@
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "build:wasm": "cd ./src/wasm/ed25519-WASM && GOOS=js GOARCH=wasm go build -o ./../ed25519.wasm",
     "build:node": "yarn clean && yarn gen-index && yarn prettier && yarn lint && yarn build && yarn copy-wasm && yarn docs",
-    "build:protoc": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_opt=esModuleInterop=true,forceLong=string,lowerCaseServiceMethods=true,outputServices=nice-grpc,outputServices=generic-definitions --ts_proto_out=./src/proto/dist  -I=./src/proto/api/proto -I=./src/proto/api/third_party ./src/proto/api/proto/spacemesh/v1/*.proto",
+    "build:protoc": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_opt=esModuleInterop=true,forceLong=string,lowerCaseServiceMethods=true,outputServices=nice-grpc,outputServices=generic-definitions --ts_proto_out=./src/proto/dist  -I=./src/proto/api -I=./src/proto/api/google ./src/proto/api/spacemesh/v1/*.proto",
     "build:all": "yarn clean && yarn gen-index && yarn build:protoc && yarn prettier && yarn lint && yarn build && yarn build:wasm && yarn copy-wasm && yarn docs",
     "clean": "rm -fr dist/* && yarn ctix remove",
     "gen-index": "yarn ctix create",

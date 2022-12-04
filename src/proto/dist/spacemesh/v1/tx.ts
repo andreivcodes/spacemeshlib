@@ -3,6 +3,8 @@ import { CallContext, CallOptions } from "nice-grpc-common";
 import {
   SubmitTransactionRequest,
   SubmitTransactionResponse,
+  TransactionResult,
+  TransactionResultsRequest,
   TransactionsStateRequest,
   TransactionsStateResponse,
   TransactionsStateStreamRequest,
@@ -60,6 +62,15 @@ export const TransactionServiceDefinition = {
       responseStream: true,
       options: {},
     },
+    /** StreamResults streams historical data and watch live events with transaction results. */
+    streamResults: {
+      name: "StreamResults",
+      requestType: TransactionResultsRequest,
+      requestStream: false,
+      responseType: TransactionResult,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -90,6 +101,11 @@ export interface TransactionServiceServiceImplementation<CallContextExt = {}> {
     request: TransactionsStateStreamRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<DeepPartial<TransactionsStateStreamResponse>>;
+  /** StreamResults streams historical data and watch live events with transaction results. */
+  streamResults(
+    request: TransactionResultsRequest,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<DeepPartial<TransactionResult>>;
 }
 
 export interface TransactionServiceClient<CallOptionsExt = {}> {
@@ -119,6 +135,11 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<TransactionsStateStreamRequest>,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<TransactionsStateStreamResponse>;
+  /** StreamResults streams historical data and watch live events with transaction results. */
+  streamResults(
+    request: DeepPartial<TransactionResultsRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): AsyncIterable<TransactionResult>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

@@ -15,8 +15,8 @@ import {
   StatusStreamResponse,
   SyncStartRequest,
   SyncStartResponse,
-  UpdatePoetServerRequest,
-  UpdatePoetServerResponse,
+  UpdatePoetServersRequest,
+  UpdatePoetServersResponse,
   VersionResponse,
 } from "./node_types";
 
@@ -82,12 +82,15 @@ export const NodeServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** UpdatePoetServer updates poet server */
-    updatePoetServer: {
-      name: "UpdatePoetServer",
-      requestType: UpdatePoetServerRequest,
+    /**
+     * UpdatePoetServers updates poet servers
+     * All existing PoET servers will be substituted with this new list
+     */
+    updatePoetServers: {
+      name: "UpdatePoetServers",
+      requestType: UpdatePoetServersRequest,
       requestStream: false,
-      responseType: UpdatePoetServerResponse,
+      responseType: UpdatePoetServersResponse,
       responseStream: false,
       options: {},
     },
@@ -125,11 +128,14 @@ export interface NodeServiceServiceImplementation<CallContextExt = {}> {
   syncStart(request: SyncStartRequest, context: CallContext & CallContextExt): Promise<DeepPartial<SyncStartResponse>>;
   /** Request that the node initiate graceful shutdown */
   shutdown(request: ShutdownRequest, context: CallContext & CallContextExt): Promise<DeepPartial<ShutdownResponse>>;
-  /** UpdatePoetServer updates poet server */
-  updatePoetServer(
-    request: UpdatePoetServerRequest,
+  /**
+   * UpdatePoetServers updates poet servers
+   * All existing PoET servers will be substituted with this new list
+   */
+  updatePoetServers(
+    request: UpdatePoetServersRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<UpdatePoetServerResponse>>;
+  ): Promise<DeepPartial<UpdatePoetServersResponse>>;
   /** Node status events (sync and net) */
   statusStream(
     request: StatusStreamRequest,
@@ -155,11 +161,14 @@ export interface NodeServiceClient<CallOptionsExt = {}> {
   syncStart(request: DeepPartial<SyncStartRequest>, options?: CallOptions & CallOptionsExt): Promise<SyncStartResponse>;
   /** Request that the node initiate graceful shutdown */
   shutdown(request: DeepPartial<ShutdownRequest>, options?: CallOptions & CallOptionsExt): Promise<ShutdownResponse>;
-  /** UpdatePoetServer updates poet server */
-  updatePoetServer(
-    request: DeepPartial<UpdatePoetServerRequest>,
+  /**
+   * UpdatePoetServers updates poet servers
+   * All existing PoET servers will be substituted with this new list
+   */
+  updatePoetServers(
+    request: DeepPartial<UpdatePoetServersRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<UpdatePoetServerResponse>;
+  ): Promise<UpdatePoetServersResponse>;
   /** Node status events (sync and net) */
   statusStream(
     request: DeepPartial<StatusStreamRequest>,

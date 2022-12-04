@@ -99,6 +99,8 @@ export interface PostConfigResponse {
   labelsPerUnit: string;
   minNumUnits: number;
   maxNumUnits: number;
+  k1: number;
+  k2: number;
 }
 
 export interface PostSetupComputeProvider {
@@ -1148,7 +1150,7 @@ export const PostSetupStatusStreamResponse = {
 };
 
 function createBasePostConfigResponse(): PostConfigResponse {
-  return { bitsPerLabel: 0, labelsPerUnit: "0", minNumUnits: 0, maxNumUnits: 0 };
+  return { bitsPerLabel: 0, labelsPerUnit: "0", minNumUnits: 0, maxNumUnits: 0, k1: 0, k2: 0 };
 }
 
 export const PostConfigResponse = {
@@ -1164,6 +1166,12 @@ export const PostConfigResponse = {
     }
     if (message.maxNumUnits !== 0) {
       writer.uint32(32).uint32(message.maxNumUnits);
+    }
+    if (message.k1 !== 0) {
+      writer.uint32(40).uint32(message.k1);
+    }
+    if (message.k2 !== 0) {
+      writer.uint32(48).uint32(message.k2);
     }
     return writer;
   },
@@ -1187,6 +1195,12 @@ export const PostConfigResponse = {
         case 4:
           message.maxNumUnits = reader.uint32();
           break;
+        case 5:
+          message.k1 = reader.uint32();
+          break;
+        case 6:
+          message.k2 = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1201,6 +1215,8 @@ export const PostConfigResponse = {
       labelsPerUnit: isSet(object.labelsPerUnit) ? String(object.labelsPerUnit) : "0",
       minNumUnits: isSet(object.minNumUnits) ? Number(object.minNumUnits) : 0,
       maxNumUnits: isSet(object.maxNumUnits) ? Number(object.maxNumUnits) : 0,
+      k1: isSet(object.k1) ? Number(object.k1) : 0,
+      k2: isSet(object.k2) ? Number(object.k2) : 0,
     };
   },
 
@@ -1210,6 +1226,8 @@ export const PostConfigResponse = {
     message.labelsPerUnit !== undefined && (obj.labelsPerUnit = message.labelsPerUnit);
     message.minNumUnits !== undefined && (obj.minNumUnits = Math.round(message.minNumUnits));
     message.maxNumUnits !== undefined && (obj.maxNumUnits = Math.round(message.maxNumUnits));
+    message.k1 !== undefined && (obj.k1 = Math.round(message.k1));
+    message.k2 !== undefined && (obj.k2 = Math.round(message.k2));
     return obj;
   },
 
@@ -1219,6 +1237,8 @@ export const PostConfigResponse = {
     message.labelsPerUnit = object.labelsPerUnit ?? "0";
     message.minNumUnits = object.minNumUnits ?? 0;
     message.maxNumUnits = object.maxNumUnits ?? 0;
+    message.k1 = object.k1 ?? 0;
+    message.k2 = object.k2 ?? 0;
     return message;
   },
 };

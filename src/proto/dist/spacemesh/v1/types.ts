@@ -18,7 +18,7 @@ export interface Amount {
 }
 
 export interface AccountId {
-  address: Uint8Array;
+  address: string;
 }
 
 export interface TransactionId {
@@ -31,128 +31,6 @@ export interface ActivationId {
 
 export interface SmesherId {
   id: Uint8Array;
-}
-
-export interface GasOffered {
-  gasProvided: string;
-  gasPrice: string;
-}
-
-/** Data specific to a simple coin transaction. */
-export interface CoinTransferTransaction {
-  receiver: AccountId | undefined;
-}
-
-/** Data specific to a smart contract transaction. */
-export interface SmartContractTransaction {
-  type: SmartContractTransaction_TransactionType;
-  /** packed binary arguments, including ABI selector */
-  data: Uint8Array;
-  /** address of smart contract or template */
-  accountId: AccountId | undefined;
-}
-
-export enum SmartContractTransaction_TransactionType {
-  TRANSACTION_TYPE_UNSPECIFIED = 0,
-  /** TRANSACTION_TYPE_APP - smart contract method */
-  TRANSACTION_TYPE_APP = 1,
-  /** TRANSACTION_TYPE_APP_SPAWN_APP - deploy app from template using svm terminology */
-  TRANSACTION_TYPE_APP_SPAWN_APP = 2,
-  /** TRANSACTION_TYPE_DEPLOY_TEMPLATE - deploy app template code to mesh */
-  TRANSACTION_TYPE_DEPLOY_TEMPLATE = 3,
-  UNRECOGNIZED = -1,
-}
-
-export function smartContractTransaction_TransactionTypeFromJSON(
-  object: any,
-): SmartContractTransaction_TransactionType {
-  switch (object) {
-    case 0:
-    case "TRANSACTION_TYPE_UNSPECIFIED":
-      return SmartContractTransaction_TransactionType.TRANSACTION_TYPE_UNSPECIFIED;
-    case 1:
-    case "TRANSACTION_TYPE_APP":
-      return SmartContractTransaction_TransactionType.TRANSACTION_TYPE_APP;
-    case 2:
-    case "TRANSACTION_TYPE_APP_SPAWN_APP":
-      return SmartContractTransaction_TransactionType.TRANSACTION_TYPE_APP_SPAWN_APP;
-    case 3:
-    case "TRANSACTION_TYPE_DEPLOY_TEMPLATE":
-      return SmartContractTransaction_TransactionType.TRANSACTION_TYPE_DEPLOY_TEMPLATE;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return SmartContractTransaction_TransactionType.UNRECOGNIZED;
-  }
-}
-
-export function smartContractTransaction_TransactionTypeToJSON(
-  object: SmartContractTransaction_TransactionType,
-): string {
-  switch (object) {
-    case SmartContractTransaction_TransactionType.TRANSACTION_TYPE_UNSPECIFIED:
-      return "TRANSACTION_TYPE_UNSPECIFIED";
-    case SmartContractTransaction_TransactionType.TRANSACTION_TYPE_APP:
-      return "TRANSACTION_TYPE_APP";
-    case SmartContractTransaction_TransactionType.TRANSACTION_TYPE_APP_SPAWN_APP:
-      return "TRANSACTION_TYPE_APP_SPAWN_APP";
-    case SmartContractTransaction_TransactionType.TRANSACTION_TYPE_DEPLOY_TEMPLATE:
-      return "TRANSACTION_TYPE_DEPLOY_TEMPLATE";
-    case SmartContractTransaction_TransactionType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-
-/** A simple signature data */
-export interface Signature {
-  /** the signature's scheme */
-  scheme: Signature_Scheme;
-  /** the signature itself */
-  signature: Uint8Array;
-  /** included in schemes which require signer to provide a public key */
-  publicKey: Uint8Array;
-}
-
-export enum Signature_Scheme {
-  SCHEME_UNSPECIFIED = 0,
-  /** SCHEME_ED25519 - standard Ed25519 scheme */
-  SCHEME_ED25519 = 1,
-  /** SCHEME_ED25519_PLUS_PLUS - sm-modified ED25519 , a.k.a. ED25519++ */
-  SCHEME_ED25519_PLUS_PLUS = 2,
-  UNRECOGNIZED = -1,
-}
-
-export function signature_SchemeFromJSON(object: any): Signature_Scheme {
-  switch (object) {
-    case 0:
-    case "SCHEME_UNSPECIFIED":
-      return Signature_Scheme.SCHEME_UNSPECIFIED;
-    case 1:
-    case "SCHEME_ED25519":
-      return Signature_Scheme.SCHEME_ED25519;
-    case 2:
-    case "SCHEME_ED25519_PLUS_PLUS":
-      return Signature_Scheme.SCHEME_ED25519_PLUS_PLUS;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return Signature_Scheme.UNRECOGNIZED;
-  }
-}
-
-export function signature_SchemeToJSON(object: Signature_Scheme): string {
-  switch (object) {
-    case Signature_Scheme.SCHEME_UNSPECIFIED:
-      return "SCHEME_UNSPECIFIED";
-    case Signature_Scheme.SCHEME_ED25519:
-      return "SCHEME_ED25519";
-    case Signature_Scheme.SCHEME_ED25519_PLUS_PLUS:
-      return "SCHEME_ED25519_PLUS_PLUS";
-    case Signature_Scheme.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
 }
 
 /** An Activation "transaction" (ATX) */
@@ -178,6 +56,7 @@ export interface Activation {
     | undefined;
   /** number of PoST data commitment units */
   numUnits: number;
+  sequence: string;
 }
 
 /**
@@ -185,27 +64,30 @@ export interface Activation {
  * do not include mutable data such as tx state or result.
  */
 export interface Transaction {
-  id: TransactionId | undefined;
-  coinTransfer: CoinTransferTransaction | undefined;
-  smartContract:
-    | SmartContractTransaction
-    | undefined;
-  /** tx originator, should match signer inside Signature */
-  sender:
+  id: Uint8Array;
+  principal: AccountId | undefined;
+  template:
     | AccountId
     | undefined;
-  /** gas price and max gas offered */
-  gasOffered:
-    | GasOffered
-    | undefined;
-  /** amount of coin transfered in this tx by sender */
-  amount:
-    | Amount
-    | undefined;
-  /** tx counter aka nonce */
+  /** this is actually limited by uint8, but no type for that. */
+  method: number;
+  nonce: Nonce | undefined;
+  limits: LayerLimits | undefined;
+  maxGas: string;
+  gasPrice: string;
+  maxSpend: string;
+  raw: Uint8Array;
+}
+
+export interface LayerLimits {
+  min: number;
+  max: number;
+}
+
+export interface Nonce {
   counter: string;
-  /** sender signature on transaction */
-  signature: Signature | undefined;
+  /** this is actually limited by uint8, but no type for that. */
+  bitfield: number;
 }
 
 /** Transaction that was added to the mesh. */
@@ -273,6 +155,8 @@ export enum Layer_LayerStatus {
   LAYER_STATUS_APPROVED = 1,
   /** LAYER_STATUS_CONFIRMED - confirmed by tortoise */
   LAYER_STATUS_CONFIRMED = 2,
+  /** LAYER_STATUS_APPLIED - applied in state */
+  LAYER_STATUS_APPLIED = 3,
   UNRECOGNIZED = -1,
 }
 
@@ -287,6 +171,9 @@ export function layer_LayerStatusFromJSON(object: any): Layer_LayerStatus {
     case 2:
     case "LAYER_STATUS_CONFIRMED":
       return Layer_LayerStatus.LAYER_STATUS_CONFIRMED;
+    case 3:
+    case "LAYER_STATUS_APPLIED":
+      return Layer_LayerStatus.LAYER_STATUS_APPLIED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -302,6 +189,8 @@ export function layer_LayerStatusToJSON(object: Layer_LayerStatus): string {
       return "LAYER_STATUS_APPROVED";
     case Layer_LayerStatus.LAYER_STATUS_CONFIRMED:
       return "LAYER_STATUS_CONFIRMED";
+    case Layer_LayerStatus.LAYER_STATUS_APPLIED:
+      return "LAYER_STATUS_APPLIED";
     case Layer_LayerStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -464,13 +353,13 @@ export const Amount = {
 };
 
 function createBaseAccountId(): AccountId {
-  return { address: new Uint8Array() };
+  return { address: "" };
 }
 
 export const AccountId = {
   encode(message: AccountId, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address.length !== 0) {
-      writer.uint32(10).bytes(message.address);
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
     }
     return writer;
   },
@@ -483,7 +372,7 @@ export const AccountId = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.address = reader.bytes();
+          message.address = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -494,19 +383,18 @@ export const AccountId = {
   },
 
   fromJSON(object: any): AccountId {
-    return { address: isSet(object.address) ? bytesFromBase64(object.address) : new Uint8Array() };
+    return { address: isSet(object.address) ? String(object.address) : "" };
   },
 
   toJSON(message: AccountId): unknown {
     const obj: any = {};
-    message.address !== undefined &&
-      (obj.address = base64FromBytes(message.address !== undefined ? message.address : new Uint8Array()));
+    message.address !== undefined && (obj.address = message.address);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountId>, I>>(object: I): AccountId {
     const message = createBaseAccountId();
-    message.address = object.address ?? new Uint8Array();
+    message.address = object.address ?? "";
     return message;
   },
 };
@@ -652,254 +540,6 @@ export const SmesherId = {
   },
 };
 
-function createBaseGasOffered(): GasOffered {
-  return { gasProvided: "0", gasPrice: "0" };
-}
-
-export const GasOffered = {
-  encode(message: GasOffered, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.gasProvided !== "0") {
-      writer.uint32(8).uint64(message.gasProvided);
-    }
-    if (message.gasPrice !== "0") {
-      writer.uint32(16).uint64(message.gasPrice);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): GasOffered {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGasOffered();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.gasProvided = longToString(reader.uint64() as Long);
-          break;
-        case 2:
-          message.gasPrice = longToString(reader.uint64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GasOffered {
-    return {
-      gasProvided: isSet(object.gasProvided) ? String(object.gasProvided) : "0",
-      gasPrice: isSet(object.gasPrice) ? String(object.gasPrice) : "0",
-    };
-  },
-
-  toJSON(message: GasOffered): unknown {
-    const obj: any = {};
-    message.gasProvided !== undefined && (obj.gasProvided = message.gasProvided);
-    message.gasPrice !== undefined && (obj.gasPrice = message.gasPrice);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<GasOffered>, I>>(object: I): GasOffered {
-    const message = createBaseGasOffered();
-    message.gasProvided = object.gasProvided ?? "0";
-    message.gasPrice = object.gasPrice ?? "0";
-    return message;
-  },
-};
-
-function createBaseCoinTransferTransaction(): CoinTransferTransaction {
-  return { receiver: undefined };
-}
-
-export const CoinTransferTransaction = {
-  encode(message: CoinTransferTransaction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.receiver !== undefined) {
-      AccountId.encode(message.receiver, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): CoinTransferTransaction {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCoinTransferTransaction();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.receiver = AccountId.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CoinTransferTransaction {
-    return { receiver: isSet(object.receiver) ? AccountId.fromJSON(object.receiver) : undefined };
-  },
-
-  toJSON(message: CoinTransferTransaction): unknown {
-    const obj: any = {};
-    message.receiver !== undefined &&
-      (obj.receiver = message.receiver ? AccountId.toJSON(message.receiver) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<CoinTransferTransaction>, I>>(object: I): CoinTransferTransaction {
-    const message = createBaseCoinTransferTransaction();
-    message.receiver = (object.receiver !== undefined && object.receiver !== null)
-      ? AccountId.fromPartial(object.receiver)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseSmartContractTransaction(): SmartContractTransaction {
-  return { type: 0, data: new Uint8Array(), accountId: undefined };
-}
-
-export const SmartContractTransaction = {
-  encode(message: SmartContractTransaction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.type !== 0) {
-      writer.uint32(8).int32(message.type);
-    }
-    if (message.data.length !== 0) {
-      writer.uint32(18).bytes(message.data);
-    }
-    if (message.accountId !== undefined) {
-      AccountId.encode(message.accountId, writer.uint32(26).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SmartContractTransaction {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSmartContractTransaction();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.type = reader.int32() as any;
-          break;
-        case 2:
-          message.data = reader.bytes();
-          break;
-        case 3:
-          message.accountId = AccountId.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): SmartContractTransaction {
-    return {
-      type: isSet(object.type) ? smartContractTransaction_TransactionTypeFromJSON(object.type) : 0,
-      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
-      accountId: isSet(object.accountId) ? AccountId.fromJSON(object.accountId) : undefined,
-    };
-  },
-
-  toJSON(message: SmartContractTransaction): unknown {
-    const obj: any = {};
-    message.type !== undefined && (obj.type = smartContractTransaction_TransactionTypeToJSON(message.type));
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
-    message.accountId !== undefined &&
-      (obj.accountId = message.accountId ? AccountId.toJSON(message.accountId) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SmartContractTransaction>, I>>(object: I): SmartContractTransaction {
-    const message = createBaseSmartContractTransaction();
-    message.type = object.type ?? 0;
-    message.data = object.data ?? new Uint8Array();
-    message.accountId = (object.accountId !== undefined && object.accountId !== null)
-      ? AccountId.fromPartial(object.accountId)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseSignature(): Signature {
-  return { scheme: 0, signature: new Uint8Array(), publicKey: new Uint8Array() };
-}
-
-export const Signature = {
-  encode(message: Signature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.scheme !== 0) {
-      writer.uint32(8).int32(message.scheme);
-    }
-    if (message.signature.length !== 0) {
-      writer.uint32(18).bytes(message.signature);
-    }
-    if (message.publicKey.length !== 0) {
-      writer.uint32(26).bytes(message.publicKey);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Signature {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSignature();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.scheme = reader.int32() as any;
-          break;
-        case 2:
-          message.signature = reader.bytes();
-          break;
-        case 3:
-          message.publicKey = reader.bytes();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Signature {
-    return {
-      scheme: isSet(object.scheme) ? signature_SchemeFromJSON(object.scheme) : 0,
-      signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array(),
-      publicKey: isSet(object.publicKey) ? bytesFromBase64(object.publicKey) : new Uint8Array(),
-    };
-  },
-
-  toJSON(message: Signature): unknown {
-    const obj: any = {};
-    message.scheme !== undefined && (obj.scheme = signature_SchemeToJSON(message.scheme));
-    message.signature !== undefined &&
-      (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
-    message.publicKey !== undefined &&
-      (obj.publicKey = base64FromBytes(message.publicKey !== undefined ? message.publicKey : new Uint8Array()));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<Signature>, I>>(object: I): Signature {
-    const message = createBaseSignature();
-    message.scheme = object.scheme ?? 0;
-    message.signature = object.signature ?? new Uint8Array();
-    message.publicKey = object.publicKey ?? new Uint8Array();
-    return message;
-  },
-};
-
 function createBaseActivation(): Activation {
   return {
     id: undefined,
@@ -908,6 +548,7 @@ function createBaseActivation(): Activation {
     coinbase: undefined,
     prevAtx: undefined,
     numUnits: 0,
+    sequence: "0",
   };
 }
 
@@ -930,6 +571,9 @@ export const Activation = {
     }
     if (message.numUnits !== 0) {
       writer.uint32(48).uint32(message.numUnits);
+    }
+    if (message.sequence !== "0") {
+      writer.uint32(56).uint64(message.sequence);
     }
     return writer;
   },
@@ -959,6 +603,9 @@ export const Activation = {
         case 6:
           message.numUnits = reader.uint32();
           break;
+        case 7:
+          message.sequence = longToString(reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -975,6 +622,7 @@ export const Activation = {
       coinbase: isSet(object.coinbase) ? AccountId.fromJSON(object.coinbase) : undefined,
       prevAtx: isSet(object.prevAtx) ? ActivationId.fromJSON(object.prevAtx) : undefined,
       numUnits: isSet(object.numUnits) ? Number(object.numUnits) : 0,
+      sequence: isSet(object.sequence) ? String(object.sequence) : "0",
     };
   },
 
@@ -988,6 +636,7 @@ export const Activation = {
       (obj.coinbase = message.coinbase ? AccountId.toJSON(message.coinbase) : undefined);
     message.prevAtx !== undefined && (obj.prevAtx = message.prevAtx ? ActivationId.toJSON(message.prevAtx) : undefined);
     message.numUnits !== undefined && (obj.numUnits = Math.round(message.numUnits));
+    message.sequence !== undefined && (obj.sequence = message.sequence);
     return obj;
   },
 
@@ -1007,48 +656,57 @@ export const Activation = {
       ? ActivationId.fromPartial(object.prevAtx)
       : undefined;
     message.numUnits = object.numUnits ?? 0;
+    message.sequence = object.sequence ?? "0";
     return message;
   },
 };
 
 function createBaseTransaction(): Transaction {
   return {
-    id: undefined,
-    coinTransfer: undefined,
-    smartContract: undefined,
-    sender: undefined,
-    gasOffered: undefined,
-    amount: undefined,
-    counter: "0",
-    signature: undefined,
+    id: new Uint8Array(),
+    principal: undefined,
+    template: undefined,
+    method: 0,
+    nonce: undefined,
+    limits: undefined,
+    maxGas: "0",
+    gasPrice: "0",
+    maxSpend: "0",
+    raw: new Uint8Array(),
   };
 }
 
 export const Transaction = {
   encode(message: Transaction, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== undefined) {
-      TransactionId.encode(message.id, writer.uint32(10).fork()).ldelim();
+    if (message.id.length !== 0) {
+      writer.uint32(10).bytes(message.id);
     }
-    if (message.coinTransfer !== undefined) {
-      CoinTransferTransaction.encode(message.coinTransfer, writer.uint32(18).fork()).ldelim();
+    if (message.principal !== undefined) {
+      AccountId.encode(message.principal, writer.uint32(18).fork()).ldelim();
     }
-    if (message.smartContract !== undefined) {
-      SmartContractTransaction.encode(message.smartContract, writer.uint32(26).fork()).ldelim();
+    if (message.template !== undefined) {
+      AccountId.encode(message.template, writer.uint32(26).fork()).ldelim();
     }
-    if (message.sender !== undefined) {
-      AccountId.encode(message.sender, writer.uint32(34).fork()).ldelim();
+    if (message.method !== 0) {
+      writer.uint32(32).uint32(message.method);
     }
-    if (message.gasOffered !== undefined) {
-      GasOffered.encode(message.gasOffered, writer.uint32(42).fork()).ldelim();
+    if (message.nonce !== undefined) {
+      Nonce.encode(message.nonce, writer.uint32(42).fork()).ldelim();
     }
-    if (message.amount !== undefined) {
-      Amount.encode(message.amount, writer.uint32(50).fork()).ldelim();
+    if (message.limits !== undefined) {
+      LayerLimits.encode(message.limits, writer.uint32(50).fork()).ldelim();
     }
-    if (message.counter !== "0") {
-      writer.uint32(56).uint64(message.counter);
+    if (message.maxGas !== "0") {
+      writer.uint32(56).uint64(message.maxGas);
     }
-    if (message.signature !== undefined) {
-      Signature.encode(message.signature, writer.uint32(66).fork()).ldelim();
+    if (message.gasPrice !== "0") {
+      writer.uint32(64).uint64(message.gasPrice);
+    }
+    if (message.maxSpend !== "0") {
+      writer.uint32(72).uint64(message.maxSpend);
+    }
+    if (message.raw.length !== 0) {
+      writer.uint32(82).bytes(message.raw);
     }
     return writer;
   },
@@ -1061,28 +719,34 @@ export const Transaction = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = TransactionId.decode(reader, reader.uint32());
+          message.id = reader.bytes();
           break;
         case 2:
-          message.coinTransfer = CoinTransferTransaction.decode(reader, reader.uint32());
+          message.principal = AccountId.decode(reader, reader.uint32());
           break;
         case 3:
-          message.smartContract = SmartContractTransaction.decode(reader, reader.uint32());
+          message.template = AccountId.decode(reader, reader.uint32());
           break;
         case 4:
-          message.sender = AccountId.decode(reader, reader.uint32());
+          message.method = reader.uint32();
           break;
         case 5:
-          message.gasOffered = GasOffered.decode(reader, reader.uint32());
+          message.nonce = Nonce.decode(reader, reader.uint32());
           break;
         case 6:
-          message.amount = Amount.decode(reader, reader.uint32());
+          message.limits = LayerLimits.decode(reader, reader.uint32());
           break;
         case 7:
-          message.counter = longToString(reader.uint64() as Long);
+          message.maxGas = longToString(reader.uint64() as Long);
           break;
         case 8:
-          message.signature = Signature.decode(reader, reader.uint32());
+          message.gasPrice = longToString(reader.uint64() as Long);
+          break;
+        case 9:
+          message.maxSpend = longToString(reader.uint64() as Long);
+          break;
+        case 10:
+          message.raw = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1094,56 +758,168 @@ export const Transaction = {
 
   fromJSON(object: any): Transaction {
     return {
-      id: isSet(object.id) ? TransactionId.fromJSON(object.id) : undefined,
-      coinTransfer: isSet(object.coinTransfer) ? CoinTransferTransaction.fromJSON(object.coinTransfer) : undefined,
-      smartContract: isSet(object.smartContract) ? SmartContractTransaction.fromJSON(object.smartContract) : undefined,
-      sender: isSet(object.sender) ? AccountId.fromJSON(object.sender) : undefined,
-      gasOffered: isSet(object.gasOffered) ? GasOffered.fromJSON(object.gasOffered) : undefined,
-      amount: isSet(object.amount) ? Amount.fromJSON(object.amount) : undefined,
-      counter: isSet(object.counter) ? String(object.counter) : "0",
-      signature: isSet(object.signature) ? Signature.fromJSON(object.signature) : undefined,
+      id: isSet(object.id) ? bytesFromBase64(object.id) : new Uint8Array(),
+      principal: isSet(object.principal) ? AccountId.fromJSON(object.principal) : undefined,
+      template: isSet(object.template) ? AccountId.fromJSON(object.template) : undefined,
+      method: isSet(object.method) ? Number(object.method) : 0,
+      nonce: isSet(object.nonce) ? Nonce.fromJSON(object.nonce) : undefined,
+      limits: isSet(object.limits) ? LayerLimits.fromJSON(object.limits) : undefined,
+      maxGas: isSet(object.maxGas) ? String(object.maxGas) : "0",
+      gasPrice: isSet(object.gasPrice) ? String(object.gasPrice) : "0",
+      maxSpend: isSet(object.maxSpend) ? String(object.maxSpend) : "0",
+      raw: isSet(object.raw) ? bytesFromBase64(object.raw) : new Uint8Array(),
     };
   },
 
   toJSON(message: Transaction): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id ? TransactionId.toJSON(message.id) : undefined);
-    message.coinTransfer !== undefined &&
-      (obj.coinTransfer = message.coinTransfer ? CoinTransferTransaction.toJSON(message.coinTransfer) : undefined);
-    message.smartContract !== undefined &&
-      (obj.smartContract = message.smartContract ? SmartContractTransaction.toJSON(message.smartContract) : undefined);
-    message.sender !== undefined && (obj.sender = message.sender ? AccountId.toJSON(message.sender) : undefined);
-    message.gasOffered !== undefined &&
-      (obj.gasOffered = message.gasOffered ? GasOffered.toJSON(message.gasOffered) : undefined);
-    message.amount !== undefined && (obj.amount = message.amount ? Amount.toJSON(message.amount) : undefined);
-    message.counter !== undefined && (obj.counter = message.counter);
-    message.signature !== undefined &&
-      (obj.signature = message.signature ? Signature.toJSON(message.signature) : undefined);
+    message.id !== undefined && (obj.id = base64FromBytes(message.id !== undefined ? message.id : new Uint8Array()));
+    message.principal !== undefined &&
+      (obj.principal = message.principal ? AccountId.toJSON(message.principal) : undefined);
+    message.template !== undefined &&
+      (obj.template = message.template ? AccountId.toJSON(message.template) : undefined);
+    message.method !== undefined && (obj.method = Math.round(message.method));
+    message.nonce !== undefined && (obj.nonce = message.nonce ? Nonce.toJSON(message.nonce) : undefined);
+    message.limits !== undefined && (obj.limits = message.limits ? LayerLimits.toJSON(message.limits) : undefined);
+    message.maxGas !== undefined && (obj.maxGas = message.maxGas);
+    message.gasPrice !== undefined && (obj.gasPrice = message.gasPrice);
+    message.maxSpend !== undefined && (obj.maxSpend = message.maxSpend);
+    message.raw !== undefined &&
+      (obj.raw = base64FromBytes(message.raw !== undefined ? message.raw : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Transaction>, I>>(object: I): Transaction {
     const message = createBaseTransaction();
-    message.id = (object.id !== undefined && object.id !== null) ? TransactionId.fromPartial(object.id) : undefined;
-    message.coinTransfer = (object.coinTransfer !== undefined && object.coinTransfer !== null)
-      ? CoinTransferTransaction.fromPartial(object.coinTransfer)
+    message.id = object.id ?? new Uint8Array();
+    message.principal = (object.principal !== undefined && object.principal !== null)
+      ? AccountId.fromPartial(object.principal)
       : undefined;
-    message.smartContract = (object.smartContract !== undefined && object.smartContract !== null)
-      ? SmartContractTransaction.fromPartial(object.smartContract)
+    message.template = (object.template !== undefined && object.template !== null)
+      ? AccountId.fromPartial(object.template)
       : undefined;
-    message.sender = (object.sender !== undefined && object.sender !== null)
-      ? AccountId.fromPartial(object.sender)
+    message.method = object.method ?? 0;
+    message.nonce = (object.nonce !== undefined && object.nonce !== null) ? Nonce.fromPartial(object.nonce) : undefined;
+    message.limits = (object.limits !== undefined && object.limits !== null)
+      ? LayerLimits.fromPartial(object.limits)
       : undefined;
-    message.gasOffered = (object.gasOffered !== undefined && object.gasOffered !== null)
-      ? GasOffered.fromPartial(object.gasOffered)
-      : undefined;
-    message.amount = (object.amount !== undefined && object.amount !== null)
-      ? Amount.fromPartial(object.amount)
-      : undefined;
+    message.maxGas = object.maxGas ?? "0";
+    message.gasPrice = object.gasPrice ?? "0";
+    message.maxSpend = object.maxSpend ?? "0";
+    message.raw = object.raw ?? new Uint8Array();
+    return message;
+  },
+};
+
+function createBaseLayerLimits(): LayerLimits {
+  return { min: 0, max: 0 };
+}
+
+export const LayerLimits = {
+  encode(message: LayerLimits, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.min !== 0) {
+      writer.uint32(8).uint32(message.min);
+    }
+    if (message.max !== 0) {
+      writer.uint32(16).uint32(message.max);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LayerLimits {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLayerLimits();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.min = reader.uint32();
+          break;
+        case 2:
+          message.max = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LayerLimits {
+    return { min: isSet(object.min) ? Number(object.min) : 0, max: isSet(object.max) ? Number(object.max) : 0 };
+  },
+
+  toJSON(message: LayerLimits): unknown {
+    const obj: any = {};
+    message.min !== undefined && (obj.min = Math.round(message.min));
+    message.max !== undefined && (obj.max = Math.round(message.max));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LayerLimits>, I>>(object: I): LayerLimits {
+    const message = createBaseLayerLimits();
+    message.min = object.min ?? 0;
+    message.max = object.max ?? 0;
+    return message;
+  },
+};
+
+function createBaseNonce(): Nonce {
+  return { counter: "0", bitfield: 0 };
+}
+
+export const Nonce = {
+  encode(message: Nonce, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.counter !== "0") {
+      writer.uint32(8).uint64(message.counter);
+    }
+    if (message.bitfield !== 0) {
+      writer.uint32(16).uint32(message.bitfield);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Nonce {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseNonce();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.counter = longToString(reader.uint64() as Long);
+          break;
+        case 2:
+          message.bitfield = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Nonce {
+    return {
+      counter: isSet(object.counter) ? String(object.counter) : "0",
+      bitfield: isSet(object.bitfield) ? Number(object.bitfield) : 0,
+    };
+  },
+
+  toJSON(message: Nonce): unknown {
+    const obj: any = {};
+    message.counter !== undefined && (obj.counter = message.counter);
+    message.bitfield !== undefined && (obj.bitfield = Math.round(message.bitfield));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Nonce>, I>>(object: I): Nonce {
+    const message = createBaseNonce();
     message.counter = object.counter ?? "0";
-    message.signature = (object.signature !== undefined && object.signature !== null)
-      ? Signature.fromPartial(object.signature)
-      : undefined;
+    message.bitfield = object.bitfield ?? 0;
     return message;
   },
 };

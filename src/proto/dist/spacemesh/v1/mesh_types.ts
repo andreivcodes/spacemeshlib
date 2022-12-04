@@ -64,11 +64,11 @@ export interface CurrentEpochResponse {
   epochnum: SimpleInt | undefined;
 }
 
-export interface NetIDRequest {
+export interface GenesisIDRequest {
 }
 
-export interface NetIDResponse {
-  netid: SimpleInt | undefined;
+export interface GenesisIDResponse {
+  genesisId: Uint8Array;
 }
 
 export interface EpochNumLayersRequest {
@@ -417,19 +417,19 @@ export const CurrentEpochResponse = {
   },
 };
 
-function createBaseNetIDRequest(): NetIDRequest {
+function createBaseGenesisIDRequest(): GenesisIDRequest {
   return {};
 }
 
-export const NetIDRequest = {
-  encode(_: NetIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GenesisIDRequest = {
+  encode(_: GenesisIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): NetIDRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisIDRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseNetIDRequest();
+    const message = createBaseGenesisIDRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -441,42 +441,42 @@ export const NetIDRequest = {
     return message;
   },
 
-  fromJSON(_: any): NetIDRequest {
+  fromJSON(_: any): GenesisIDRequest {
     return {};
   },
 
-  toJSON(_: NetIDRequest): unknown {
+  toJSON(_: GenesisIDRequest): unknown {
     const obj: any = {};
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<NetIDRequest>, I>>(_: I): NetIDRequest {
-    const message = createBaseNetIDRequest();
+  fromPartial<I extends Exact<DeepPartial<GenesisIDRequest>, I>>(_: I): GenesisIDRequest {
+    const message = createBaseGenesisIDRequest();
     return message;
   },
 };
 
-function createBaseNetIDResponse(): NetIDResponse {
-  return { netid: undefined };
+function createBaseGenesisIDResponse(): GenesisIDResponse {
+  return { genesisId: new Uint8Array() };
 }
 
-export const NetIDResponse = {
-  encode(message: NetIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.netid !== undefined) {
-      SimpleInt.encode(message.netid, writer.uint32(10).fork()).ldelim();
+export const GenesisIDResponse = {
+  encode(message: GenesisIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.genesisId.length !== 0) {
+      writer.uint32(10).bytes(message.genesisId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): NetIDResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisIDResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseNetIDResponse();
+    const message = createBaseGenesisIDResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.netid = SimpleInt.decode(reader, reader.uint32());
+          message.genesisId = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -486,21 +486,20 @@ export const NetIDResponse = {
     return message;
   },
 
-  fromJSON(object: any): NetIDResponse {
-    return { netid: isSet(object.netid) ? SimpleInt.fromJSON(object.netid) : undefined };
+  fromJSON(object: any): GenesisIDResponse {
+    return { genesisId: isSet(object.genesisId) ? bytesFromBase64(object.genesisId) : new Uint8Array() };
   },
 
-  toJSON(message: NetIDResponse): unknown {
+  toJSON(message: GenesisIDResponse): unknown {
     const obj: any = {};
-    message.netid !== undefined && (obj.netid = message.netid ? SimpleInt.toJSON(message.netid) : undefined);
+    message.genesisId !== undefined &&
+      (obj.genesisId = base64FromBytes(message.genesisId !== undefined ? message.genesisId : new Uint8Array()));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<NetIDResponse>, I>>(object: I): NetIDResponse {
-    const message = createBaseNetIDResponse();
-    message.netid = (object.netid !== undefined && object.netid !== null)
-      ? SimpleInt.fromPartial(object.netid)
-      : undefined;
+  fromPartial<I extends Exact<DeepPartial<GenesisIDResponse>, I>>(object: I): GenesisIDResponse {
+    const message = createBaseGenesisIDResponse();
+    message.genesisId = object.genesisId ?? new Uint8Array();
     return message;
   },
 };
@@ -1344,6 +1343,50 @@ export const LayerStreamResponse = {
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
+function bytesFromBase64(b64: string): Uint8Array {
+  if (globalThis.Buffer) {
+    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  } else {
+    const bin = globalThis.atob(b64);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; ++i) {
+      arr[i] = bin.charCodeAt(i);
+    }
+    return arr;
+  }
+}
+
+function base64FromBytes(arr: Uint8Array): string {
+  if (globalThis.Buffer) {
+    return globalThis.Buffer.from(arr).toString("base64");
+  } else {
+    const bin: string[] = [];
+    arr.forEach((byte) => {
+      bin.push(String.fromCharCode(byte));
+    });
+    return globalThis.btoa(bin.join(""));
+  }
+}
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

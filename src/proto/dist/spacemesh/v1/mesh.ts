@@ -11,6 +11,8 @@ import {
   CurrentLayerResponse,
   EpochNumLayersRequest,
   EpochNumLayersResponse,
+  GenesisIDRequest,
+  GenesisIDResponse,
   GenesisTimeRequest,
   GenesisTimeResponse,
   LayerDurationRequest,
@@ -21,8 +23,6 @@ import {
   LayerStreamResponse,
   MaxTransactionsPerSecondRequest,
   MaxTransactionsPerSecondResponse,
-  NetIDRequest,
-  NetIDResponse,
 } from "./mesh_types";
 
 export const protobufPackage = "spacemesh.v1";
@@ -60,12 +60,12 @@ export const MeshServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Network ID */
-    netID: {
-      name: "NetID",
-      requestType: NetIDRequest,
+    /** Genesis ID */
+    genesisID: {
+      name: "GenesisID",
+      requestType: GenesisIDRequest,
       requestStream: false,
-      responseType: NetIDResponse,
+      responseType: GenesisIDResponse,
       responseStream: false,
       options: {},
     },
@@ -157,8 +157,8 @@ export interface MeshServiceServiceImplementation<CallContextExt = {}> {
     request: CurrentEpochRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<CurrentEpochResponse>>;
-  /** Network ID */
-  netID(request: NetIDRequest, context: CallContext & CallContextExt): Promise<DeepPartial<NetIDResponse>>;
+  /** Genesis ID */
+  genesisID(request: GenesisIDRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GenesisIDResponse>>;
   /** Number of layers per epoch (a network parameter) */
   epochNumLayers(
     request: EpochNumLayersRequest,
@@ -218,8 +218,8 @@ export interface MeshServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<CurrentEpochRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<CurrentEpochResponse>;
-  /** Network ID */
-  netID(request: DeepPartial<NetIDRequest>, options?: CallOptions & CallOptionsExt): Promise<NetIDResponse>;
+  /** Genesis ID */
+  genesisID(request: DeepPartial<GenesisIDRequest>, options?: CallOptions & CallOptionsExt): Promise<GenesisIDResponse>;
   /** Number of layers per epoch (a network parameter) */
   epochNumLayers(
     request: DeepPartial<EpochNumLayersRequest>,

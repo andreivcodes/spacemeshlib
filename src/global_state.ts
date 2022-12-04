@@ -9,7 +9,7 @@ import { globalStateClient } from './clients'
 export const accountDataQuery = async (pk: Uint8Array, flags: number) => {
   if (!globalStateClient) throw 'GlobalState channel not created'
 
-  const accountQueryId: AccountId = { address: pk }
+  const accountQueryId: AccountId = { address: pk.toString() }
 
   const accountQueryFilter: AccountDataFilter = {
     accountId: accountQueryId,
@@ -28,7 +28,7 @@ export const accountDataQuery = async (pk: Uint8Array, flags: number) => {
 export const getAccountNonce = async (pk: Uint8Array) => {
   if (!globalStateClient) throw 'GlobalState channel not created'
 
-  const accountQueryId: AccountId = { address: pk }
+  const accountQueryId: AccountId = { address: pk.toString() }
 
   const accountQueryFilter: AccountDataFilter = {
     accountId: accountQueryId,
@@ -49,7 +49,7 @@ export const getAccountNonce = async (pk: Uint8Array) => {
 export const getAccountBalance = async (pk: Uint8Array) => {
   if (!globalStateClient) throw 'GlobalState channel not created'
 
-  const accountQueryId: AccountId = { address: pk }
+  const accountQueryId: AccountId = { address: pk.toString() }
 
   const accountQueryFilter: AccountDataFilter = {
     accountId: accountQueryId,

@@ -130,11 +130,11 @@ export interface StatusResponse {
   status: NodeStatus | undefined;
 }
 
-export interface UpdatePoetServerRequest {
-  url: string;
+export interface UpdatePoetServersRequest {
+  urls: string[];
 }
 
-export interface UpdatePoetServerResponse {
+export interface UpdatePoetServersResponse {
   status: Status | undefined;
 }
 
@@ -717,27 +717,27 @@ export const StatusResponse = {
   },
 };
 
-function createBaseUpdatePoetServerRequest(): UpdatePoetServerRequest {
-  return { url: "" };
+function createBaseUpdatePoetServersRequest(): UpdatePoetServersRequest {
+  return { urls: [] };
 }
 
-export const UpdatePoetServerRequest = {
-  encode(message: UpdatePoetServerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.url !== "") {
-      writer.uint32(10).string(message.url);
+export const UpdatePoetServersRequest = {
+  encode(message: UpdatePoetServersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.urls) {
+      writer.uint32(10).string(v!);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePoetServerRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePoetServersRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdatePoetServerRequest();
+    const message = createBaseUpdatePoetServersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.url = reader.string();
+          message.urls.push(reader.string());
           break;
         default:
           reader.skipType(tag & 7);
@@ -747,39 +747,43 @@ export const UpdatePoetServerRequest = {
     return message;
   },
 
-  fromJSON(object: any): UpdatePoetServerRequest {
-    return { url: isSet(object.url) ? String(object.url) : "" };
+  fromJSON(object: any): UpdatePoetServersRequest {
+    return { urls: Array.isArray(object?.urls) ? object.urls.map((e: any) => String(e)) : [] };
   },
 
-  toJSON(message: UpdatePoetServerRequest): unknown {
+  toJSON(message: UpdatePoetServersRequest): unknown {
     const obj: any = {};
-    message.url !== undefined && (obj.url = message.url);
+    if (message.urls) {
+      obj.urls = message.urls.map((e) => e);
+    } else {
+      obj.urls = [];
+    }
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<UpdatePoetServerRequest>, I>>(object: I): UpdatePoetServerRequest {
-    const message = createBaseUpdatePoetServerRequest();
-    message.url = object.url ?? "";
+  fromPartial<I extends Exact<DeepPartial<UpdatePoetServersRequest>, I>>(object: I): UpdatePoetServersRequest {
+    const message = createBaseUpdatePoetServersRequest();
+    message.urls = object.urls?.map((e) => e) || [];
     return message;
   },
 };
 
-function createBaseUpdatePoetServerResponse(): UpdatePoetServerResponse {
+function createBaseUpdatePoetServersResponse(): UpdatePoetServersResponse {
   return { status: undefined };
 }
 
-export const UpdatePoetServerResponse = {
-  encode(message: UpdatePoetServerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const UpdatePoetServersResponse = {
+  encode(message: UpdatePoetServersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.status !== undefined) {
       Status.encode(message.status, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePoetServerResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePoetServersResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdatePoetServerResponse();
+    const message = createBaseUpdatePoetServersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -794,18 +798,18 @@ export const UpdatePoetServerResponse = {
     return message;
   },
 
-  fromJSON(object: any): UpdatePoetServerResponse {
+  fromJSON(object: any): UpdatePoetServersResponse {
     return { status: isSet(object.status) ? Status.fromJSON(object.status) : undefined };
   },
 
-  toJSON(message: UpdatePoetServerResponse): unknown {
+  toJSON(message: UpdatePoetServersResponse): unknown {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? Status.toJSON(message.status) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<UpdatePoetServerResponse>, I>>(object: I): UpdatePoetServerResponse {
-    const message = createBaseUpdatePoetServerResponse();
+  fromPartial<I extends Exact<DeepPartial<UpdatePoetServersResponse>, I>>(object: I): UpdatePoetServersResponse {
+    const message = createBaseUpdatePoetServersResponse();
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
