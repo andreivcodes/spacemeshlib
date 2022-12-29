@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "spacemesh.v1.NodeService.StatusStream"
+  },
+  "requests": [
+    {
+      "location": "StatusStream-request.json"
+    }
+  ],
+  "operationType": "serverStreaming",
+  "invokerName": "grpc"
+}

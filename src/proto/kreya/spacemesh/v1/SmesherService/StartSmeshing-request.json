@@ -1,0 +1,12 @@
+{
+  "coinbase": {
+    "address": "Front-line tangible"
+  },
+  "opts": {
+    "dataDir": "hard drive",
+    "numUnits": 895,
+    "maxFileSize": "724",
+    "computeProviderId": 735,
+    "throttle": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "spacemesh.v1.TransactionService.TransactionsStateStream"
+  },
+  "requests": [
+    {
+      "location": "TransactionsStateStream-request.json"
+    }
+  ],
+  "operationType": "serverStreaming",
+  "invokerName": "grpc"
+}

@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "spacemesh.v1.SmesherService.EstimatedRewards"
+  },
+  "requests": [
+    {
+      "location": "EstimatedRewards-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

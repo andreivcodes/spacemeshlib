@@ -1,21 +1,21 @@
 /* eslint-disable */
 import { CallContext, CallOptions } from "nice-grpc-common";
-import { BroadcastPoetRequest, BroadcastPoetResponse } from "./gateway_types";
+import { VerifyChallengeRequest, VerifyChallengeResponse } from "./gateway_types";
 
 export const protobufPackage = "spacemesh.v1";
 
-/** Exposes poet gateway services that can be used by a poet server to broadcast data to the network */
+/** Exposes poet gateway services */
 export type GatewayServiceDefinition = typeof GatewayServiceDefinition;
 export const GatewayServiceDefinition = {
   name: "GatewayService",
   fullName: "spacemesh.v1.GatewayService",
   methods: {
-    /** Submit a poet data packet to the network to broadcast */
-    broadcastPoet: {
-      name: "BroadcastPoet",
-      requestType: BroadcastPoetRequest,
+    /** Verify a PoET challenge */
+    verifyChallenge: {
+      name: "VerifyChallenge",
+      requestType: VerifyChallengeRequest,
       requestStream: false,
-      responseType: BroadcastPoetResponse,
+      responseType: VerifyChallengeResponse,
       responseStream: false,
       options: {},
     },
@@ -23,19 +23,19 @@ export const GatewayServiceDefinition = {
 } as const;
 
 export interface GatewayServiceServiceImplementation<CallContextExt = {}> {
-  /** Submit a poet data packet to the network to broadcast */
-  broadcastPoet(
-    request: BroadcastPoetRequest,
+  /** Verify a PoET challenge */
+  verifyChallenge(
+    request: VerifyChallengeRequest,
     context: CallContext & CallContextExt,
-  ): Promise<DeepPartial<BroadcastPoetResponse>>;
+  ): Promise<DeepPartial<VerifyChallengeResponse>>;
 }
 
 export interface GatewayServiceClient<CallOptionsExt = {}> {
-  /** Submit a poet data packet to the network to broadcast */
-  broadcastPoet(
-    request: DeepPartial<BroadcastPoetRequest>,
+  /** Verify a PoET challenge */
+  verifyChallenge(
+    request: DeepPartial<VerifyChallengeRequest>,
     options?: CallOptions & CallOptionsExt,
-  ): Promise<BroadcastPoetResponse>;
+  ): Promise<VerifyChallengeResponse>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

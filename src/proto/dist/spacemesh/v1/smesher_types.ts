@@ -170,8 +170,8 @@ export interface PostSetupOpts {
   dataDir: string;
   /** Number of Post data units to generate */
   numUnits: number;
-  /** Number of files to equally distribute the data among */
-  numFiles: number;
+  /** Max size in bytes of a single file within the data files */
+  maxFileSize: string;
   /** A `PostSetupComputeProvider` id */
   computeProviderId: number;
   /** Throttle down setup phase computations while user is interactive on system */
@@ -183,11 +183,7 @@ export interface PostSetupStatus {
   /** Number of labels (hashes) written to the data files */
   numLabelsWritten: string;
   /** setup options previously set by the user */
-  opts:
-    | PostSetupOpts
-    | undefined;
-  /** The error message, if the state is STATE_ERROR */
-  errorMessage: string;
+  opts: PostSetupOpts | undefined;
 }
 
 export enum PostSetupStatus_State {
@@ -197,10 +193,12 @@ export enum PostSetupStatus_State {
   STATE_NOT_STARTED = 1,
   /** STATE_IN_PROGRESS - Setup in progress */
   STATE_IN_PROGRESS = 2,
+  /** STATE_PAUSED - Setup paused */
+  STATE_PAUSED = 3,
   /** STATE_COMPLETE - Setup is complete */
-  STATE_COMPLETE = 3,
+  STATE_COMPLETE = 4,
   /** STATE_ERROR - Setup last session ended with an error */
-  STATE_ERROR = 4,
+  STATE_ERROR = 5,
   UNRECOGNIZED = -1,
 }
 
@@ -216,9 +214,12 @@ export function postSetupStatus_StateFromJSON(object: any): PostSetupStatus_Stat
     case "STATE_IN_PROGRESS":
       return PostSetupStatus_State.STATE_IN_PROGRESS;
     case 3:
+    case "STATE_PAUSED":
+      return PostSetupStatus_State.STATE_PAUSED;
+    case 4:
     case "STATE_COMPLETE":
       return PostSetupStatus_State.STATE_COMPLETE;
-    case 4:
+    case 5:
     case "STATE_ERROR":
       return PostSetupStatus_State.STATE_ERROR;
     case -1:
@@ -236,6 +237,8 @@ export function postSetupStatus_StateToJSON(object: PostSetupStatus_State): stri
       return "STATE_NOT_STARTED";
     case PostSetupStatus_State.STATE_IN_PROGRESS:
       return "STATE_IN_PROGRESS";
+    case PostSetupStatus_State.STATE_PAUSED:
+      return "STATE_PAUSED";
     case PostSetupStatus_State.STATE_COMPLETE:
       return "STATE_COMPLETE";
     case PostSetupStatus_State.STATE_ERROR:
@@ -1321,7 +1324,7 @@ export const PostSetupComputeProvider = {
 };
 
 function createBasePostSetupOpts(): PostSetupOpts {
-  return { dataDir: "", numUnits: 0, numFiles: 0, computeProviderId: 0, throttle: false };
+  return { dataDir: "", numUnits: 0, maxFileSize: "0", computeProviderId: 0, throttle: false };
 }
 
 export const PostSetupOpts = {
@@ -1332,8 +1335,8 @@ export const PostSetupOpts = {
     if (message.numUnits !== 0) {
       writer.uint32(16).uint32(message.numUnits);
     }
-    if (message.numFiles !== 0) {
-      writer.uint32(24).uint32(message.numFiles);
+    if (message.maxFileSize !== "0") {
+      writer.uint32(24).uint64(message.maxFileSize);
     }
     if (message.computeProviderId !== 0) {
       writer.uint32(32).uint32(message.computeProviderId);
@@ -1358,7 +1361,7 @@ export const PostSetupOpts = {
           message.numUnits = reader.uint32();
           break;
         case 3:
-          message.numFiles = reader.uint32();
+          message.maxFileSize = longToString(reader.uint64() as Long);
           break;
         case 4:
           message.computeProviderId = reader.uint32();
@@ -1378,7 +1381,7 @@ export const PostSetupOpts = {
     return {
       dataDir: isSet(object.dataDir) ? String(object.dataDir) : "",
       numUnits: isSet(object.numUnits) ? Number(object.numUnits) : 0,
-      numFiles: isSet(object.numFiles) ? Number(object.numFiles) : 0,
+      maxFileSize: isSet(object.maxFileSize) ? String(object.maxFileSize) : "0",
       computeProviderId: isSet(object.computeProviderId) ? Number(object.computeProviderId) : 0,
       throttle: isSet(object.throttle) ? Boolean(object.throttle) : false,
     };
@@ -1388,7 +1391,7 @@ export const PostSetupOpts = {
     const obj: any = {};
     message.dataDir !== undefined && (obj.dataDir = message.dataDir);
     message.numUnits !== undefined && (obj.numUnits = Math.round(message.numUnits));
-    message.numFiles !== undefined && (obj.numFiles = Math.round(message.numFiles));
+    message.maxFileSize !== undefined && (obj.maxFileSize = message.maxFileSize);
     message.computeProviderId !== undefined && (obj.computeProviderId = Math.round(message.computeProviderId));
     message.throttle !== undefined && (obj.throttle = message.throttle);
     return obj;
@@ -1398,7 +1401,7 @@ export const PostSetupOpts = {
     const message = createBasePostSetupOpts();
     message.dataDir = object.dataDir ?? "";
     message.numUnits = object.numUnits ?? 0;
-    message.numFiles = object.numFiles ?? 0;
+    message.maxFileSize = object.maxFileSize ?? "0";
     message.computeProviderId = object.computeProviderId ?? 0;
     message.throttle = object.throttle ?? false;
     return message;
@@ -1406,7 +1409,7 @@ export const PostSetupOpts = {
 };
 
 function createBasePostSetupStatus(): PostSetupStatus {
-  return { state: 0, numLabelsWritten: "0", opts: undefined, errorMessage: "" };
+  return { state: 0, numLabelsWritten: "0", opts: undefined };
 }
 
 export const PostSetupStatus = {
@@ -1419,9 +1422,6 @@ export const PostSetupStatus = {
     }
     if (message.opts !== undefined) {
       PostSetupOpts.encode(message.opts, writer.uint32(26).fork()).ldelim();
-    }
-    if (message.errorMessage !== "") {
-      writer.uint32(34).string(message.errorMessage);
     }
     return writer;
   },
@@ -1442,9 +1442,6 @@ export const PostSetupStatus = {
         case 3:
           message.opts = PostSetupOpts.decode(reader, reader.uint32());
           break;
-        case 4:
-          message.errorMessage = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1458,7 +1455,6 @@ export const PostSetupStatus = {
       state: isSet(object.state) ? postSetupStatus_StateFromJSON(object.state) : 0,
       numLabelsWritten: isSet(object.numLabelsWritten) ? String(object.numLabelsWritten) : "0",
       opts: isSet(object.opts) ? PostSetupOpts.fromJSON(object.opts) : undefined,
-      errorMessage: isSet(object.errorMessage) ? String(object.errorMessage) : "",
     };
   },
 
@@ -1467,7 +1463,6 @@ export const PostSetupStatus = {
     message.state !== undefined && (obj.state = postSetupStatus_StateToJSON(message.state));
     message.numLabelsWritten !== undefined && (obj.numLabelsWritten = message.numLabelsWritten);
     message.opts !== undefined && (obj.opts = message.opts ? PostSetupOpts.toJSON(message.opts) : undefined);
-    message.errorMessage !== undefined && (obj.errorMessage = message.errorMessage);
     return obj;
   },
 
@@ -1478,7 +1473,6 @@ export const PostSetupStatus = {
     message.opts = (object.opts !== undefined && object.opts !== null)
       ? PostSetupOpts.fromPartial(object.opts)
       : undefined;
-    message.errorMessage = object.errorMessage ?? "";
     return message;
   },
 };

@@ -1,0 +1,13 @@
+{
+  "settings": [
+    {
+      "options": {
+        "grpc": {
+          "endpoint": "https://api-devnet310.spacemesh.io/",
+          "mode": "grpc",
+          "disableServerCertificateValidation": false
+        }
+      }
+    }
+  ]
+}

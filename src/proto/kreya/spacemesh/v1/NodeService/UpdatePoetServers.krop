@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "spacemesh.v1.NodeService.UpdatePoetServers"
+  },
+  "requests": [
+    {
+      "location": "UpdatePoetServers-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

@@ -1,39 +1,45 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
-import { Status } from "../../google/rpc/status";
 
 export const protobufPackage = "spacemesh.v1";
 
-export interface BroadcastPoetRequest {
-  /** encoded poet proof */
-  data: Uint8Array;
+export interface VerifyChallengeRequest {
+  challenge: Uint8Array;
+  signature: Uint8Array;
 }
 
-export interface BroadcastPoetResponse {
-  status: Status | undefined;
+export interface VerifyChallengeResponse {
+  hash: Uint8Array;
+  nodeId: Uint8Array;
 }
 
-function createBaseBroadcastPoetRequest(): BroadcastPoetRequest {
-  return { data: new Uint8Array() };
+function createBaseVerifyChallengeRequest(): VerifyChallengeRequest {
+  return { challenge: new Uint8Array(), signature: new Uint8Array() };
 }
 
-export const BroadcastPoetRequest = {
-  encode(message: BroadcastPoetRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.data.length !== 0) {
-      writer.uint32(10).bytes(message.data);
+export const VerifyChallengeRequest = {
+  encode(message: VerifyChallengeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.challenge.length !== 0) {
+      writer.uint32(10).bytes(message.challenge);
+    }
+    if (message.signature.length !== 0) {
+      writer.uint32(18).bytes(message.signature);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BroadcastPoetRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): VerifyChallengeRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBroadcastPoetRequest();
+    const message = createBaseVerifyChallengeRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.data = reader.bytes();
+          message.challenge = reader.bytes();
+          break;
+        case 2:
+          message.signature = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -43,45 +49,57 @@ export const BroadcastPoetRequest = {
     return message;
   },
 
-  fromJSON(object: any): BroadcastPoetRequest {
-    return { data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array() };
+  fromJSON(object: any): VerifyChallengeRequest {
+    return {
+      challenge: isSet(object.challenge) ? bytesFromBase64(object.challenge) : new Uint8Array(),
+      signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array(),
+    };
   },
 
-  toJSON(message: BroadcastPoetRequest): unknown {
+  toJSON(message: VerifyChallengeRequest): unknown {
     const obj: any = {};
-    message.data !== undefined &&
-      (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.challenge !== undefined &&
+      (obj.challenge = base64FromBytes(message.challenge !== undefined ? message.challenge : new Uint8Array()));
+    message.signature !== undefined &&
+      (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<BroadcastPoetRequest>, I>>(object: I): BroadcastPoetRequest {
-    const message = createBaseBroadcastPoetRequest();
-    message.data = object.data ?? new Uint8Array();
+  fromPartial<I extends Exact<DeepPartial<VerifyChallengeRequest>, I>>(object: I): VerifyChallengeRequest {
+    const message = createBaseVerifyChallengeRequest();
+    message.challenge = object.challenge ?? new Uint8Array();
+    message.signature = object.signature ?? new Uint8Array();
     return message;
   },
 };
 
-function createBaseBroadcastPoetResponse(): BroadcastPoetResponse {
-  return { status: undefined };
+function createBaseVerifyChallengeResponse(): VerifyChallengeResponse {
+  return { hash: new Uint8Array(), nodeId: new Uint8Array() };
 }
 
-export const BroadcastPoetResponse = {
-  encode(message: BroadcastPoetResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.status !== undefined) {
-      Status.encode(message.status, writer.uint32(10).fork()).ldelim();
+export const VerifyChallengeResponse = {
+  encode(message: VerifyChallengeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.hash.length !== 0) {
+      writer.uint32(10).bytes(message.hash);
+    }
+    if (message.nodeId.length !== 0) {
+      writer.uint32(18).bytes(message.nodeId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BroadcastPoetResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): VerifyChallengeResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBroadcastPoetResponse();
+    const message = createBaseVerifyChallengeResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.status = Status.decode(reader, reader.uint32());
+          message.hash = reader.bytes();
+          break;
+        case 2:
+          message.nodeId = reader.bytes();
           break;
         default:
           reader.skipType(tag & 7);
@@ -91,21 +109,26 @@ export const BroadcastPoetResponse = {
     return message;
   },
 
-  fromJSON(object: any): BroadcastPoetResponse {
-    return { status: isSet(object.status) ? Status.fromJSON(object.status) : undefined };
+  fromJSON(object: any): VerifyChallengeResponse {
+    return {
+      hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(),
+      nodeId: isSet(object.nodeId) ? bytesFromBase64(object.nodeId) : new Uint8Array(),
+    };
   },
 
-  toJSON(message: BroadcastPoetResponse): unknown {
+  toJSON(message: VerifyChallengeResponse): unknown {
     const obj: any = {};
-    message.status !== undefined && (obj.status = message.status ? Status.toJSON(message.status) : undefined);
+    message.hash !== undefined &&
+      (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
+    message.nodeId !== undefined &&
+      (obj.nodeId = base64FromBytes(message.nodeId !== undefined ? message.nodeId : new Uint8Array()));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<BroadcastPoetResponse>, I>>(object: I): BroadcastPoetResponse {
-    const message = createBaseBroadcastPoetResponse();
-    message.status = (object.status !== undefined && object.status !== null)
-      ? Status.fromPartial(object.status)
-      : undefined;
+  fromPartial<I extends Exact<DeepPartial<VerifyChallengeResponse>, I>>(object: I): VerifyChallengeResponse {
+    const message = createBaseVerifyChallengeResponse();
+    message.hash = object.hash ?? new Uint8Array();
+    message.nodeId = object.nodeId ?? new Uint8Array();
     return message;
   },
 };

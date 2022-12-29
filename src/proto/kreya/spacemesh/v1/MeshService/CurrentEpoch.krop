@@ -1,0 +1,13 @@
+{
+  "details": {
+    "endpoint": "https://api-devnet310.spacemesh.io/",
+    "methodFqn": "spacemesh.v1.MeshService.CurrentEpoch"
+  },
+  "requests": [
+    {
+      "location": "CurrentEpoch-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}
