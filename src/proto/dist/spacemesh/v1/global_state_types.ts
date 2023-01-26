@@ -260,9 +260,9 @@ export function transactionReceipt_TransactionResultToJSON(object: TransactionRe
  * change to account state; nonce and balance updates are _results_.
  */
 export interface AccountData {
-  reward: Reward | undefined;
-  receipt: TransactionReceipt | undefined;
-  accountWrapper: Account | undefined;
+  reward?: Reward | undefined;
+  receipt?: TransactionReceipt | undefined;
+  accountWrapper?: Account | undefined;
 }
 
 export interface AccountDataQueryResponse {
@@ -315,10 +315,10 @@ export interface GlobalStateStreamRequest {
 }
 
 export interface GlobalStateData {
-  reward: Reward | undefined;
-  receipt: TransactionReceipt | undefined;
-  accountWrapper: Account | undefined;
-  globalState: GlobalStateHash | undefined;
+  reward?: Reward | undefined;
+  receipt?: TransactionReceipt | undefined;
+  accountWrapper?: Account | undefined;
+  globalState?: GlobalStateHash | undefined;
 }
 
 export interface GlobalStateStreamResponse {
@@ -380,6 +380,10 @@ export const AccountState = {
     message.counter !== undefined && (obj.counter = message.counter);
     message.balance !== undefined && (obj.balance = message.balance ? Amount.toJSON(message.balance) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountState>, I>>(base?: I): AccountState {
+    return AccountState.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountState>, I>>(object: I): AccountState {
@@ -453,6 +457,10 @@ export const Account = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Account>, I>>(base?: I): Account {
+    return Account.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Account>, I>>(object: I): Account {
     const message = createBaseAccount();
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
@@ -509,6 +517,10 @@ export const AccountRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountRequest>, I>>(base?: I): AccountRequest {
+    return AccountRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountRequest>, I>>(object: I): AccountRequest {
     const message = createBaseAccountRequest();
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
@@ -557,6 +569,10 @@ export const AccountResponse = {
     message.accountWrapper !== undefined &&
       (obj.accountWrapper = message.accountWrapper ? Account.toJSON(message.accountWrapper) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountResponse>, I>>(base?: I): AccountResponse {
+    return AccountResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountResponse>, I>>(object: I): AccountResponse {
@@ -619,6 +635,10 @@ export const AccountDataFilter = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountDataFilter>, I>>(base?: I): AccountDataFilter {
+    return AccountDataFilter.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountDataFilter>, I>>(object: I): AccountDataFilter {
     const message = createBaseAccountDataFilter();
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
@@ -670,6 +690,10 @@ export const AccountDataStreamRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountDataStreamRequest>, I>>(base?: I): AccountDataStreamRequest {
+    return AccountDataStreamRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountDataStreamRequest>, I>>(object: I): AccountDataStreamRequest {
     const message = createBaseAccountDataStreamRequest();
     message.filter = (object.filter !== undefined && object.filter !== null)
@@ -717,6 +741,10 @@ export const AccountDataStreamResponse = {
     const obj: any = {};
     message.datum !== undefined && (obj.datum = message.datum ? AccountData.toJSON(message.datum) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountDataStreamResponse>, I>>(base?: I): AccountDataStreamResponse {
+    return AccountDataStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountDataStreamResponse>, I>>(object: I): AccountDataStreamResponse {
@@ -785,6 +813,10 @@ export const AccountDataQueryRequest = {
     message.maxResults !== undefined && (obj.maxResults = Math.round(message.maxResults));
     message.offset !== undefined && (obj.offset = Math.round(message.offset));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountDataQueryRequest>, I>>(base?: I): AccountDataQueryRequest {
+    return AccountDataQueryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountDataQueryRequest>, I>>(object: I): AccountDataQueryRequest {
@@ -897,6 +929,10 @@ export const TransactionReceipt = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TransactionReceipt>, I>>(base?: I): TransactionReceipt {
+    return TransactionReceipt.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<TransactionReceipt>, I>>(object: I): TransactionReceipt {
     const message = createBaseTransactionReceipt();
     message.id = (object.id !== undefined && object.id !== null) ? TransactionId.fromPartial(object.id) : undefined;
@@ -972,6 +1008,10 @@ export const AccountData = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountData>, I>>(base?: I): AccountData {
+    return AccountData.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountData>, I>>(object: I): AccountData {
     const message = createBaseAccountData();
     message.reward = (object.reward !== undefined && object.reward !== null)
@@ -1043,6 +1083,10 @@ export const AccountDataQueryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountDataQueryResponse>, I>>(base?: I): AccountDataQueryResponse {
+    return AccountDataQueryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountDataQueryResponse>, I>>(object: I): AccountDataQueryResponse {
     const message = createBaseAccountDataQueryResponse();
     message.totalResults = object.totalResults ?? 0;
@@ -1091,6 +1135,10 @@ export const SmesherRewardStreamRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SmesherRewardStreamRequest>, I>>(base?: I): SmesherRewardStreamRequest {
+    return SmesherRewardStreamRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SmesherRewardStreamRequest>, I>>(object: I): SmesherRewardStreamRequest {
     const message = createBaseSmesherRewardStreamRequest();
     message.id = (object.id !== undefined && object.id !== null) ? SmesherId.fromPartial(object.id) : undefined;
@@ -1136,6 +1184,10 @@ export const SmesherRewardStreamResponse = {
     const obj: any = {};
     message.reward !== undefined && (obj.reward = message.reward ? Reward.toJSON(message.reward) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SmesherRewardStreamResponse>, I>>(base?: I): SmesherRewardStreamResponse {
+    return SmesherRewardStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SmesherRewardStreamResponse>, I>>(object: I): SmesherRewardStreamResponse {
@@ -1206,6 +1258,10 @@ export const SmesherDataQueryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SmesherDataQueryRequest>, I>>(base?: I): SmesherDataQueryRequest {
+    return SmesherDataQueryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SmesherDataQueryRequest>, I>>(object: I): SmesherDataQueryRequest {
     const message = createBaseSmesherDataQueryRequest();
     message.smesherId = (object.smesherId !== undefined && object.smesherId !== null)
@@ -1271,6 +1327,10 @@ export const SmesherDataQueryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SmesherDataQueryResponse>, I>>(base?: I): SmesherDataQueryResponse {
+    return SmesherDataQueryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SmesherDataQueryResponse>, I>>(object: I): SmesherDataQueryResponse {
     const message = createBaseSmesherDataQueryResponse();
     message.totalResults = object.totalResults ?? 0;
@@ -1330,6 +1390,10 @@ export const GlobalStateHash = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GlobalStateHash>, I>>(base?: I): GlobalStateHash {
+    return GlobalStateHash.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GlobalStateHash>, I>>(object: I): GlobalStateHash {
     const message = createBaseGlobalStateHash();
     message.rootHash = object.rootHash ?? new Uint8Array();
@@ -1371,6 +1435,10 @@ export const GlobalStateHashRequest = {
   toJSON(_: GlobalStateHashRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GlobalStateHashRequest>, I>>(base?: I): GlobalStateHashRequest {
+    return GlobalStateHashRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GlobalStateHashRequest>, I>>(_: I): GlobalStateHashRequest {
@@ -1420,6 +1488,10 @@ export const GlobalStateHashResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GlobalStateHashResponse>, I>>(base?: I): GlobalStateHashResponse {
+    return GlobalStateHashResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GlobalStateHashResponse>, I>>(object: I): GlobalStateHashResponse {
     const message = createBaseGlobalStateHashResponse();
     message.response = (object.response !== undefined && object.response !== null)
@@ -1467,6 +1539,10 @@ export const GlobalStateStreamRequest = {
     const obj: any = {};
     message.globalStateDataFlags !== undefined && (obj.globalStateDataFlags = Math.round(message.globalStateDataFlags));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GlobalStateStreamRequest>, I>>(base?: I): GlobalStateStreamRequest {
+    return GlobalStateStreamRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GlobalStateStreamRequest>, I>>(object: I): GlobalStateStreamRequest {
@@ -1545,6 +1621,10 @@ export const GlobalStateData = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GlobalStateData>, I>>(base?: I): GlobalStateData {
+    return GlobalStateData.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GlobalStateData>, I>>(object: I): GlobalStateData {
     const message = createBaseGlobalStateData();
     message.reward = (object.reward !== undefined && object.reward !== null)
@@ -1603,6 +1683,10 @@ export const GlobalStateStreamResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GlobalStateStreamResponse>, I>>(base?: I): GlobalStateStreamResponse {
+    return GlobalStateStreamResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GlobalStateStreamResponse>, I>>(object: I): GlobalStateStreamResponse {
     const message = createBaseGlobalStateStreamResponse();
     message.datum = (object.datum !== undefined && object.datum !== null)
@@ -1643,6 +1727,10 @@ export const AppEventStreamRequest = {
   toJSON(_: AppEventStreamRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AppEventStreamRequest>, I>>(base?: I): AppEventStreamRequest {
+    return AppEventStreamRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AppEventStreamRequest>, I>>(_: I): AppEventStreamRequest {
@@ -1691,6 +1779,10 @@ export const AppEventStreamResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AppEventStreamResponse>, I>>(base?: I): AppEventStreamResponse {
+    return AppEventStreamResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AppEventStreamResponse>, I>>(object: I): AppEventStreamResponse {
     const message = createBaseAppEventStreamResponse();
     message.event = (object.event !== undefined && object.event !== null)
@@ -1703,7 +1795,7 @@ export const AppEventStreamResponse = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -1720,10 +1812,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -1733,14 +1825,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

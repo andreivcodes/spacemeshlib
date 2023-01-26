@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import {
   SubmitTransactionRequest,
   SubmitTransactionResponse,
@@ -74,7 +74,7 @@ export const TransactionServiceDefinition = {
   },
 } as const;
 
-export interface TransactionServiceServiceImplementation<CallContextExt = {}> {
+export interface TransactionServiceImplementation<CallContextExt = {}> {
   /**
    * Submit a new tx to the node for processing. The response
    * TransactionState message contains both the txid of the new tx, as well

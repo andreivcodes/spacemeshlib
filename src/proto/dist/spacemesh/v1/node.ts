@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import { Empty } from "../../google/protobuf/empty";
 import {
   BuildResponse,
@@ -115,7 +115,7 @@ export const NodeServiceDefinition = {
   },
 } as const;
 
-export interface NodeServiceServiceImplementation<CallContextExt = {}> {
+export interface NodeServiceImplementation<CallContextExt = {}> {
   /** A simple test endpoint */
   echo(request: EchoRequest, context: CallContext & CallContextExt): Promise<DeepPartial<EchoResponse>>;
   /** Returns the version of the node software as a semver string */

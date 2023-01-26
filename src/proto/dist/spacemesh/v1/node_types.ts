@@ -199,6 +199,10 @@ export const EchoRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EchoRequest>, I>>(base?: I): EchoRequest {
+    return EchoRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<EchoRequest>, I>>(object: I): EchoRequest {
     const message = createBaseEchoRequest();
     message.msg = (object.msg !== undefined && object.msg !== null) ? SimpleString.fromPartial(object.msg) : undefined;
@@ -244,6 +248,10 @@ export const EchoResponse = {
     const obj: any = {};
     message.msg !== undefined && (obj.msg = message.msg ? SimpleString.toJSON(message.msg) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EchoResponse>, I>>(base?: I): EchoResponse {
+    return EchoResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<EchoResponse>, I>>(object: I): EchoResponse {
@@ -292,6 +300,10 @@ export const VersionResponse = {
     message.versionString !== undefined &&
       (obj.versionString = message.versionString ? SimpleString.toJSON(message.versionString) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<VersionResponse>, I>>(base?: I): VersionResponse {
+    return VersionResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<VersionResponse>, I>>(object: I): VersionResponse {
@@ -344,6 +356,10 @@ export const BuildResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<BuildResponse>, I>>(base?: I): BuildResponse {
+    return BuildResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<BuildResponse>, I>>(object: I): BuildResponse {
     const message = createBaseBuildResponse();
     message.buildString = (object.buildString !== undefined && object.buildString !== null)
@@ -384,6 +400,10 @@ export const SyncStartRequest = {
   toJSON(_: SyncStartRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SyncStartRequest>, I>>(base?: I): SyncStartRequest {
+    return SyncStartRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SyncStartRequest>, I>>(_: I): SyncStartRequest {
@@ -432,6 +452,10 @@ export const SyncStartResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SyncStartResponse>, I>>(base?: I): SyncStartResponse {
+    return SyncStartResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SyncStartResponse>, I>>(object: I): SyncStartResponse {
     const message = createBaseSyncStartResponse();
     message.status = (object.status !== undefined && object.status !== null)
@@ -472,6 +496,10 @@ export const ShutdownRequest = {
   toJSON(_: ShutdownRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ShutdownRequest>, I>>(base?: I): ShutdownRequest {
+    return ShutdownRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ShutdownRequest>, I>>(_: I): ShutdownRequest {
@@ -518,6 +546,10 @@ export const ShutdownResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? Status.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ShutdownResponse>, I>>(base?: I): ShutdownResponse {
+    return ShutdownResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ShutdownResponse>, I>>(object: I): ShutdownResponse {
@@ -612,6 +644,10 @@ export const NodeStatus = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<NodeStatus>, I>>(base?: I): NodeStatus {
+    return NodeStatus.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<NodeStatus>, I>>(object: I): NodeStatus {
     const message = createBaseNodeStatus();
     message.connectedPeers = object.connectedPeers ?? "0";
@@ -662,6 +698,10 @@ export const StatusRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<StatusRequest>, I>>(base?: I): StatusRequest {
+    return StatusRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<StatusRequest>, I>>(_: I): StatusRequest {
     const message = createBaseStatusRequest();
     return message;
@@ -706,6 +746,10 @@ export const StatusResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? NodeStatus.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StatusResponse>, I>>(base?: I): StatusResponse {
+    return StatusResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<StatusResponse>, I>>(object: I): StatusResponse {
@@ -761,6 +805,10 @@ export const UpdatePoetServersRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdatePoetServersRequest>, I>>(base?: I): UpdatePoetServersRequest {
+    return UpdatePoetServersRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdatePoetServersRequest>, I>>(object: I): UpdatePoetServersRequest {
     const message = createBaseUpdatePoetServersRequest();
     message.urls = object.urls?.map((e) => e) || [];
@@ -808,6 +856,10 @@ export const UpdatePoetServersResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdatePoetServersResponse>, I>>(base?: I): UpdatePoetServersResponse {
+    return UpdatePoetServersResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdatePoetServersResponse>, I>>(object: I): UpdatePoetServersResponse {
     const message = createBaseUpdatePoetServersResponse();
     message.status = (object.status !== undefined && object.status !== null)
@@ -848,6 +900,10 @@ export const StatusStreamRequest = {
   toJSON(_: StatusStreamRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StatusStreamRequest>, I>>(base?: I): StatusStreamRequest {
+    return StatusStreamRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<StatusStreamRequest>, I>>(_: I): StatusStreamRequest {
@@ -894,6 +950,10 @@ export const StatusStreamResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? NodeStatus.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StatusStreamResponse>, I>>(base?: I): StatusStreamResponse {
+    return StatusStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<StatusStreamResponse>, I>>(object: I): StatusStreamResponse {
@@ -971,6 +1031,10 @@ export const NodeError = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<NodeError>, I>>(base?: I): NodeError {
+    return NodeError.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<NodeError>, I>>(object: I): NodeError {
     const message = createBaseNodeError();
     message.level = object.level ?? 0;
@@ -1012,6 +1076,10 @@ export const ErrorStreamRequest = {
   toJSON(_: ErrorStreamRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ErrorStreamRequest>, I>>(base?: I): ErrorStreamRequest {
+    return ErrorStreamRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ErrorStreamRequest>, I>>(_: I): ErrorStreamRequest {
@@ -1058,6 +1126,10 @@ export const ErrorStreamResponse = {
     const obj: any = {};
     message.error !== undefined && (obj.error = message.error ? NodeError.toJSON(message.error) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ErrorStreamResponse>, I>>(base?: I): ErrorStreamResponse {
+    return ErrorStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ErrorStreamResponse>, I>>(object: I): ErrorStreamResponse {

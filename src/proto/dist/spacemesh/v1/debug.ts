@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import { Empty } from "../../google/protobuf/empty";
 import { AccountsResponse, NetworkInfoResponse, Proposal } from "./debug_types";
 
@@ -51,7 +51,7 @@ export const DebugServiceDefinition = {
   },
 } as const;
 
-export interface DebugServiceServiceImplementation<CallContextExt = {}> {
+export interface DebugServiceImplementation<CallContextExt = {}> {
   /**
    * NetworkInfo returns p2p network information. Mostly required for integration with deployment
    * and testing tooling.

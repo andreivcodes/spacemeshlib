@@ -251,6 +251,10 @@ export const SimpleInt = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SimpleInt>, I>>(base?: I): SimpleInt {
+    return SimpleInt.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SimpleInt>, I>>(object: I): SimpleInt {
     const message = createBaseSimpleInt();
     message.value = object.value ?? "0";
@@ -296,6 +300,10 @@ export const SimpleString = {
     const obj: any = {};
     message.value !== undefined && (obj.value = message.value);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SimpleString>, I>>(base?: I): SimpleString {
+    return SimpleString.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SimpleString>, I>>(object: I): SimpleString {
@@ -345,6 +353,10 @@ export const Amount = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Amount>, I>>(base?: I): Amount {
+    return Amount.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Amount>, I>>(object: I): Amount {
     const message = createBaseAmount();
     message.value = object.value ?? "0";
@@ -390,6 +402,10 @@ export const AccountId = {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountId>, I>>(base?: I): AccountId {
+    return AccountId.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountId>, I>>(object: I): AccountId {
@@ -439,6 +455,10 @@ export const TransactionId = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TransactionId>, I>>(base?: I): TransactionId {
+    return TransactionId.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<TransactionId>, I>>(object: I): TransactionId {
     const message = createBaseTransactionId();
     message.id = object.id ?? new Uint8Array();
@@ -486,6 +506,10 @@ export const ActivationId = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ActivationId>, I>>(base?: I): ActivationId {
+    return ActivationId.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ActivationId>, I>>(object: I): ActivationId {
     const message = createBaseActivationId();
     message.id = object.id ?? new Uint8Array();
@@ -531,6 +555,10 @@ export const SmesherId = {
     const obj: any = {};
     message.id !== undefined && (obj.id = base64FromBytes(message.id !== undefined ? message.id : new Uint8Array()));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SmesherId>, I>>(base?: I): SmesherId {
+    return SmesherId.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SmesherId>, I>>(object: I): SmesherId {
@@ -638,6 +666,10 @@ export const Activation = {
     message.numUnits !== undefined && (obj.numUnits = Math.round(message.numUnits));
     message.sequence !== undefined && (obj.sequence = message.sequence);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Activation>, I>>(base?: I): Activation {
+    return Activation.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<Activation>, I>>(object: I): Activation {
@@ -789,6 +821,10 @@ export const Transaction = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Transaction>, I>>(base?: I): Transaction {
+    return Transaction.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Transaction>, I>>(object: I): Transaction {
     const message = createBaseTransaction();
     message.id = object.id ?? new Uint8Array();
@@ -858,6 +894,10 @@ export const LayerLimits = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LayerLimits>, I>>(base?: I): LayerLimits {
+    return LayerLimits.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LayerLimits>, I>>(object: I): LayerLimits {
     const message = createBaseLayerLimits();
     message.min = object.min ?? 0;
@@ -914,6 +954,10 @@ export const Nonce = {
     message.counter !== undefined && (obj.counter = message.counter);
     message.bitfield !== undefined && (obj.bitfield = Math.round(message.bitfield));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Nonce>, I>>(base?: I): Nonce {
+    return Nonce.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<Nonce>, I>>(object: I): Nonce {
@@ -973,6 +1017,10 @@ export const MeshTransaction = {
       (obj.transaction = message.transaction ? Transaction.toJSON(message.transaction) : undefined);
     message.layerId !== undefined && (obj.layerId = message.layerId ? LayerNumber.toJSON(message.layerId) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MeshTransaction>, I>>(base?: I): MeshTransaction {
+    return MeshTransaction.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<MeshTransaction>, I>>(object: I): MeshTransaction {
@@ -1079,6 +1127,10 @@ export const Reward = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Reward>, I>>(base?: I): Reward {
+    return Reward.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Reward>, I>>(object: I): Reward {
     const message = createBaseReward();
     message.layer = (object.layer !== undefined && object.layer !== null)
@@ -1175,6 +1227,10 @@ export const Block = {
     message.smesherId !== undefined &&
       (obj.smesherId = message.smesherId ? SmesherId.toJSON(message.smesherId) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Block>, I>>(base?: I): Block {
+    return Block.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<Block>, I>>(object: I): Block {
@@ -1292,6 +1348,10 @@ export const Layer = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Layer>, I>>(base?: I): Layer {
+    return Layer.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Layer>, I>>(object: I): Layer {
     const message = createBaseLayer();
     message.number = (object.number !== undefined && object.number !== null)
@@ -1344,6 +1404,10 @@ export const LayerNumber = {
     const obj: any = {};
     message.number !== undefined && (obj.number = Math.round(message.number));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LayerNumber>, I>>(base?: I): LayerNumber {
+    return LayerNumber.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<LayerNumber>, I>>(object: I): LayerNumber {
@@ -1404,6 +1468,10 @@ export const AppEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AppEvent>, I>>(base?: I): AppEvent {
+    return AppEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AppEvent>, I>>(object: I): AppEvent {
     const message = createBaseAppEvent();
     message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
@@ -1417,7 +1485,7 @@ export const AppEvent = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -1434,10 +1502,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -1447,14 +1515,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

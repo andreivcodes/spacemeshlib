@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import { VerifyChallengeRequest, VerifyChallengeResponse } from "./gateway_types";
 
 export const protobufPackage = "spacemesh.v1";
@@ -22,7 +22,7 @@ export const GatewayServiceDefinition = {
   },
 } as const;
 
-export interface GatewayServiceServiceImplementation<CallContextExt = {}> {
+export interface GatewayServiceImplementation<CallContextExt = {}> {
   /** Verify a PoET challenge */
   verifyChallenge(
     request: VerifyChallengeRequest,

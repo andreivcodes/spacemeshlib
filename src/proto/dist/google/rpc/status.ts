@@ -91,6 +91,10 @@ export const Status = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Status>, I>>(base?: I): Status {
+    return Status.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Status>, I>>(object: I): Status {
     const message = createBaseStatus();
     message.code = object.code ?? 0;

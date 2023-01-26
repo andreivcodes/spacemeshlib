@@ -234,6 +234,10 @@ export const TransactionsIds = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TransactionsIds>, I>>(base?: I): TransactionsIds {
+    return TransactionsIds.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<TransactionsIds>, I>>(object: I): TransactionsIds {
     const message = createBaseTransactionsIds();
     message.transactionId = object.transactionId?.map((e) => TransactionId.fromPartial(e)) || [];
@@ -280,6 +284,10 @@ export const SubmitTransactionRequest = {
     message.transaction !== undefined &&
       (obj.transaction = base64FromBytes(message.transaction !== undefined ? message.transaction : new Uint8Array()));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SubmitTransactionRequest>, I>>(base?: I): SubmitTransactionRequest {
+    return SubmitTransactionRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SubmitTransactionRequest>, I>>(object: I): SubmitTransactionRequest {
@@ -338,6 +346,10 @@ export const SubmitTransactionResponse = {
     message.txstate !== undefined &&
       (obj.txstate = message.txstate ? TransactionState.toJSON(message.txstate) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SubmitTransactionResponse>, I>>(base?: I): SubmitTransactionResponse {
+    return SubmitTransactionResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SubmitTransactionResponse>, I>>(object: I): SubmitTransactionResponse {
@@ -406,6 +418,10 @@ export const TransactionsStateRequest = {
     }
     message.includeTransactions !== undefined && (obj.includeTransactions = message.includeTransactions);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionsStateRequest>, I>>(base?: I): TransactionsStateRequest {
+    return TransactionsStateRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<TransactionsStateRequest>, I>>(object: I): TransactionsStateRequest {
@@ -478,6 +494,10 @@ export const TransactionsStateResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TransactionsStateResponse>, I>>(base?: I): TransactionsStateResponse {
+    return TransactionsStateResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<TransactionsStateResponse>, I>>(object: I): TransactionsStateResponse {
     const message = createBaseTransactionsStateResponse();
     message.transactionsState = object.transactionsState?.map((e) => TransactionState.fromPartial(e)) || [];
@@ -542,6 +562,10 @@ export const TransactionsStateStreamRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TransactionsStateStreamRequest>, I>>(base?: I): TransactionsStateStreamRequest {
+    return TransactionsStateStreamRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<TransactionsStateStreamRequest>, I>>(
     object: I,
   ): TransactionsStateStreamRequest {
@@ -602,6 +626,10 @@ export const TransactionsStateStreamResponse = {
     message.transaction !== undefined &&
       (obj.transaction = message.transaction ? Transaction.toJSON(message.transaction) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionsStateStreamResponse>, I>>(base?: I): TransactionsStateStreamResponse {
+    return TransactionsStateStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<TransactionsStateStreamResponse>, I>>(
@@ -666,6 +694,10 @@ export const TransactionState = {
     message.id !== undefined && (obj.id = message.id ? TransactionId.toJSON(message.id) : undefined);
     message.state !== undefined && (obj.state = transactionState_TransactionStateToJSON(message.state));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionState>, I>>(base?: I): TransactionState {
+    return TransactionState.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<TransactionState>, I>>(object: I): TransactionState {
@@ -748,6 +780,10 @@ export const TransactionResultsRequest = {
     message.end !== undefined && (obj.end = Math.round(message.end));
     message.watch !== undefined && (obj.watch = message.watch);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransactionResultsRequest>, I>>(base?: I): TransactionResultsRequest {
+    return TransactionResultsRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<TransactionResultsRequest>, I>>(object: I): TransactionResultsRequest {
@@ -875,6 +911,10 @@ export const TransactionResult = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<TransactionResult>, I>>(base?: I): TransactionResult {
+    return TransactionResult.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<TransactionResult>, I>>(object: I): TransactionResult {
     const message = createBaseTransactionResult();
     message.tx = (object.tx !== undefined && object.tx !== null) ? Transaction.fromPartial(object.tx) : undefined;
@@ -892,7 +932,7 @@ export const TransactionResult = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -909,10 +949,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -922,14 +962,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

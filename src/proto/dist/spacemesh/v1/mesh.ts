@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import {
   AccountMeshDataQueryRequest,
   AccountMeshDataQueryResponse,
@@ -141,7 +141,7 @@ export const MeshServiceDefinition = {
   },
 } as const;
 
-export interface MeshServiceServiceImplementation<CallContextExt = {}> {
+export interface MeshServiceImplementation<CallContextExt = {}> {
   /** Network genesis time as unix epoch time */
   genesisTime(
     request: GenesisTimeRequest,

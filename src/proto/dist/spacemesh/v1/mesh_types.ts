@@ -102,8 +102,8 @@ export interface AccountMeshDataFilter {
 }
 
 export interface AccountMeshData {
-  meshTransaction: MeshTransaction | undefined;
-  activation: Activation | undefined;
+  meshTransaction?: MeshTransaction | undefined;
+  activation?: Activation | undefined;
 }
 
 export interface AccountMeshDataStreamRequest {
@@ -183,6 +183,10 @@ export const GenesisTimeRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisTimeRequest>, I>>(base?: I): GenesisTimeRequest {
+    return GenesisTimeRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GenesisTimeRequest>, I>>(_: I): GenesisTimeRequest {
     const message = createBaseGenesisTimeRequest();
     return message;
@@ -230,6 +234,10 @@ export const GenesisTimeResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisTimeResponse>, I>>(base?: I): GenesisTimeResponse {
+    return GenesisTimeResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GenesisTimeResponse>, I>>(object: I): GenesisTimeResponse {
     const message = createBaseGenesisTimeResponse();
     message.unixtime = (object.unixtime !== undefined && object.unixtime !== null)
@@ -270,6 +278,10 @@ export const CurrentLayerRequest = {
   toJSON(_: CurrentLayerRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CurrentLayerRequest>, I>>(base?: I): CurrentLayerRequest {
+    return CurrentLayerRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CurrentLayerRequest>, I>>(_: I): CurrentLayerRequest {
@@ -319,6 +331,10 @@ export const CurrentLayerResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CurrentLayerResponse>, I>>(base?: I): CurrentLayerResponse {
+    return CurrentLayerResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CurrentLayerResponse>, I>>(object: I): CurrentLayerResponse {
     const message = createBaseCurrentLayerResponse();
     message.layernum = (object.layernum !== undefined && object.layernum !== null)
@@ -359,6 +375,10 @@ export const CurrentEpochRequest = {
   toJSON(_: CurrentEpochRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CurrentEpochRequest>, I>>(base?: I): CurrentEpochRequest {
+    return CurrentEpochRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CurrentEpochRequest>, I>>(_: I): CurrentEpochRequest {
@@ -408,6 +428,10 @@ export const CurrentEpochResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CurrentEpochResponse>, I>>(base?: I): CurrentEpochResponse {
+    return CurrentEpochResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CurrentEpochResponse>, I>>(object: I): CurrentEpochResponse {
     const message = createBaseCurrentEpochResponse();
     message.epochnum = (object.epochnum !== undefined && object.epochnum !== null)
@@ -448,6 +472,10 @@ export const GenesisIDRequest = {
   toJSON(_: GenesisIDRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GenesisIDRequest>, I>>(base?: I): GenesisIDRequest {
+    return GenesisIDRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GenesisIDRequest>, I>>(_: I): GenesisIDRequest {
@@ -497,6 +525,10 @@ export const GenesisIDResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GenesisIDResponse>, I>>(base?: I): GenesisIDResponse {
+    return GenesisIDResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GenesisIDResponse>, I>>(object: I): GenesisIDResponse {
     const message = createBaseGenesisIDResponse();
     message.genesisId = object.genesisId ?? new Uint8Array();
@@ -535,6 +567,10 @@ export const EpochNumLayersRequest = {
   toJSON(_: EpochNumLayersRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EpochNumLayersRequest>, I>>(base?: I): EpochNumLayersRequest {
+    return EpochNumLayersRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<EpochNumLayersRequest>, I>>(_: I): EpochNumLayersRequest {
@@ -584,6 +620,10 @@ export const EpochNumLayersResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EpochNumLayersResponse>, I>>(base?: I): EpochNumLayersResponse {
+    return EpochNumLayersResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<EpochNumLayersResponse>, I>>(object: I): EpochNumLayersResponse {
     const message = createBaseEpochNumLayersResponse();
     message.numlayers = (object.numlayers !== undefined && object.numlayers !== null)
@@ -624,6 +664,10 @@ export const LayerDurationRequest = {
   toJSON(_: LayerDurationRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LayerDurationRequest>, I>>(base?: I): LayerDurationRequest {
+    return LayerDurationRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<LayerDurationRequest>, I>>(_: I): LayerDurationRequest {
@@ -673,6 +717,10 @@ export const LayerDurationResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LayerDurationResponse>, I>>(base?: I): LayerDurationResponse {
+    return LayerDurationResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LayerDurationResponse>, I>>(object: I): LayerDurationResponse {
     const message = createBaseLayerDurationResponse();
     message.duration = (object.duration !== undefined && object.duration !== null)
@@ -713,6 +761,10 @@ export const MaxTransactionsPerSecondRequest = {
   toJSON(_: MaxTransactionsPerSecondRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MaxTransactionsPerSecondRequest>, I>>(base?: I): MaxTransactionsPerSecondRequest {
+    return MaxTransactionsPerSecondRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<MaxTransactionsPerSecondRequest>, I>>(_: I): MaxTransactionsPerSecondRequest {
@@ -760,6 +812,12 @@ export const MaxTransactionsPerSecondResponse = {
     message.maxTxsPerSecond !== undefined &&
       (obj.maxTxsPerSecond = message.maxTxsPerSecond ? SimpleInt.toJSON(message.maxTxsPerSecond) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<MaxTransactionsPerSecondResponse>, I>>(
+    base?: I,
+  ): MaxTransactionsPerSecondResponse {
+    return MaxTransactionsPerSecondResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<MaxTransactionsPerSecondResponse>, I>>(
@@ -824,6 +882,10 @@ export const AccountMeshDataFilter = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountMeshDataFilter>, I>>(base?: I): AccountMeshDataFilter {
+    return AccountMeshDataFilter.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountMeshDataFilter>, I>>(object: I): AccountMeshDataFilter {
     const message = createBaseAccountMeshDataFilter();
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
@@ -886,6 +948,10 @@ export const AccountMeshData = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountMeshData>, I>>(base?: I): AccountMeshData {
+    return AccountMeshData.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountMeshData>, I>>(object: I): AccountMeshData {
     const message = createBaseAccountMeshData();
     message.meshTransaction = (object.meshTransaction !== undefined && object.meshTransaction !== null)
@@ -939,6 +1005,10 @@ export const AccountMeshDataStreamRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountMeshDataStreamRequest>, I>>(base?: I): AccountMeshDataStreamRequest {
+    return AccountMeshDataStreamRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountMeshDataStreamRequest>, I>>(object: I): AccountMeshDataStreamRequest {
     const message = createBaseAccountMeshDataStreamRequest();
     message.filter = (object.filter !== undefined && object.filter !== null)
@@ -986,6 +1056,10 @@ export const AccountMeshDataStreamResponse = {
     const obj: any = {};
     message.datum !== undefined && (obj.datum = message.datum ? AccountMeshData.toJSON(message.datum) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AccountMeshDataStreamResponse>, I>>(base?: I): AccountMeshDataStreamResponse {
+    return AccountMeshDataStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AccountMeshDataStreamResponse>, I>>(
@@ -1067,6 +1141,10 @@ export const AccountMeshDataQueryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountMeshDataQueryRequest>, I>>(base?: I): AccountMeshDataQueryRequest {
+    return AccountMeshDataQueryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountMeshDataQueryRequest>, I>>(object: I): AccountMeshDataQueryRequest {
     const message = createBaseAccountMeshDataQueryRequest();
     message.filter = (object.filter !== undefined && object.filter !== null)
@@ -1135,6 +1213,10 @@ export const AccountMeshDataQueryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AccountMeshDataQueryResponse>, I>>(base?: I): AccountMeshDataQueryResponse {
+    return AccountMeshDataQueryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AccountMeshDataQueryResponse>, I>>(object: I): AccountMeshDataQueryResponse {
     const message = createBaseAccountMeshDataQueryResponse();
     message.data = object.data?.map((e) => AccountMeshData.fromPartial(e)) || [];
@@ -1195,6 +1277,10 @@ export const LayersQueryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LayersQueryRequest>, I>>(base?: I): LayersQueryRequest {
+    return LayersQueryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LayersQueryRequest>, I>>(object: I): LayersQueryRequest {
     const message = createBaseLayersQueryRequest();
     message.startLayer = (object.startLayer !== undefined && object.startLayer !== null)
@@ -1251,6 +1337,10 @@ export const LayersQueryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LayersQueryResponse>, I>>(base?: I): LayersQueryResponse {
+    return LayersQueryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LayersQueryResponse>, I>>(object: I): LayersQueryResponse {
     const message = createBaseLayersQueryResponse();
     message.layer = object.layer?.map((e) => Layer.fromPartial(e)) || [];
@@ -1289,6 +1379,10 @@ export const LayerStreamRequest = {
   toJSON(_: LayerStreamRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LayerStreamRequest>, I>>(base?: I): LayerStreamRequest {
+    return LayerStreamRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<LayerStreamRequest>, I>>(_: I): LayerStreamRequest {
@@ -1337,6 +1431,10 @@ export const LayerStreamResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LayerStreamResponse>, I>>(base?: I): LayerStreamResponse {
+    return LayerStreamResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LayerStreamResponse>, I>>(object: I): LayerStreamResponse {
     const message = createBaseLayerStreamResponse();
     message.layer = (object.layer !== undefined && object.layer !== null) ? Layer.fromPartial(object.layer) : undefined;
@@ -1347,7 +1445,7 @@ export const LayerStreamResponse = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -1364,10 +1462,10 @@ var globalThis: any = (() => {
 })();
 
 function bytesFromBase64(b64: string): Uint8Array {
-  if (globalThis.Buffer) {
-    return Uint8Array.from(globalThis.Buffer.from(b64, "base64"));
+  if (tsProtoGlobalThis.Buffer) {
+    return Uint8Array.from(tsProtoGlobalThis.Buffer.from(b64, "base64"));
   } else {
-    const bin = globalThis.atob(b64);
+    const bin = tsProtoGlobalThis.atob(b64);
     const arr = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; ++i) {
       arr[i] = bin.charCodeAt(i);
@@ -1377,14 +1475,14 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 function base64FromBytes(arr: Uint8Array): string {
-  if (globalThis.Buffer) {
-    return globalThis.Buffer.from(arr).toString("base64");
+  if (tsProtoGlobalThis.Buffer) {
+    return tsProtoGlobalThis.Buffer.from(arr).toString("base64");
   } else {
     const bin: string[] = [];
     arr.forEach((byte) => {
       bin.push(String.fromCharCode(byte));
     });
-    return globalThis.btoa(bin.join(""));
+    return tsProtoGlobalThis.btoa(bin.join(""));
   }
 }
 

@@ -289,6 +289,10 @@ export const IsSmeshingResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<IsSmeshingResponse>, I>>(base?: I): IsSmeshingResponse {
+    return IsSmeshingResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<IsSmeshingResponse>, I>>(object: I): IsSmeshingResponse {
     const message = createBaseIsSmeshingResponse();
     message.isSmeshing = object.isSmeshing ?? false;
@@ -347,6 +351,10 @@ export const StartSmeshingRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<StartSmeshingRequest>, I>>(base?: I): StartSmeshingRequest {
+    return StartSmeshingRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<StartSmeshingRequest>, I>>(object: I): StartSmeshingRequest {
     const message = createBaseStartSmeshingRequest();
     message.coinbase = (object.coinbase !== undefined && object.coinbase !== null)
@@ -399,6 +407,10 @@ export const StartSmeshingResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<StartSmeshingResponse>, I>>(base?: I): StartSmeshingResponse {
+    return StartSmeshingResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<StartSmeshingResponse>, I>>(object: I): StartSmeshingResponse {
     const message = createBaseStartSmeshingResponse();
     message.status = (object.status !== undefined && object.status !== null)
@@ -448,6 +460,10 @@ export const StopSmeshingRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<StopSmeshingRequest>, I>>(base?: I): StopSmeshingRequest {
+    return StopSmeshingRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<StopSmeshingRequest>, I>>(object: I): StopSmeshingRequest {
     const message = createBaseStopSmeshingRequest();
     message.deleteFiles = object.deleteFiles ?? false;
@@ -493,6 +509,10 @@ export const StopSmeshingResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? Status.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StopSmeshingResponse>, I>>(base?: I): StopSmeshingResponse {
+    return StopSmeshingResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<StopSmeshingResponse>, I>>(object: I): StopSmeshingResponse {
@@ -544,6 +564,10 @@ export const SetCoinbaseRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SetCoinbaseRequest>, I>>(base?: I): SetCoinbaseRequest {
+    return SetCoinbaseRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SetCoinbaseRequest>, I>>(object: I): SetCoinbaseRequest {
     const message = createBaseSetCoinbaseRequest();
     message.id = (object.id !== undefined && object.id !== null) ? AccountId.fromPartial(object.id) : undefined;
@@ -589,6 +613,10 @@ export const SetCoinbaseResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? Status.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SetCoinbaseResponse>, I>>(base?: I): SetCoinbaseResponse {
+    return SetCoinbaseResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SetCoinbaseResponse>, I>>(object: I): SetCoinbaseResponse {
@@ -640,6 +668,10 @@ export const MinGasResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<MinGasResponse>, I>>(base?: I): MinGasResponse {
+    return MinGasResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<MinGasResponse>, I>>(object: I): MinGasResponse {
     const message = createBaseMinGasResponse();
     message.mingas = (object.mingas !== undefined && object.mingas !== null)
@@ -689,6 +721,10 @@ export const SetMinGasRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SetMinGasRequest>, I>>(base?: I): SetMinGasRequest {
+    return SetMinGasRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SetMinGasRequest>, I>>(object: I): SetMinGasRequest {
     const message = createBaseSetMinGasRequest();
     message.mingas = (object.mingas !== undefined && object.mingas !== null)
@@ -736,6 +772,10 @@ export const SetMinGasResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? Status.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SetMinGasResponse>, I>>(base?: I): SetMinGasResponse {
+    return SetMinGasResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SetMinGasResponse>, I>>(object: I): SetMinGasResponse {
@@ -788,6 +828,10 @@ export const SmesherIDResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SmesherIDResponse>, I>>(base?: I): SmesherIDResponse {
+    return SmesherIDResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SmesherIDResponse>, I>>(object: I): SmesherIDResponse {
     const message = createBaseSmesherIDResponse();
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
@@ -838,6 +882,10 @@ export const CoinbaseResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CoinbaseResponse>, I>>(base?: I): CoinbaseResponse {
+    return CoinbaseResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CoinbaseResponse>, I>>(object: I): CoinbaseResponse {
     const message = createBaseCoinbaseResponse();
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
@@ -878,6 +926,10 @@ export const EstimatedRewardsRequest = {
   toJSON(_: EstimatedRewardsRequest): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<EstimatedRewardsRequest>, I>>(base?: I): EstimatedRewardsRequest {
+    return EstimatedRewardsRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<EstimatedRewardsRequest>, I>>(_: I): EstimatedRewardsRequest {
@@ -936,6 +988,10 @@ export const EstimatedRewardsResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<EstimatedRewardsResponse>, I>>(base?: I): EstimatedRewardsResponse {
+    return EstimatedRewardsResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<EstimatedRewardsResponse>, I>>(object: I): EstimatedRewardsResponse {
     const message = createBaseEstimatedRewardsResponse();
     message.amount = (object.amount !== undefined && object.amount !== null)
@@ -984,6 +1040,12 @@ export const PostSetupComputeProvidersRequest = {
     const obj: any = {};
     message.benchmark !== undefined && (obj.benchmark = message.benchmark);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostSetupComputeProvidersRequest>, I>>(
+    base?: I,
+  ): PostSetupComputeProvidersRequest {
+    return PostSetupComputeProvidersRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<PostSetupComputeProvidersRequest>, I>>(
@@ -1043,6 +1105,12 @@ export const PostSetupComputeProvidersResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PostSetupComputeProvidersResponse>, I>>(
+    base?: I,
+  ): PostSetupComputeProvidersResponse {
+    return PostSetupComputeProvidersResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<PostSetupComputeProvidersResponse>, I>>(
     object: I,
   ): PostSetupComputeProvidersResponse {
@@ -1092,6 +1160,10 @@ export const PostSetupStatusResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PostSetupStatusResponse>, I>>(base?: I): PostSetupStatusResponse {
+    return PostSetupStatusResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<PostSetupStatusResponse>, I>>(object: I): PostSetupStatusResponse {
     const message = createBasePostSetupStatusResponse();
     message.status = (object.status !== undefined && object.status !== null)
@@ -1139,6 +1211,10 @@ export const PostSetupStatusStreamResponse = {
     const obj: any = {};
     message.status !== undefined && (obj.status = message.status ? PostSetupStatus.toJSON(message.status) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostSetupStatusStreamResponse>, I>>(base?: I): PostSetupStatusStreamResponse {
+    return PostSetupStatusStreamResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<PostSetupStatusStreamResponse>, I>>(
@@ -1234,6 +1310,10 @@ export const PostConfigResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PostConfigResponse>, I>>(base?: I): PostConfigResponse {
+    return PostConfigResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<PostConfigResponse>, I>>(object: I): PostConfigResponse {
     const message = createBasePostConfigResponse();
     message.bitsPerLabel = object.bitsPerLabel ?? 0;
@@ -1311,6 +1391,10 @@ export const PostSetupComputeProvider = {
       (obj.computeApi = postSetupComputeProvider_ComputeApiClassToJSON(message.computeApi));
     message.performance !== undefined && (obj.performance = message.performance);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostSetupComputeProvider>, I>>(base?: I): PostSetupComputeProvider {
+    return PostSetupComputeProvider.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<PostSetupComputeProvider>, I>>(object: I): PostSetupComputeProvider {
@@ -1397,6 +1481,10 @@ export const PostSetupOpts = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PostSetupOpts>, I>>(base?: I): PostSetupOpts {
+    return PostSetupOpts.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<PostSetupOpts>, I>>(object: I): PostSetupOpts {
     const message = createBasePostSetupOpts();
     message.dataDir = object.dataDir ?? "";
@@ -1464,6 +1552,10 @@ export const PostSetupStatus = {
     message.numLabelsWritten !== undefined && (obj.numLabelsWritten = message.numLabelsWritten);
     message.opts !== undefined && (obj.opts = message.opts ? PostSetupOpts.toJSON(message.opts) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostSetupStatus>, I>>(base?: I): PostSetupStatus {
+    return PostSetupStatus.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<PostSetupStatus>, I>>(object: I): PostSetupStatus {

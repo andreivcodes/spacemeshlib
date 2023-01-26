@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import {
   AccountDataQueryRequest,
   AccountDataQueryResponse,
@@ -123,7 +123,7 @@ export const GlobalStateServiceDefinition = {
   },
 } as const;
 
-export interface GlobalStateServiceServiceImplementation<CallContextExt = {}> {
+export interface GlobalStateServiceImplementation<CallContextExt = {}> {
   /** Latest computed global state - layer and its root hash */
   globalStateHash(
     request: GlobalStateHashRequest,

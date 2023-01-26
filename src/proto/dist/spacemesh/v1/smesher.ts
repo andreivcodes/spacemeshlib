@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CallContext, CallOptions } from "nice-grpc-common";
+import type { CallContext, CallOptions } from "nice-grpc-common";
 import { Empty } from "../../google/protobuf/empty";
 import {
   CoinbaseResponse,
@@ -164,7 +164,7 @@ export const SmesherServiceDefinition = {
   },
 } as const;
 
-export interface SmesherServiceServiceImplementation<CallContextExt = {}> {
+export interface SmesherServiceImplementation<CallContextExt = {}> {
   /** Returns true iff node is currently smeshing */
   isSmeshing(request: Empty, context: CallContext & CallContextExt): Promise<DeepPartial<IsSmeshingResponse>>;
   /**
