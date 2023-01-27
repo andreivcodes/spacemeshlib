@@ -5,58 +5,58 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "spacemesh.v1";
 
 export interface SimpleInt {
-  value: string;
+  readonly value: bigint;
 }
 
 export interface SimpleString {
-  value: string;
+  readonly value: string;
 }
 
 /** A non-negative coin amount, in smidge */
 export interface Amount {
-  value: string;
+  readonly value: bigint;
 }
 
 export interface AccountId {
-  address: string;
+  readonly address: string;
 }
 
 export interface TransactionId {
-  id: Uint8Array;
+  readonly id: Uint8Array;
 }
 
 export interface ActivationId {
-  id: Uint8Array;
+  readonly id: Uint8Array;
 }
 
 export interface SmesherId {
-  id: Uint8Array;
+  readonly id: Uint8Array;
 }
 
 /** An Activation "transaction" (ATX) */
 export interface Activation {
-  id:
+  readonly id:
     | ActivationId
     | undefined;
   /** the layer that this activation is part of */
-  layer:
+  readonly layer:
     | LayerNumber
     | undefined;
   /** id of smesher who created the ATX */
-  smesherId:
+  readonly smesherId:
     | SmesherId
     | undefined;
   /** coinbase account id */
-  coinbase:
+  readonly coinbase:
     | AccountId
     | undefined;
   /** previous ATX pointed to */
-  prevAtx:
+  readonly prevAtx:
     | ActivationId
     | undefined;
   /** number of PoST data commitment units */
-  numUnits: number;
-  sequence: string;
+  readonly numUnits: number;
+  readonly sequence: bigint;
 }
 
 /**
@@ -64,88 +64,88 @@ export interface Activation {
  * do not include mutable data such as tx state or result.
  */
 export interface Transaction {
-  id: Uint8Array;
-  principal: AccountId | undefined;
-  template:
+  readonly id: Uint8Array;
+  readonly principal: AccountId | undefined;
+  readonly template:
     | AccountId
     | undefined;
   /** this is actually limited by uint8, but no type for that. */
-  method: number;
-  nonce: Nonce | undefined;
-  limits: LayerLimits | undefined;
-  maxGas: string;
-  gasPrice: string;
-  maxSpend: string;
-  raw: Uint8Array;
+  readonly method: number;
+  readonly nonce: Nonce | undefined;
+  readonly limits: LayerLimits | undefined;
+  readonly maxGas: bigint;
+  readonly gasPrice: bigint;
+  readonly maxSpend: bigint;
+  readonly raw: Uint8Array;
 }
 
 export interface LayerLimits {
-  min: number;
-  max: number;
+  readonly min: number;
+  readonly max: number;
 }
 
 export interface Nonce {
-  counter: string;
+  readonly counter: bigint;
   /** this is actually limited by uint8, but no type for that. */
-  bitfield: number;
+  readonly bitfield: number;
 }
 
 /** Transaction that was added to the mesh. */
 export interface MeshTransaction {
-  transaction: Transaction | undefined;
-  layerId: LayerNumber | undefined;
+  readonly transaction: Transaction | undefined;
+  readonly layerId: LayerNumber | undefined;
 }
 
 export interface Reward {
   /** layer award was paid in */
-  layer:
+  readonly layer:
     | LayerNumber
     | undefined;
   /** total reward paid (sum of tx fee and layer reward) */
-  total:
+  readonly total:
     | Amount
     | undefined;
   /** tx_fee = total - layer_reward */
-  layerReward:
+  readonly layerReward:
     | Amount
     | undefined;
   /** layer number of the layer when reward was computed */
-  layerComputed:
+  readonly layerComputed:
     | LayerNumber
     | undefined;
   /** account awarded this reward */
-  coinbase:
+  readonly coinbase:
     | AccountId
     | undefined;
   /** id of smesher who earned this reward */
-  smesher: SmesherId | undefined;
+  readonly smesher: SmesherId | undefined;
 }
 
 export interface Block {
   /** block hash */
-  id: Uint8Array;
+  readonly id: Uint8Array;
   /** block transactions */
-  transactions: Transaction[];
+  readonly transactions: readonly Transaction[];
   /** the smesher's activation that this block refers to */
-  activationId:
+  readonly activationId:
     | ActivationId
     | undefined;
   /** the id of the smesher who submitted this block */
-  smesherId: SmesherId | undefined;
+  readonly smesherId: SmesherId | undefined;
 }
 
 export interface Layer {
   /** layer number - not hash - layer content may change */
-  number: LayerNumber | undefined;
-  status: Layer_LayerStatus;
+  readonly number: LayerNumber | undefined;
+  readonly status: Layer_LayerStatus;
   /** computer layer hash - do we need this? */
-  hash: Uint8Array;
+  readonly hash: Uint8Array;
   /** layer's blocks */
-  blocks: Block[];
+  readonly blocks: readonly Block[];
   /** list of layer's activations */
-  activations: Activation[];
+  readonly activations: readonly Activation[];
   /** when available - the root state hash of global state in this layer */
-  rootStateHash: Uint8Array;
+  readonly rootStateHash: Uint8Array;
 }
 
 export enum Layer_LayerStatus {
@@ -198,27 +198,27 @@ export function layer_LayerStatusToJSON(object: Layer_LayerStatus): string {
 }
 
 export interface LayerNumber {
-  number: number;
+  readonly number: number;
 }
 
 /** an event emitted from an app instance */
 export interface AppEvent {
   /** the transaction that called the code */
-  transactionId:
+  readonly transactionId:
     | TransactionId
     | undefined;
   /** the event's string emitted from code */
-  message: string;
+  readonly message: string;
 }
 
 function createBaseSimpleInt(): SimpleInt {
-  return { value: "0" };
+  return { value: BigInt("0") };
 }
 
 export const SimpleInt = {
   encode(message: SimpleInt, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.value !== "0") {
-      writer.uint32(8).uint64(message.value);
+    if (message.value !== BigInt("0")) {
+      writer.uint32(8).uint64(message.value.toString());
     }
     return writer;
   },
@@ -226,12 +226,12 @@ export const SimpleInt = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SimpleInt {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSimpleInt();
+    const message = createBaseSimpleInt() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.value = longToString(reader.uint64() as Long);
+          message.value = longToBigint(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -242,22 +242,22 @@ export const SimpleInt = {
   },
 
   fromJSON(object: any): SimpleInt {
-    return { value: isSet(object.value) ? String(object.value) : "0" };
+    return { value: isSet(object.value) ? BigInt(object.value) : BigInt("0") };
   },
 
   toJSON(message: SimpleInt): unknown {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && (obj.value = message.value.toString());
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SimpleInt>, I>>(base?: I): SimpleInt {
+  create(base?: DeepPartial<SimpleInt>): SimpleInt {
     return SimpleInt.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SimpleInt>, I>>(object: I): SimpleInt {
-    const message = createBaseSimpleInt();
-    message.value = object.value ?? "0";
+  fromPartial(object: DeepPartial<SimpleInt>): SimpleInt {
+    const message = createBaseSimpleInt() as any;
+    message.value = object.value ?? BigInt("0");
     return message;
   },
 };
@@ -277,7 +277,7 @@ export const SimpleString = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SimpleString {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSimpleString();
+    const message = createBaseSimpleString() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -302,25 +302,25 @@ export const SimpleString = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SimpleString>, I>>(base?: I): SimpleString {
+  create(base?: DeepPartial<SimpleString>): SimpleString {
     return SimpleString.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SimpleString>, I>>(object: I): SimpleString {
-    const message = createBaseSimpleString();
+  fromPartial(object: DeepPartial<SimpleString>): SimpleString {
+    const message = createBaseSimpleString() as any;
     message.value = object.value ?? "";
     return message;
   },
 };
 
 function createBaseAmount(): Amount {
-  return { value: "0" };
+  return { value: BigInt("0") };
 }
 
 export const Amount = {
   encode(message: Amount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.value !== "0") {
-      writer.uint32(8).uint64(message.value);
+    if (message.value !== BigInt("0")) {
+      writer.uint32(8).uint64(message.value.toString());
     }
     return writer;
   },
@@ -328,12 +328,12 @@ export const Amount = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Amount {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAmount();
+    const message = createBaseAmount() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.value = longToString(reader.uint64() as Long);
+          message.value = longToBigint(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -344,22 +344,22 @@ export const Amount = {
   },
 
   fromJSON(object: any): Amount {
-    return { value: isSet(object.value) ? String(object.value) : "0" };
+    return { value: isSet(object.value) ? BigInt(object.value) : BigInt("0") };
   },
 
   toJSON(message: Amount): unknown {
     const obj: any = {};
-    message.value !== undefined && (obj.value = message.value);
+    message.value !== undefined && (obj.value = message.value.toString());
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Amount>, I>>(base?: I): Amount {
+  create(base?: DeepPartial<Amount>): Amount {
     return Amount.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Amount>, I>>(object: I): Amount {
-    const message = createBaseAmount();
-    message.value = object.value ?? "0";
+  fromPartial(object: DeepPartial<Amount>): Amount {
+    const message = createBaseAmount() as any;
+    message.value = object.value ?? BigInt("0");
     return message;
   },
 };
@@ -379,7 +379,7 @@ export const AccountId = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountId {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountId();
+    const message = createBaseAccountId() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -404,12 +404,12 @@ export const AccountId = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountId>, I>>(base?: I): AccountId {
+  create(base?: DeepPartial<AccountId>): AccountId {
     return AccountId.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountId>, I>>(object: I): AccountId {
-    const message = createBaseAccountId();
+  fromPartial(object: DeepPartial<AccountId>): AccountId {
+    const message = createBaseAccountId() as any;
     message.address = object.address ?? "";
     return message;
   },
@@ -430,7 +430,7 @@ export const TransactionId = {
   decode(input: _m0.Reader | Uint8Array, length?: number): TransactionId {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTransactionId();
+    const message = createBaseTransactionId() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -455,12 +455,12 @@ export const TransactionId = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<TransactionId>, I>>(base?: I): TransactionId {
+  create(base?: DeepPartial<TransactionId>): TransactionId {
     return TransactionId.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<TransactionId>, I>>(object: I): TransactionId {
-    const message = createBaseTransactionId();
+  fromPartial(object: DeepPartial<TransactionId>): TransactionId {
+    const message = createBaseTransactionId() as any;
     message.id = object.id ?? new Uint8Array();
     return message;
   },
@@ -481,7 +481,7 @@ export const ActivationId = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ActivationId {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseActivationId();
+    const message = createBaseActivationId() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -506,12 +506,12 @@ export const ActivationId = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ActivationId>, I>>(base?: I): ActivationId {
+  create(base?: DeepPartial<ActivationId>): ActivationId {
     return ActivationId.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ActivationId>, I>>(object: I): ActivationId {
-    const message = createBaseActivationId();
+  fromPartial(object: DeepPartial<ActivationId>): ActivationId {
+    const message = createBaseActivationId() as any;
     message.id = object.id ?? new Uint8Array();
     return message;
   },
@@ -532,7 +532,7 @@ export const SmesherId = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SmesherId {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSmesherId();
+    const message = createBaseSmesherId() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -557,12 +557,12 @@ export const SmesherId = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SmesherId>, I>>(base?: I): SmesherId {
+  create(base?: DeepPartial<SmesherId>): SmesherId {
     return SmesherId.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SmesherId>, I>>(object: I): SmesherId {
-    const message = createBaseSmesherId();
+  fromPartial(object: DeepPartial<SmesherId>): SmesherId {
+    const message = createBaseSmesherId() as any;
     message.id = object.id ?? new Uint8Array();
     return message;
   },
@@ -576,7 +576,7 @@ function createBaseActivation(): Activation {
     coinbase: undefined,
     prevAtx: undefined,
     numUnits: 0,
-    sequence: "0",
+    sequence: BigInt("0"),
   };
 }
 
@@ -600,8 +600,8 @@ export const Activation = {
     if (message.numUnits !== 0) {
       writer.uint32(48).uint32(message.numUnits);
     }
-    if (message.sequence !== "0") {
-      writer.uint32(56).uint64(message.sequence);
+    if (message.sequence !== BigInt("0")) {
+      writer.uint32(56).uint64(message.sequence.toString());
     }
     return writer;
   },
@@ -609,7 +609,7 @@ export const Activation = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Activation {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseActivation();
+    const message = createBaseActivation() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -632,7 +632,7 @@ export const Activation = {
           message.numUnits = reader.uint32();
           break;
         case 7:
-          message.sequence = longToString(reader.uint64() as Long);
+          message.sequence = longToBigint(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -650,7 +650,7 @@ export const Activation = {
       coinbase: isSet(object.coinbase) ? AccountId.fromJSON(object.coinbase) : undefined,
       prevAtx: isSet(object.prevAtx) ? ActivationId.fromJSON(object.prevAtx) : undefined,
       numUnits: isSet(object.numUnits) ? Number(object.numUnits) : 0,
-      sequence: isSet(object.sequence) ? String(object.sequence) : "0",
+      sequence: isSet(object.sequence) ? BigInt(object.sequence) : BigInt("0"),
     };
   },
 
@@ -664,16 +664,16 @@ export const Activation = {
       (obj.coinbase = message.coinbase ? AccountId.toJSON(message.coinbase) : undefined);
     message.prevAtx !== undefined && (obj.prevAtx = message.prevAtx ? ActivationId.toJSON(message.prevAtx) : undefined);
     message.numUnits !== undefined && (obj.numUnits = Math.round(message.numUnits));
-    message.sequence !== undefined && (obj.sequence = message.sequence);
+    message.sequence !== undefined && (obj.sequence = message.sequence.toString());
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Activation>, I>>(base?: I): Activation {
+  create(base?: DeepPartial<Activation>): Activation {
     return Activation.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Activation>, I>>(object: I): Activation {
-    const message = createBaseActivation();
+  fromPartial(object: DeepPartial<Activation>): Activation {
+    const message = createBaseActivation() as any;
     message.id = (object.id !== undefined && object.id !== null) ? ActivationId.fromPartial(object.id) : undefined;
     message.layer = (object.layer !== undefined && object.layer !== null)
       ? LayerNumber.fromPartial(object.layer)
@@ -688,7 +688,7 @@ export const Activation = {
       ? ActivationId.fromPartial(object.prevAtx)
       : undefined;
     message.numUnits = object.numUnits ?? 0;
-    message.sequence = object.sequence ?? "0";
+    message.sequence = object.sequence ?? BigInt("0");
     return message;
   },
 };
@@ -701,9 +701,9 @@ function createBaseTransaction(): Transaction {
     method: 0,
     nonce: undefined,
     limits: undefined,
-    maxGas: "0",
-    gasPrice: "0",
-    maxSpend: "0",
+    maxGas: BigInt("0"),
+    gasPrice: BigInt("0"),
+    maxSpend: BigInt("0"),
     raw: new Uint8Array(),
   };
 }
@@ -728,14 +728,14 @@ export const Transaction = {
     if (message.limits !== undefined) {
       LayerLimits.encode(message.limits, writer.uint32(50).fork()).ldelim();
     }
-    if (message.maxGas !== "0") {
-      writer.uint32(56).uint64(message.maxGas);
+    if (message.maxGas !== BigInt("0")) {
+      writer.uint32(56).uint64(message.maxGas.toString());
     }
-    if (message.gasPrice !== "0") {
-      writer.uint32(64).uint64(message.gasPrice);
+    if (message.gasPrice !== BigInt("0")) {
+      writer.uint32(64).uint64(message.gasPrice.toString());
     }
-    if (message.maxSpend !== "0") {
-      writer.uint32(72).uint64(message.maxSpend);
+    if (message.maxSpend !== BigInt("0")) {
+      writer.uint32(72).uint64(message.maxSpend.toString());
     }
     if (message.raw.length !== 0) {
       writer.uint32(82).bytes(message.raw);
@@ -746,7 +746,7 @@ export const Transaction = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Transaction {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTransaction();
+    const message = createBaseTransaction() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -769,13 +769,13 @@ export const Transaction = {
           message.limits = LayerLimits.decode(reader, reader.uint32());
           break;
         case 7:
-          message.maxGas = longToString(reader.uint64() as Long);
+          message.maxGas = longToBigint(reader.uint64() as Long);
           break;
         case 8:
-          message.gasPrice = longToString(reader.uint64() as Long);
+          message.gasPrice = longToBigint(reader.uint64() as Long);
           break;
         case 9:
-          message.maxSpend = longToString(reader.uint64() as Long);
+          message.maxSpend = longToBigint(reader.uint64() as Long);
           break;
         case 10:
           message.raw = reader.bytes();
@@ -796,9 +796,9 @@ export const Transaction = {
       method: isSet(object.method) ? Number(object.method) : 0,
       nonce: isSet(object.nonce) ? Nonce.fromJSON(object.nonce) : undefined,
       limits: isSet(object.limits) ? LayerLimits.fromJSON(object.limits) : undefined,
-      maxGas: isSet(object.maxGas) ? String(object.maxGas) : "0",
-      gasPrice: isSet(object.gasPrice) ? String(object.gasPrice) : "0",
-      maxSpend: isSet(object.maxSpend) ? String(object.maxSpend) : "0",
+      maxGas: isSet(object.maxGas) ? BigInt(object.maxGas) : BigInt("0"),
+      gasPrice: isSet(object.gasPrice) ? BigInt(object.gasPrice) : BigInt("0"),
+      maxSpend: isSet(object.maxSpend) ? BigInt(object.maxSpend) : BigInt("0"),
       raw: isSet(object.raw) ? bytesFromBase64(object.raw) : new Uint8Array(),
     };
   },
@@ -813,20 +813,20 @@ export const Transaction = {
     message.method !== undefined && (obj.method = Math.round(message.method));
     message.nonce !== undefined && (obj.nonce = message.nonce ? Nonce.toJSON(message.nonce) : undefined);
     message.limits !== undefined && (obj.limits = message.limits ? LayerLimits.toJSON(message.limits) : undefined);
-    message.maxGas !== undefined && (obj.maxGas = message.maxGas);
-    message.gasPrice !== undefined && (obj.gasPrice = message.gasPrice);
-    message.maxSpend !== undefined && (obj.maxSpend = message.maxSpend);
+    message.maxGas !== undefined && (obj.maxGas = message.maxGas.toString());
+    message.gasPrice !== undefined && (obj.gasPrice = message.gasPrice.toString());
+    message.maxSpend !== undefined && (obj.maxSpend = message.maxSpend.toString());
     message.raw !== undefined &&
       (obj.raw = base64FromBytes(message.raw !== undefined ? message.raw : new Uint8Array()));
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Transaction>, I>>(base?: I): Transaction {
+  create(base?: DeepPartial<Transaction>): Transaction {
     return Transaction.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Transaction>, I>>(object: I): Transaction {
-    const message = createBaseTransaction();
+  fromPartial(object: DeepPartial<Transaction>): Transaction {
+    const message = createBaseTransaction() as any;
     message.id = object.id ?? new Uint8Array();
     message.principal = (object.principal !== undefined && object.principal !== null)
       ? AccountId.fromPartial(object.principal)
@@ -839,9 +839,9 @@ export const Transaction = {
     message.limits = (object.limits !== undefined && object.limits !== null)
       ? LayerLimits.fromPartial(object.limits)
       : undefined;
-    message.maxGas = object.maxGas ?? "0";
-    message.gasPrice = object.gasPrice ?? "0";
-    message.maxSpend = object.maxSpend ?? "0";
+    message.maxGas = object.maxGas ?? BigInt("0");
+    message.gasPrice = object.gasPrice ?? BigInt("0");
+    message.maxSpend = object.maxSpend ?? BigInt("0");
     message.raw = object.raw ?? new Uint8Array();
     return message;
   },
@@ -865,7 +865,7 @@ export const LayerLimits = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayerLimits {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayerLimits();
+    const message = createBaseLayerLimits() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -894,12 +894,12 @@ export const LayerLimits = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayerLimits>, I>>(base?: I): LayerLimits {
+  create(base?: DeepPartial<LayerLimits>): LayerLimits {
     return LayerLimits.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayerLimits>, I>>(object: I): LayerLimits {
-    const message = createBaseLayerLimits();
+  fromPartial(object: DeepPartial<LayerLimits>): LayerLimits {
+    const message = createBaseLayerLimits() as any;
     message.min = object.min ?? 0;
     message.max = object.max ?? 0;
     return message;
@@ -907,13 +907,13 @@ export const LayerLimits = {
 };
 
 function createBaseNonce(): Nonce {
-  return { counter: "0", bitfield: 0 };
+  return { counter: BigInt("0"), bitfield: 0 };
 }
 
 export const Nonce = {
   encode(message: Nonce, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.counter !== "0") {
-      writer.uint32(8).uint64(message.counter);
+    if (message.counter !== BigInt("0")) {
+      writer.uint32(8).uint64(message.counter.toString());
     }
     if (message.bitfield !== 0) {
       writer.uint32(16).uint32(message.bitfield);
@@ -924,12 +924,12 @@ export const Nonce = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Nonce {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseNonce();
+    const message = createBaseNonce() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.counter = longToString(reader.uint64() as Long);
+          message.counter = longToBigint(reader.uint64() as Long);
           break;
         case 2:
           message.bitfield = reader.uint32();
@@ -944,25 +944,25 @@ export const Nonce = {
 
   fromJSON(object: any): Nonce {
     return {
-      counter: isSet(object.counter) ? String(object.counter) : "0",
+      counter: isSet(object.counter) ? BigInt(object.counter) : BigInt("0"),
       bitfield: isSet(object.bitfield) ? Number(object.bitfield) : 0,
     };
   },
 
   toJSON(message: Nonce): unknown {
     const obj: any = {};
-    message.counter !== undefined && (obj.counter = message.counter);
+    message.counter !== undefined && (obj.counter = message.counter.toString());
     message.bitfield !== undefined && (obj.bitfield = Math.round(message.bitfield));
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Nonce>, I>>(base?: I): Nonce {
+  create(base?: DeepPartial<Nonce>): Nonce {
     return Nonce.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Nonce>, I>>(object: I): Nonce {
-    const message = createBaseNonce();
-    message.counter = object.counter ?? "0";
+  fromPartial(object: DeepPartial<Nonce>): Nonce {
+    const message = createBaseNonce() as any;
+    message.counter = object.counter ?? BigInt("0");
     message.bitfield = object.bitfield ?? 0;
     return message;
   },
@@ -986,7 +986,7 @@ export const MeshTransaction = {
   decode(input: _m0.Reader | Uint8Array, length?: number): MeshTransaction {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMeshTransaction();
+    const message = createBaseMeshTransaction() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1019,12 +1019,12 @@ export const MeshTransaction = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<MeshTransaction>, I>>(base?: I): MeshTransaction {
+  create(base?: DeepPartial<MeshTransaction>): MeshTransaction {
     return MeshTransaction.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<MeshTransaction>, I>>(object: I): MeshTransaction {
-    const message = createBaseMeshTransaction();
+  fromPartial(object: DeepPartial<MeshTransaction>): MeshTransaction {
+    const message = createBaseMeshTransaction() as any;
     message.transaction = (object.transaction !== undefined && object.transaction !== null)
       ? Transaction.fromPartial(object.transaction)
       : undefined;
@@ -1072,7 +1072,7 @@ export const Reward = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Reward {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseReward();
+    const message = createBaseReward() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1127,12 +1127,12 @@ export const Reward = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Reward>, I>>(base?: I): Reward {
+  create(base?: DeepPartial<Reward>): Reward {
     return Reward.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Reward>, I>>(object: I): Reward {
-    const message = createBaseReward();
+  fromPartial(object: DeepPartial<Reward>): Reward {
+    const message = createBaseReward() as any;
     message.layer = (object.layer !== undefined && object.layer !== null)
       ? LayerNumber.fromPartial(object.layer)
       : undefined;
@@ -1179,7 +1179,7 @@ export const Block = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Block {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBlock();
+    const message = createBaseBlock() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1229,12 +1229,12 @@ export const Block = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Block>, I>>(base?: I): Block {
+  create(base?: DeepPartial<Block>): Block {
     return Block.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Block>, I>>(object: I): Block {
-    const message = createBaseBlock();
+  fromPartial(object: DeepPartial<Block>): Block {
+    const message = createBaseBlock() as any;
     message.id = object.id ?? new Uint8Array();
     message.transactions = object.transactions?.map((e) => Transaction.fromPartial(e)) || [];
     message.activationId = (object.activationId !== undefined && object.activationId !== null)
@@ -1284,7 +1284,7 @@ export const Layer = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Layer {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayer();
+    const message = createBaseLayer() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1348,12 +1348,12 @@ export const Layer = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Layer>, I>>(base?: I): Layer {
+  create(base?: DeepPartial<Layer>): Layer {
     return Layer.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Layer>, I>>(object: I): Layer {
-    const message = createBaseLayer();
+  fromPartial(object: DeepPartial<Layer>): Layer {
+    const message = createBaseLayer() as any;
     message.number = (object.number !== undefined && object.number !== null)
       ? LayerNumber.fromPartial(object.number)
       : undefined;
@@ -1381,7 +1381,7 @@ export const LayerNumber = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayerNumber {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayerNumber();
+    const message = createBaseLayerNumber() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1406,12 +1406,12 @@ export const LayerNumber = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayerNumber>, I>>(base?: I): LayerNumber {
+  create(base?: DeepPartial<LayerNumber>): LayerNumber {
     return LayerNumber.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayerNumber>, I>>(object: I): LayerNumber {
-    const message = createBaseLayerNumber();
+  fromPartial(object: DeepPartial<LayerNumber>): LayerNumber {
+    const message = createBaseLayerNumber() as any;
     message.number = object.number ?? 0;
     return message;
   },
@@ -1435,7 +1435,7 @@ export const AppEvent = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AppEvent {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAppEvent();
+    const message = createBaseAppEvent() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1468,12 +1468,12 @@ export const AppEvent = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AppEvent>, I>>(base?: I): AppEvent {
+  create(base?: DeepPartial<AppEvent>): AppEvent {
     return AppEvent.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AppEvent>, I>>(object: I): AppEvent {
-    const message = createBaseAppEvent();
+  fromPartial(object: DeepPartial<AppEvent>): AppEvent {
+    const message = createBaseAppEvent() as any;
     message.transactionId = (object.transactionId !== undefined && object.transactionId !== null)
       ? TransactionId.fromPartial(object.transactionId)
       : undefined;
@@ -1533,12 +1533,8 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToString(long: Long) {
-  return long.toString();
+function longToBigint(long: Long) {
+  return BigInt(long.toString());
 }
 
 if (_m0.util.Long !== Long) {

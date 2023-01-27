@@ -4,13 +4,13 @@ import _m0 from "protobufjs/minimal";
 export const protobufPackage = "spacemesh.v1";
 
 export interface VerifyChallengeRequest {
-  challenge: Uint8Array;
-  signature: Uint8Array;
+  readonly challenge: Uint8Array;
+  readonly signature: Uint8Array;
 }
 
 export interface VerifyChallengeResponse {
-  hash: Uint8Array;
-  nodeId: Uint8Array;
+  readonly hash: Uint8Array;
+  readonly nodeId: Uint8Array;
 }
 
 function createBaseVerifyChallengeRequest(): VerifyChallengeRequest {
@@ -31,7 +31,7 @@ export const VerifyChallengeRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): VerifyChallengeRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseVerifyChallengeRequest();
+    const message = createBaseVerifyChallengeRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -65,12 +65,12 @@ export const VerifyChallengeRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<VerifyChallengeRequest>, I>>(base?: I): VerifyChallengeRequest {
+  create(base?: DeepPartial<VerifyChallengeRequest>): VerifyChallengeRequest {
     return VerifyChallengeRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<VerifyChallengeRequest>, I>>(object: I): VerifyChallengeRequest {
-    const message = createBaseVerifyChallengeRequest();
+  fromPartial(object: DeepPartial<VerifyChallengeRequest>): VerifyChallengeRequest {
+    const message = createBaseVerifyChallengeRequest() as any;
     message.challenge = object.challenge ?? new Uint8Array();
     message.signature = object.signature ?? new Uint8Array();
     return message;
@@ -95,7 +95,7 @@ export const VerifyChallengeResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): VerifyChallengeResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseVerifyChallengeResponse();
+    const message = createBaseVerifyChallengeResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -129,12 +129,12 @@ export const VerifyChallengeResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<VerifyChallengeResponse>, I>>(base?: I): VerifyChallengeResponse {
+  create(base?: DeepPartial<VerifyChallengeResponse>): VerifyChallengeResponse {
     return VerifyChallengeResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<VerifyChallengeResponse>, I>>(object: I): VerifyChallengeResponse {
-    const message = createBaseVerifyChallengeResponse();
+  fromPartial(object: DeepPartial<VerifyChallengeResponse>): VerifyChallengeResponse {
+    const message = createBaseVerifyChallengeResponse() as any;
     message.hash = object.hash ?? new Uint8Array();
     message.nodeId = object.nodeId ?? new Uint8Array();
     return message;
@@ -191,10 +191,6 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

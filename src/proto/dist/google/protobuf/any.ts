@@ -113,9 +113,9 @@ export interface Any {
    * Schemes other than `http`, `https` (or the empty scheme) might be
    * used with implementation specific semantics.
    */
-  typeUrl: string;
+  readonly typeUrl: string;
   /** Must be a valid serialized protocol buffer of the above specified type. */
-  value: Uint8Array;
+  readonly value: Uint8Array;
 }
 
 function createBaseAny(): Any {
@@ -136,7 +136,7 @@ export const Any = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Any {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAny();
+    const message = createBaseAny() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -169,12 +169,12 @@ export const Any = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Any>, I>>(base?: I): Any {
+  create(base?: DeepPartial<Any>): Any {
     return Any.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Any>, I>>(object: I): Any {
-    const message = createBaseAny();
+  fromPartial(object: DeepPartial<Any>): Any {
+    const message = createBaseAny() as any;
     message.typeUrl = object.typeUrl ?? "";
     message.value = object.value ?? new Uint8Array();
     return message;
@@ -231,10 +231,6 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

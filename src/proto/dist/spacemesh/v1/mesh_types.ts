@@ -47,35 +47,35 @@ export interface GenesisTimeRequest {
 }
 
 export interface GenesisTimeResponse {
-  unixtime: SimpleInt | undefined;
+  readonly unixtime: SimpleInt | undefined;
 }
 
 export interface CurrentLayerRequest {
 }
 
 export interface CurrentLayerResponse {
-  layernum: LayerNumber | undefined;
+  readonly layernum: LayerNumber | undefined;
 }
 
 export interface CurrentEpochRequest {
 }
 
 export interface CurrentEpochResponse {
-  epochnum: SimpleInt | undefined;
+  readonly epochnum: SimpleInt | undefined;
 }
 
 export interface GenesisIDRequest {
 }
 
 export interface GenesisIDResponse {
-  genesisId: Uint8Array;
+  readonly genesisId: Uint8Array;
 }
 
 export interface EpochNumLayersRequest {
 }
 
 export interface EpochNumLayersResponse {
-  numlayers: SimpleInt | undefined;
+  readonly numlayers: SimpleInt | undefined;
 }
 
 export interface LayerDurationRequest {
@@ -83,71 +83,71 @@ export interface LayerDurationRequest {
 
 export interface LayerDurationResponse {
   /** layer duration, in seconds */
-  duration: SimpleInt | undefined;
+  readonly duration: SimpleInt | undefined;
 }
 
 export interface MaxTransactionsPerSecondRequest {
 }
 
 export interface MaxTransactionsPerSecondResponse {
-  maxTxsPerSecond: SimpleInt | undefined;
+  readonly maxTxsPerSecond: SimpleInt | undefined;
 }
 
 export interface AccountMeshDataFilter {
-  accountId:
+  readonly accountId:
     | AccountId
     | undefined;
   /** A bit field of AccountMeshDataFlags */
-  accountMeshDataFlags: number;
+  readonly accountMeshDataFlags: number;
 }
 
 export interface AccountMeshData {
-  meshTransaction?: MeshTransaction | undefined;
-  activation?: Activation | undefined;
+  readonly meshTransaction?: MeshTransaction | undefined;
+  readonly activation?: Activation | undefined;
 }
 
 export interface AccountMeshDataStreamRequest {
-  filter: AccountMeshDataFilter | undefined;
+  readonly filter: AccountMeshDataFilter | undefined;
 }
 
 export interface AccountMeshDataStreamResponse {
-  datum: AccountMeshData | undefined;
+  readonly datum: AccountMeshData | undefined;
 }
 
 export interface AccountMeshDataQueryRequest {
-  filter:
+  readonly filter:
     | AccountMeshDataFilter
     | undefined;
   /** return data only from this layer or later */
-  minLayer:
+  readonly minLayer:
     | LayerNumber
     | undefined;
   /** max number of results to return */
-  maxResults: number;
+  readonly maxResults: number;
   /** query offset */
-  offset: number;
+  readonly offset: number;
 }
 
 export interface AccountMeshDataQueryResponse {
-  data: AccountMeshData[];
+  readonly data: readonly AccountMeshData[];
   /** total number of availble results */
-  totalResults: number;
+  readonly totalResults: number;
 }
 
 export interface LayersQueryRequest {
-  startLayer: LayerNumber | undefined;
-  endLayer: LayerNumber | undefined;
+  readonly startLayer: LayerNumber | undefined;
+  readonly endLayer: LayerNumber | undefined;
 }
 
 export interface LayersQueryResponse {
-  layer: Layer[];
+  readonly layer: readonly Layer[];
 }
 
 export interface LayerStreamRequest {
 }
 
 export interface LayerStreamResponse {
-  layer: Layer | undefined;
+  readonly layer: Layer | undefined;
 }
 
 function createBaseGenesisTimeRequest(): GenesisTimeRequest {
@@ -162,7 +162,7 @@ export const GenesisTimeRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisTimeRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGenesisTimeRequest();
+    const message = createBaseGenesisTimeRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -183,12 +183,12 @@ export const GenesisTimeRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GenesisTimeRequest>, I>>(base?: I): GenesisTimeRequest {
+  create(base?: DeepPartial<GenesisTimeRequest>): GenesisTimeRequest {
     return GenesisTimeRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GenesisTimeRequest>, I>>(_: I): GenesisTimeRequest {
-    const message = createBaseGenesisTimeRequest();
+  fromPartial(_: DeepPartial<GenesisTimeRequest>): GenesisTimeRequest {
+    const message = createBaseGenesisTimeRequest() as any;
     return message;
   },
 };
@@ -208,7 +208,7 @@ export const GenesisTimeResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisTimeResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGenesisTimeResponse();
+    const message = createBaseGenesisTimeResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -234,12 +234,12 @@ export const GenesisTimeResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GenesisTimeResponse>, I>>(base?: I): GenesisTimeResponse {
+  create(base?: DeepPartial<GenesisTimeResponse>): GenesisTimeResponse {
     return GenesisTimeResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GenesisTimeResponse>, I>>(object: I): GenesisTimeResponse {
-    const message = createBaseGenesisTimeResponse();
+  fromPartial(object: DeepPartial<GenesisTimeResponse>): GenesisTimeResponse {
+    const message = createBaseGenesisTimeResponse() as any;
     message.unixtime = (object.unixtime !== undefined && object.unixtime !== null)
       ? SimpleInt.fromPartial(object.unixtime)
       : undefined;
@@ -259,7 +259,7 @@ export const CurrentLayerRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrentLayerRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCurrentLayerRequest();
+    const message = createBaseCurrentLayerRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -280,12 +280,12 @@ export const CurrentLayerRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CurrentLayerRequest>, I>>(base?: I): CurrentLayerRequest {
+  create(base?: DeepPartial<CurrentLayerRequest>): CurrentLayerRequest {
     return CurrentLayerRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CurrentLayerRequest>, I>>(_: I): CurrentLayerRequest {
-    const message = createBaseCurrentLayerRequest();
+  fromPartial(_: DeepPartial<CurrentLayerRequest>): CurrentLayerRequest {
+    const message = createBaseCurrentLayerRequest() as any;
     return message;
   },
 };
@@ -305,7 +305,7 @@ export const CurrentLayerResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrentLayerResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCurrentLayerResponse();
+    const message = createBaseCurrentLayerResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -331,12 +331,12 @@ export const CurrentLayerResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CurrentLayerResponse>, I>>(base?: I): CurrentLayerResponse {
+  create(base?: DeepPartial<CurrentLayerResponse>): CurrentLayerResponse {
     return CurrentLayerResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CurrentLayerResponse>, I>>(object: I): CurrentLayerResponse {
-    const message = createBaseCurrentLayerResponse();
+  fromPartial(object: DeepPartial<CurrentLayerResponse>): CurrentLayerResponse {
+    const message = createBaseCurrentLayerResponse() as any;
     message.layernum = (object.layernum !== undefined && object.layernum !== null)
       ? LayerNumber.fromPartial(object.layernum)
       : undefined;
@@ -356,7 +356,7 @@ export const CurrentEpochRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrentEpochRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCurrentEpochRequest();
+    const message = createBaseCurrentEpochRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -377,12 +377,12 @@ export const CurrentEpochRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CurrentEpochRequest>, I>>(base?: I): CurrentEpochRequest {
+  create(base?: DeepPartial<CurrentEpochRequest>): CurrentEpochRequest {
     return CurrentEpochRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CurrentEpochRequest>, I>>(_: I): CurrentEpochRequest {
-    const message = createBaseCurrentEpochRequest();
+  fromPartial(_: DeepPartial<CurrentEpochRequest>): CurrentEpochRequest {
+    const message = createBaseCurrentEpochRequest() as any;
     return message;
   },
 };
@@ -402,7 +402,7 @@ export const CurrentEpochResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): CurrentEpochResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCurrentEpochResponse();
+    const message = createBaseCurrentEpochResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -428,12 +428,12 @@ export const CurrentEpochResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CurrentEpochResponse>, I>>(base?: I): CurrentEpochResponse {
+  create(base?: DeepPartial<CurrentEpochResponse>): CurrentEpochResponse {
     return CurrentEpochResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CurrentEpochResponse>, I>>(object: I): CurrentEpochResponse {
-    const message = createBaseCurrentEpochResponse();
+  fromPartial(object: DeepPartial<CurrentEpochResponse>): CurrentEpochResponse {
+    const message = createBaseCurrentEpochResponse() as any;
     message.epochnum = (object.epochnum !== undefined && object.epochnum !== null)
       ? SimpleInt.fromPartial(object.epochnum)
       : undefined;
@@ -453,7 +453,7 @@ export const GenesisIDRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisIDRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGenesisIDRequest();
+    const message = createBaseGenesisIDRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -474,12 +474,12 @@ export const GenesisIDRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GenesisIDRequest>, I>>(base?: I): GenesisIDRequest {
+  create(base?: DeepPartial<GenesisIDRequest>): GenesisIDRequest {
     return GenesisIDRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GenesisIDRequest>, I>>(_: I): GenesisIDRequest {
-    const message = createBaseGenesisIDRequest();
+  fromPartial(_: DeepPartial<GenesisIDRequest>): GenesisIDRequest {
+    const message = createBaseGenesisIDRequest() as any;
     return message;
   },
 };
@@ -499,7 +499,7 @@ export const GenesisIDResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): GenesisIDResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGenesisIDResponse();
+    const message = createBaseGenesisIDResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -525,12 +525,12 @@ export const GenesisIDResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GenesisIDResponse>, I>>(base?: I): GenesisIDResponse {
+  create(base?: DeepPartial<GenesisIDResponse>): GenesisIDResponse {
     return GenesisIDResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GenesisIDResponse>, I>>(object: I): GenesisIDResponse {
-    const message = createBaseGenesisIDResponse();
+  fromPartial(object: DeepPartial<GenesisIDResponse>): GenesisIDResponse {
+    const message = createBaseGenesisIDResponse() as any;
     message.genesisId = object.genesisId ?? new Uint8Array();
     return message;
   },
@@ -548,7 +548,7 @@ export const EpochNumLayersRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EpochNumLayersRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEpochNumLayersRequest();
+    const message = createBaseEpochNumLayersRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -569,12 +569,12 @@ export const EpochNumLayersRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EpochNumLayersRequest>, I>>(base?: I): EpochNumLayersRequest {
+  create(base?: DeepPartial<EpochNumLayersRequest>): EpochNumLayersRequest {
     return EpochNumLayersRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EpochNumLayersRequest>, I>>(_: I): EpochNumLayersRequest {
-    const message = createBaseEpochNumLayersRequest();
+  fromPartial(_: DeepPartial<EpochNumLayersRequest>): EpochNumLayersRequest {
+    const message = createBaseEpochNumLayersRequest() as any;
     return message;
   },
 };
@@ -594,7 +594,7 @@ export const EpochNumLayersResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EpochNumLayersResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEpochNumLayersResponse();
+    const message = createBaseEpochNumLayersResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -620,12 +620,12 @@ export const EpochNumLayersResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EpochNumLayersResponse>, I>>(base?: I): EpochNumLayersResponse {
+  create(base?: DeepPartial<EpochNumLayersResponse>): EpochNumLayersResponse {
     return EpochNumLayersResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EpochNumLayersResponse>, I>>(object: I): EpochNumLayersResponse {
-    const message = createBaseEpochNumLayersResponse();
+  fromPartial(object: DeepPartial<EpochNumLayersResponse>): EpochNumLayersResponse {
+    const message = createBaseEpochNumLayersResponse() as any;
     message.numlayers = (object.numlayers !== undefined && object.numlayers !== null)
       ? SimpleInt.fromPartial(object.numlayers)
       : undefined;
@@ -645,7 +645,7 @@ export const LayerDurationRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayerDurationRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayerDurationRequest();
+    const message = createBaseLayerDurationRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -666,12 +666,12 @@ export const LayerDurationRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayerDurationRequest>, I>>(base?: I): LayerDurationRequest {
+  create(base?: DeepPartial<LayerDurationRequest>): LayerDurationRequest {
     return LayerDurationRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayerDurationRequest>, I>>(_: I): LayerDurationRequest {
-    const message = createBaseLayerDurationRequest();
+  fromPartial(_: DeepPartial<LayerDurationRequest>): LayerDurationRequest {
+    const message = createBaseLayerDurationRequest() as any;
     return message;
   },
 };
@@ -691,7 +691,7 @@ export const LayerDurationResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayerDurationResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayerDurationResponse();
+    const message = createBaseLayerDurationResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -717,12 +717,12 @@ export const LayerDurationResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayerDurationResponse>, I>>(base?: I): LayerDurationResponse {
+  create(base?: DeepPartial<LayerDurationResponse>): LayerDurationResponse {
     return LayerDurationResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayerDurationResponse>, I>>(object: I): LayerDurationResponse {
-    const message = createBaseLayerDurationResponse();
+  fromPartial(object: DeepPartial<LayerDurationResponse>): LayerDurationResponse {
+    const message = createBaseLayerDurationResponse() as any;
     message.duration = (object.duration !== undefined && object.duration !== null)
       ? SimpleInt.fromPartial(object.duration)
       : undefined;
@@ -742,7 +742,7 @@ export const MaxTransactionsPerSecondRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): MaxTransactionsPerSecondRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMaxTransactionsPerSecondRequest();
+    const message = createBaseMaxTransactionsPerSecondRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -763,12 +763,12 @@ export const MaxTransactionsPerSecondRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<MaxTransactionsPerSecondRequest>, I>>(base?: I): MaxTransactionsPerSecondRequest {
+  create(base?: DeepPartial<MaxTransactionsPerSecondRequest>): MaxTransactionsPerSecondRequest {
     return MaxTransactionsPerSecondRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<MaxTransactionsPerSecondRequest>, I>>(_: I): MaxTransactionsPerSecondRequest {
-    const message = createBaseMaxTransactionsPerSecondRequest();
+  fromPartial(_: DeepPartial<MaxTransactionsPerSecondRequest>): MaxTransactionsPerSecondRequest {
+    const message = createBaseMaxTransactionsPerSecondRequest() as any;
     return message;
   },
 };
@@ -788,7 +788,7 @@ export const MaxTransactionsPerSecondResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): MaxTransactionsPerSecondResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMaxTransactionsPerSecondResponse();
+    const message = createBaseMaxTransactionsPerSecondResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -814,16 +814,12 @@ export const MaxTransactionsPerSecondResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<MaxTransactionsPerSecondResponse>, I>>(
-    base?: I,
-  ): MaxTransactionsPerSecondResponse {
+  create(base?: DeepPartial<MaxTransactionsPerSecondResponse>): MaxTransactionsPerSecondResponse {
     return MaxTransactionsPerSecondResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<MaxTransactionsPerSecondResponse>, I>>(
-    object: I,
-  ): MaxTransactionsPerSecondResponse {
-    const message = createBaseMaxTransactionsPerSecondResponse();
+  fromPartial(object: DeepPartial<MaxTransactionsPerSecondResponse>): MaxTransactionsPerSecondResponse {
+    const message = createBaseMaxTransactionsPerSecondResponse() as any;
     message.maxTxsPerSecond = (object.maxTxsPerSecond !== undefined && object.maxTxsPerSecond !== null)
       ? SimpleInt.fromPartial(object.maxTxsPerSecond)
       : undefined;
@@ -849,7 +845,7 @@ export const AccountMeshDataFilter = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountMeshDataFilter {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountMeshDataFilter();
+    const message = createBaseAccountMeshDataFilter() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -882,12 +878,12 @@ export const AccountMeshDataFilter = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountMeshDataFilter>, I>>(base?: I): AccountMeshDataFilter {
+  create(base?: DeepPartial<AccountMeshDataFilter>): AccountMeshDataFilter {
     return AccountMeshDataFilter.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountMeshDataFilter>, I>>(object: I): AccountMeshDataFilter {
-    const message = createBaseAccountMeshDataFilter();
+  fromPartial(object: DeepPartial<AccountMeshDataFilter>): AccountMeshDataFilter {
+    const message = createBaseAccountMeshDataFilter() as any;
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
       ? AccountId.fromPartial(object.accountId)
       : undefined;
@@ -914,7 +910,7 @@ export const AccountMeshData = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountMeshData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountMeshData();
+    const message = createBaseAccountMeshData() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -948,12 +944,12 @@ export const AccountMeshData = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountMeshData>, I>>(base?: I): AccountMeshData {
+  create(base?: DeepPartial<AccountMeshData>): AccountMeshData {
     return AccountMeshData.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountMeshData>, I>>(object: I): AccountMeshData {
-    const message = createBaseAccountMeshData();
+  fromPartial(object: DeepPartial<AccountMeshData>): AccountMeshData {
+    const message = createBaseAccountMeshData() as any;
     message.meshTransaction = (object.meshTransaction !== undefined && object.meshTransaction !== null)
       ? MeshTransaction.fromPartial(object.meshTransaction)
       : undefined;
@@ -979,7 +975,7 @@ export const AccountMeshDataStreamRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountMeshDataStreamRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountMeshDataStreamRequest();
+    const message = createBaseAccountMeshDataStreamRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1005,12 +1001,12 @@ export const AccountMeshDataStreamRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountMeshDataStreamRequest>, I>>(base?: I): AccountMeshDataStreamRequest {
+  create(base?: DeepPartial<AccountMeshDataStreamRequest>): AccountMeshDataStreamRequest {
     return AccountMeshDataStreamRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountMeshDataStreamRequest>, I>>(object: I): AccountMeshDataStreamRequest {
-    const message = createBaseAccountMeshDataStreamRequest();
+  fromPartial(object: DeepPartial<AccountMeshDataStreamRequest>): AccountMeshDataStreamRequest {
+    const message = createBaseAccountMeshDataStreamRequest() as any;
     message.filter = (object.filter !== undefined && object.filter !== null)
       ? AccountMeshDataFilter.fromPartial(object.filter)
       : undefined;
@@ -1033,7 +1029,7 @@ export const AccountMeshDataStreamResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountMeshDataStreamResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountMeshDataStreamResponse();
+    const message = createBaseAccountMeshDataStreamResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1058,14 +1054,12 @@ export const AccountMeshDataStreamResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountMeshDataStreamResponse>, I>>(base?: I): AccountMeshDataStreamResponse {
+  create(base?: DeepPartial<AccountMeshDataStreamResponse>): AccountMeshDataStreamResponse {
     return AccountMeshDataStreamResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountMeshDataStreamResponse>, I>>(
-    object: I,
-  ): AccountMeshDataStreamResponse {
-    const message = createBaseAccountMeshDataStreamResponse();
+  fromPartial(object: DeepPartial<AccountMeshDataStreamResponse>): AccountMeshDataStreamResponse {
+    const message = createBaseAccountMeshDataStreamResponse() as any;
     message.datum = (object.datum !== undefined && object.datum !== null)
       ? AccountMeshData.fromPartial(object.datum)
       : undefined;
@@ -1097,7 +1091,7 @@ export const AccountMeshDataQueryRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountMeshDataQueryRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountMeshDataQueryRequest();
+    const message = createBaseAccountMeshDataQueryRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1141,12 +1135,12 @@ export const AccountMeshDataQueryRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountMeshDataQueryRequest>, I>>(base?: I): AccountMeshDataQueryRequest {
+  create(base?: DeepPartial<AccountMeshDataQueryRequest>): AccountMeshDataQueryRequest {
     return AccountMeshDataQueryRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountMeshDataQueryRequest>, I>>(object: I): AccountMeshDataQueryRequest {
-    const message = createBaseAccountMeshDataQueryRequest();
+  fromPartial(object: DeepPartial<AccountMeshDataQueryRequest>): AccountMeshDataQueryRequest {
+    const message = createBaseAccountMeshDataQueryRequest() as any;
     message.filter = (object.filter !== undefined && object.filter !== null)
       ? AccountMeshDataFilter.fromPartial(object.filter)
       : undefined;
@@ -1177,7 +1171,7 @@ export const AccountMeshDataQueryResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountMeshDataQueryResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountMeshDataQueryResponse();
+    const message = createBaseAccountMeshDataQueryResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1213,12 +1207,12 @@ export const AccountMeshDataQueryResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountMeshDataQueryResponse>, I>>(base?: I): AccountMeshDataQueryResponse {
+  create(base?: DeepPartial<AccountMeshDataQueryResponse>): AccountMeshDataQueryResponse {
     return AccountMeshDataQueryResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountMeshDataQueryResponse>, I>>(object: I): AccountMeshDataQueryResponse {
-    const message = createBaseAccountMeshDataQueryResponse();
+  fromPartial(object: DeepPartial<AccountMeshDataQueryResponse>): AccountMeshDataQueryResponse {
+    const message = createBaseAccountMeshDataQueryResponse() as any;
     message.data = object.data?.map((e) => AccountMeshData.fromPartial(e)) || [];
     message.totalResults = object.totalResults ?? 0;
     return message;
@@ -1243,7 +1237,7 @@ export const LayersQueryRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayersQueryRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayersQueryRequest();
+    const message = createBaseLayersQueryRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1277,12 +1271,12 @@ export const LayersQueryRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayersQueryRequest>, I>>(base?: I): LayersQueryRequest {
+  create(base?: DeepPartial<LayersQueryRequest>): LayersQueryRequest {
     return LayersQueryRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayersQueryRequest>, I>>(object: I): LayersQueryRequest {
-    const message = createBaseLayersQueryRequest();
+  fromPartial(object: DeepPartial<LayersQueryRequest>): LayersQueryRequest {
+    const message = createBaseLayersQueryRequest() as any;
     message.startLayer = (object.startLayer !== undefined && object.startLayer !== null)
       ? LayerNumber.fromPartial(object.startLayer)
       : undefined;
@@ -1308,7 +1302,7 @@ export const LayersQueryResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayersQueryResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayersQueryResponse();
+    const message = createBaseLayersQueryResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1337,12 +1331,12 @@ export const LayersQueryResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayersQueryResponse>, I>>(base?: I): LayersQueryResponse {
+  create(base?: DeepPartial<LayersQueryResponse>): LayersQueryResponse {
     return LayersQueryResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayersQueryResponse>, I>>(object: I): LayersQueryResponse {
-    const message = createBaseLayersQueryResponse();
+  fromPartial(object: DeepPartial<LayersQueryResponse>): LayersQueryResponse {
+    const message = createBaseLayersQueryResponse() as any;
     message.layer = object.layer?.map((e) => Layer.fromPartial(e)) || [];
     return message;
   },
@@ -1360,7 +1354,7 @@ export const LayerStreamRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayerStreamRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayerStreamRequest();
+    const message = createBaseLayerStreamRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1381,12 +1375,12 @@ export const LayerStreamRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayerStreamRequest>, I>>(base?: I): LayerStreamRequest {
+  create(base?: DeepPartial<LayerStreamRequest>): LayerStreamRequest {
     return LayerStreamRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayerStreamRequest>, I>>(_: I): LayerStreamRequest {
-    const message = createBaseLayerStreamRequest();
+  fromPartial(_: DeepPartial<LayerStreamRequest>): LayerStreamRequest {
+    const message = createBaseLayerStreamRequest() as any;
     return message;
   },
 };
@@ -1406,7 +1400,7 @@ export const LayerStreamResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): LayerStreamResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseLayerStreamResponse();
+    const message = createBaseLayerStreamResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1431,12 +1425,12 @@ export const LayerStreamResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LayerStreamResponse>, I>>(base?: I): LayerStreamResponse {
+  create(base?: DeepPartial<LayerStreamResponse>): LayerStreamResponse {
     return LayerStreamResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<LayerStreamResponse>, I>>(object: I): LayerStreamResponse {
-    const message = createBaseLayerStreamResponse();
+  fromPartial(object: DeepPartial<LayerStreamResponse>): LayerStreamResponse {
+    const message = createBaseLayerStreamResponse() as any;
     message.layer = (object.layer !== undefined && object.layer !== null) ? Layer.fromPartial(object.layer) : undefined;
     return message;
   },
@@ -1492,10 +1486,6 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

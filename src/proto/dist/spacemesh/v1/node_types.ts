@@ -76,87 +76,87 @@ export function logLevelToJSON(object: LogLevel): string {
 }
 
 export interface EchoRequest {
-  msg: SimpleString | undefined;
+  readonly msg: SimpleString | undefined;
 }
 
 export interface EchoResponse {
-  msg: SimpleString | undefined;
+  readonly msg: SimpleString | undefined;
 }
 
 export interface VersionResponse {
-  versionString: SimpleString | undefined;
+  readonly versionString: SimpleString | undefined;
 }
 
 export interface BuildResponse {
-  buildString: SimpleString | undefined;
+  readonly buildString: SimpleString | undefined;
 }
 
 export interface SyncStartRequest {
 }
 
 export interface SyncStartResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 export interface ShutdownRequest {
 }
 
 export interface ShutdownResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 /** current node status */
 export interface NodeStatus {
   /** number of connected neighbors */
-  connectedPeers: string;
+  readonly connectedPeers: bigint;
   /** true when meshed is synced */
-  isSynced: boolean;
+  readonly isSynced: boolean;
   /** the last layer node has synced */
-  syncedLayer:
+  readonly syncedLayer:
     | LayerNumber
     | undefined;
   /** top layer is the tip */
-  topLayer:
+  readonly topLayer:
     | LayerNumber
     | undefined;
   /** the last layer node has verified */
-  verifiedLayer: LayerNumber | undefined;
+  readonly verifiedLayer: LayerNumber | undefined;
 }
 
 export interface StatusRequest {
 }
 
 export interface StatusResponse {
-  status: NodeStatus | undefined;
+  readonly status: NodeStatus | undefined;
 }
 
 export interface UpdatePoetServersRequest {
-  urls: string[];
+  readonly urls: readonly string[];
 }
 
 export interface UpdatePoetServersResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 export interface StatusStreamRequest {
 }
 
 export interface StatusStreamResponse {
-  status: NodeStatus | undefined;
+  readonly status: NodeStatus | undefined;
 }
 
 export interface NodeError {
-  level: LogLevel;
-  module: string;
-  msg: string;
-  stackTrace: string;
+  readonly level: LogLevel;
+  readonly module: string;
+  readonly msg: string;
+  readonly stackTrace: string;
 }
 
 export interface ErrorStreamRequest {
 }
 
 export interface ErrorStreamResponse {
-  error: NodeError | undefined;
+  readonly error: NodeError | undefined;
 }
 
 function createBaseEchoRequest(): EchoRequest {
@@ -174,7 +174,7 @@ export const EchoRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EchoRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEchoRequest();
+    const message = createBaseEchoRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -199,12 +199,12 @@ export const EchoRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EchoRequest>, I>>(base?: I): EchoRequest {
+  create(base?: DeepPartial<EchoRequest>): EchoRequest {
     return EchoRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EchoRequest>, I>>(object: I): EchoRequest {
-    const message = createBaseEchoRequest();
+  fromPartial(object: DeepPartial<EchoRequest>): EchoRequest {
+    const message = createBaseEchoRequest() as any;
     message.msg = (object.msg !== undefined && object.msg !== null) ? SimpleString.fromPartial(object.msg) : undefined;
     return message;
   },
@@ -225,7 +225,7 @@ export const EchoResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EchoResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEchoResponse();
+    const message = createBaseEchoResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -250,12 +250,12 @@ export const EchoResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EchoResponse>, I>>(base?: I): EchoResponse {
+  create(base?: DeepPartial<EchoResponse>): EchoResponse {
     return EchoResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EchoResponse>, I>>(object: I): EchoResponse {
-    const message = createBaseEchoResponse();
+  fromPartial(object: DeepPartial<EchoResponse>): EchoResponse {
+    const message = createBaseEchoResponse() as any;
     message.msg = (object.msg !== undefined && object.msg !== null) ? SimpleString.fromPartial(object.msg) : undefined;
     return message;
   },
@@ -276,7 +276,7 @@ export const VersionResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): VersionResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseVersionResponse();
+    const message = createBaseVersionResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -302,12 +302,12 @@ export const VersionResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<VersionResponse>, I>>(base?: I): VersionResponse {
+  create(base?: DeepPartial<VersionResponse>): VersionResponse {
     return VersionResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<VersionResponse>, I>>(object: I): VersionResponse {
-    const message = createBaseVersionResponse();
+  fromPartial(object: DeepPartial<VersionResponse>): VersionResponse {
+    const message = createBaseVersionResponse() as any;
     message.versionString = (object.versionString !== undefined && object.versionString !== null)
       ? SimpleString.fromPartial(object.versionString)
       : undefined;
@@ -330,7 +330,7 @@ export const BuildResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): BuildResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBuildResponse();
+    const message = createBaseBuildResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -356,12 +356,12 @@ export const BuildResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<BuildResponse>, I>>(base?: I): BuildResponse {
+  create(base?: DeepPartial<BuildResponse>): BuildResponse {
     return BuildResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<BuildResponse>, I>>(object: I): BuildResponse {
-    const message = createBaseBuildResponse();
+  fromPartial(object: DeepPartial<BuildResponse>): BuildResponse {
+    const message = createBaseBuildResponse() as any;
     message.buildString = (object.buildString !== undefined && object.buildString !== null)
       ? SimpleString.fromPartial(object.buildString)
       : undefined;
@@ -381,7 +381,7 @@ export const SyncStartRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SyncStartRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSyncStartRequest();
+    const message = createBaseSyncStartRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -402,12 +402,12 @@ export const SyncStartRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SyncStartRequest>, I>>(base?: I): SyncStartRequest {
+  create(base?: DeepPartial<SyncStartRequest>): SyncStartRequest {
     return SyncStartRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SyncStartRequest>, I>>(_: I): SyncStartRequest {
-    const message = createBaseSyncStartRequest();
+  fromPartial(_: DeepPartial<SyncStartRequest>): SyncStartRequest {
+    const message = createBaseSyncStartRequest() as any;
     return message;
   },
 };
@@ -427,7 +427,7 @@ export const SyncStartResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SyncStartResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSyncStartResponse();
+    const message = createBaseSyncStartResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -452,12 +452,12 @@ export const SyncStartResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SyncStartResponse>, I>>(base?: I): SyncStartResponse {
+  create(base?: DeepPartial<SyncStartResponse>): SyncStartResponse {
     return SyncStartResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SyncStartResponse>, I>>(object: I): SyncStartResponse {
-    const message = createBaseSyncStartResponse();
+  fromPartial(object: DeepPartial<SyncStartResponse>): SyncStartResponse {
+    const message = createBaseSyncStartResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -477,7 +477,7 @@ export const ShutdownRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ShutdownRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseShutdownRequest();
+    const message = createBaseShutdownRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -498,12 +498,12 @@ export const ShutdownRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ShutdownRequest>, I>>(base?: I): ShutdownRequest {
+  create(base?: DeepPartial<ShutdownRequest>): ShutdownRequest {
     return ShutdownRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ShutdownRequest>, I>>(_: I): ShutdownRequest {
-    const message = createBaseShutdownRequest();
+  fromPartial(_: DeepPartial<ShutdownRequest>): ShutdownRequest {
+    const message = createBaseShutdownRequest() as any;
     return message;
   },
 };
@@ -523,7 +523,7 @@ export const ShutdownResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ShutdownResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseShutdownResponse();
+    const message = createBaseShutdownResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -548,12 +548,12 @@ export const ShutdownResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ShutdownResponse>, I>>(base?: I): ShutdownResponse {
+  create(base?: DeepPartial<ShutdownResponse>): ShutdownResponse {
     return ShutdownResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ShutdownResponse>, I>>(object: I): ShutdownResponse {
-    const message = createBaseShutdownResponse();
+  fromPartial(object: DeepPartial<ShutdownResponse>): ShutdownResponse {
+    const message = createBaseShutdownResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -563,7 +563,7 @@ export const ShutdownResponse = {
 
 function createBaseNodeStatus(): NodeStatus {
   return {
-    connectedPeers: "0",
+    connectedPeers: BigInt("0"),
     isSynced: false,
     syncedLayer: undefined,
     topLayer: undefined,
@@ -573,8 +573,8 @@ function createBaseNodeStatus(): NodeStatus {
 
 export const NodeStatus = {
   encode(message: NodeStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.connectedPeers !== "0") {
-      writer.uint32(8).uint64(message.connectedPeers);
+    if (message.connectedPeers !== BigInt("0")) {
+      writer.uint32(8).uint64(message.connectedPeers.toString());
     }
     if (message.isSynced === true) {
       writer.uint32(16).bool(message.isSynced);
@@ -594,12 +594,12 @@ export const NodeStatus = {
   decode(input: _m0.Reader | Uint8Array, length?: number): NodeStatus {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseNodeStatus();
+    const message = createBaseNodeStatus() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.connectedPeers = longToString(reader.uint64() as Long);
+          message.connectedPeers = longToBigint(reader.uint64() as Long);
           break;
         case 2:
           message.isSynced = reader.bool();
@@ -623,7 +623,7 @@ export const NodeStatus = {
 
   fromJSON(object: any): NodeStatus {
     return {
-      connectedPeers: isSet(object.connectedPeers) ? String(object.connectedPeers) : "0",
+      connectedPeers: isSet(object.connectedPeers) ? BigInt(object.connectedPeers) : BigInt("0"),
       isSynced: isSet(object.isSynced) ? Boolean(object.isSynced) : false,
       syncedLayer: isSet(object.syncedLayer) ? LayerNumber.fromJSON(object.syncedLayer) : undefined,
       topLayer: isSet(object.topLayer) ? LayerNumber.fromJSON(object.topLayer) : undefined,
@@ -633,7 +633,7 @@ export const NodeStatus = {
 
   toJSON(message: NodeStatus): unknown {
     const obj: any = {};
-    message.connectedPeers !== undefined && (obj.connectedPeers = message.connectedPeers);
+    message.connectedPeers !== undefined && (obj.connectedPeers = message.connectedPeers.toString());
     message.isSynced !== undefined && (obj.isSynced = message.isSynced);
     message.syncedLayer !== undefined &&
       (obj.syncedLayer = message.syncedLayer ? LayerNumber.toJSON(message.syncedLayer) : undefined);
@@ -644,13 +644,13 @@ export const NodeStatus = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<NodeStatus>, I>>(base?: I): NodeStatus {
+  create(base?: DeepPartial<NodeStatus>): NodeStatus {
     return NodeStatus.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<NodeStatus>, I>>(object: I): NodeStatus {
-    const message = createBaseNodeStatus();
-    message.connectedPeers = object.connectedPeers ?? "0";
+  fromPartial(object: DeepPartial<NodeStatus>): NodeStatus {
+    const message = createBaseNodeStatus() as any;
+    message.connectedPeers = object.connectedPeers ?? BigInt("0");
     message.isSynced = object.isSynced ?? false;
     message.syncedLayer = (object.syncedLayer !== undefined && object.syncedLayer !== null)
       ? LayerNumber.fromPartial(object.syncedLayer)
@@ -677,7 +677,7 @@ export const StatusRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StatusRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStatusRequest();
+    const message = createBaseStatusRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -698,12 +698,12 @@ export const StatusRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StatusRequest>, I>>(base?: I): StatusRequest {
+  create(base?: DeepPartial<StatusRequest>): StatusRequest {
     return StatusRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StatusRequest>, I>>(_: I): StatusRequest {
-    const message = createBaseStatusRequest();
+  fromPartial(_: DeepPartial<StatusRequest>): StatusRequest {
+    const message = createBaseStatusRequest() as any;
     return message;
   },
 };
@@ -723,7 +723,7 @@ export const StatusResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StatusResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStatusResponse();
+    const message = createBaseStatusResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -748,12 +748,12 @@ export const StatusResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StatusResponse>, I>>(base?: I): StatusResponse {
+  create(base?: DeepPartial<StatusResponse>): StatusResponse {
     return StatusResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StatusResponse>, I>>(object: I): StatusResponse {
-    const message = createBaseStatusResponse();
+  fromPartial(object: DeepPartial<StatusResponse>): StatusResponse {
+    const message = createBaseStatusResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? NodeStatus.fromPartial(object.status)
       : undefined;
@@ -776,7 +776,7 @@ export const UpdatePoetServersRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePoetServersRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdatePoetServersRequest();
+    const message = createBaseUpdatePoetServersRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -805,12 +805,12 @@ export const UpdatePoetServersRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UpdatePoetServersRequest>, I>>(base?: I): UpdatePoetServersRequest {
+  create(base?: DeepPartial<UpdatePoetServersRequest>): UpdatePoetServersRequest {
     return UpdatePoetServersRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<UpdatePoetServersRequest>, I>>(object: I): UpdatePoetServersRequest {
-    const message = createBaseUpdatePoetServersRequest();
+  fromPartial(object: DeepPartial<UpdatePoetServersRequest>): UpdatePoetServersRequest {
+    const message = createBaseUpdatePoetServersRequest() as any;
     message.urls = object.urls?.map((e) => e) || [];
     return message;
   },
@@ -831,7 +831,7 @@ export const UpdatePoetServersResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePoetServersResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdatePoetServersResponse();
+    const message = createBaseUpdatePoetServersResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -856,12 +856,12 @@ export const UpdatePoetServersResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UpdatePoetServersResponse>, I>>(base?: I): UpdatePoetServersResponse {
+  create(base?: DeepPartial<UpdatePoetServersResponse>): UpdatePoetServersResponse {
     return UpdatePoetServersResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<UpdatePoetServersResponse>, I>>(object: I): UpdatePoetServersResponse {
-    const message = createBaseUpdatePoetServersResponse();
+  fromPartial(object: DeepPartial<UpdatePoetServersResponse>): UpdatePoetServersResponse {
+    const message = createBaseUpdatePoetServersResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -881,7 +881,7 @@ export const StatusStreamRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StatusStreamRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStatusStreamRequest();
+    const message = createBaseStatusStreamRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -902,12 +902,12 @@ export const StatusStreamRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StatusStreamRequest>, I>>(base?: I): StatusStreamRequest {
+  create(base?: DeepPartial<StatusStreamRequest>): StatusStreamRequest {
     return StatusStreamRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StatusStreamRequest>, I>>(_: I): StatusStreamRequest {
-    const message = createBaseStatusStreamRequest();
+  fromPartial(_: DeepPartial<StatusStreamRequest>): StatusStreamRequest {
+    const message = createBaseStatusStreamRequest() as any;
     return message;
   },
 };
@@ -927,7 +927,7 @@ export const StatusStreamResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StatusStreamResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStatusStreamResponse();
+    const message = createBaseStatusStreamResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -952,12 +952,12 @@ export const StatusStreamResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StatusStreamResponse>, I>>(base?: I): StatusStreamResponse {
+  create(base?: DeepPartial<StatusStreamResponse>): StatusStreamResponse {
     return StatusStreamResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StatusStreamResponse>, I>>(object: I): StatusStreamResponse {
-    const message = createBaseStatusStreamResponse();
+  fromPartial(object: DeepPartial<StatusStreamResponse>): StatusStreamResponse {
+    const message = createBaseStatusStreamResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? NodeStatus.fromPartial(object.status)
       : undefined;
@@ -989,7 +989,7 @@ export const NodeError = {
   decode(input: _m0.Reader | Uint8Array, length?: number): NodeError {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseNodeError();
+    const message = createBaseNodeError() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1031,12 +1031,12 @@ export const NodeError = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<NodeError>, I>>(base?: I): NodeError {
+  create(base?: DeepPartial<NodeError>): NodeError {
     return NodeError.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<NodeError>, I>>(object: I): NodeError {
-    const message = createBaseNodeError();
+  fromPartial(object: DeepPartial<NodeError>): NodeError {
+    const message = createBaseNodeError() as any;
     message.level = object.level ?? 0;
     message.module = object.module ?? "";
     message.msg = object.msg ?? "";
@@ -1057,7 +1057,7 @@ export const ErrorStreamRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ErrorStreamRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseErrorStreamRequest();
+    const message = createBaseErrorStreamRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1078,12 +1078,12 @@ export const ErrorStreamRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ErrorStreamRequest>, I>>(base?: I): ErrorStreamRequest {
+  create(base?: DeepPartial<ErrorStreamRequest>): ErrorStreamRequest {
     return ErrorStreamRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ErrorStreamRequest>, I>>(_: I): ErrorStreamRequest {
-    const message = createBaseErrorStreamRequest();
+  fromPartial(_: DeepPartial<ErrorStreamRequest>): ErrorStreamRequest {
+    const message = createBaseErrorStreamRequest() as any;
     return message;
   },
 };
@@ -1103,7 +1103,7 @@ export const ErrorStreamResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): ErrorStreamResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseErrorStreamResponse();
+    const message = createBaseErrorStreamResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1128,12 +1128,12 @@ export const ErrorStreamResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ErrorStreamResponse>, I>>(base?: I): ErrorStreamResponse {
+  create(base?: DeepPartial<ErrorStreamResponse>): ErrorStreamResponse {
     return ErrorStreamResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ErrorStreamResponse>, I>>(object: I): ErrorStreamResponse {
-    const message = createBaseErrorStreamResponse();
+  fromPartial(object: DeepPartial<ErrorStreamResponse>): ErrorStreamResponse {
+    const message = createBaseErrorStreamResponse() as any;
     message.error = (object.error !== undefined && object.error !== null)
       ? NodeError.fromPartial(object.error)
       : undefined;
@@ -1148,12 +1148,8 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToString(long: Long) {
-  return long.toString();
+function longToBigint(long: Long) {
+  return BigInt(long.toString());
 }
 
 if (_m0.util.Long !== Long) {

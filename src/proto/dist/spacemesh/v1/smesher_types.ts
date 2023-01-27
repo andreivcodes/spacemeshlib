@@ -7,57 +7,57 @@ import { AccountId, Amount, SimpleInt } from "./types";
 export const protobufPackage = "spacemesh.v1";
 
 export interface IsSmeshingResponse {
-  isSmeshing: boolean;
+  readonly isSmeshing: boolean;
 }
 
 export interface StartSmeshingRequest {
   /** Coinbase account for rewards accumulation. */
-  coinbase:
+  readonly coinbase:
     | AccountId
     | undefined;
   /** The Post setup options. */
-  opts: PostSetupOpts | undefined;
+  readonly opts: PostSetupOpts | undefined;
 }
 
 export interface StartSmeshingResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 /** Param passed to methods to indicate a request to delete data files */
 export interface StopSmeshingRequest {
-  deleteFiles: boolean;
+  readonly deleteFiles: boolean;
 }
 
 export interface StopSmeshingResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 export interface SetCoinbaseRequest {
-  id: AccountId | undefined;
+  readonly id: AccountId | undefined;
 }
 
 export interface SetCoinbaseResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 export interface MinGasResponse {
-  mingas: SimpleInt | undefined;
+  readonly mingas: SimpleInt | undefined;
 }
 
 export interface SetMinGasRequest {
-  mingas: SimpleInt | undefined;
+  readonly mingas: SimpleInt | undefined;
 }
 
 export interface SetMinGasResponse {
-  status: Status | undefined;
+  readonly status: Status | undefined;
 }
 
 export interface SmesherIDResponse {
-  accountId: AccountId | undefined;
+  readonly accountId: AccountId | undefined;
 }
 
 export interface CoinbaseResponse {
-  accountId: AccountId | undefined;
+  readonly accountId: AccountId | undefined;
 }
 
 export interface EstimatedRewardsRequest {
@@ -70,48 +70,48 @@ export interface EstimatedRewardsRequest {
  */
 export interface EstimatedRewardsResponse {
   /** The amount of the total estimated reward in the next upcoming epoch */
-  amount:
+  readonly amount:
     | Amount
     | undefined;
   /** The number of Post data commitment units that this estimated reward corresponds to (part of global config) */
-  numUnits: number;
+  readonly numUnits: number;
 }
 
 export interface PostSetupComputeProvidersRequest {
   /** Whether to run a short benchmarking session for each provider to evaluate its performance */
-  benchmark: boolean;
+  readonly benchmark: boolean;
 }
 
 export interface PostSetupComputeProvidersResponse {
-  providers: PostSetupComputeProvider[];
+  readonly providers: readonly PostSetupComputeProvider[];
 }
 
 export interface PostSetupStatusResponse {
-  status: PostSetupStatus | undefined;
+  readonly status: PostSetupStatus | undefined;
 }
 
 export interface PostSetupStatusStreamResponse {
-  status: PostSetupStatus | undefined;
+  readonly status: PostSetupStatus | undefined;
 }
 
 export interface PostConfigResponse {
-  bitsPerLabel: number;
-  labelsPerUnit: string;
-  minNumUnits: number;
-  maxNumUnits: number;
-  k1: number;
-  k2: number;
+  readonly bitsPerLabel: number;
+  readonly labelsPerUnit: bigint;
+  readonly minNumUnits: number;
+  readonly maxNumUnits: number;
+  readonly k1: number;
+  readonly k2: number;
 }
 
 export interface PostSetupComputeProvider {
   /** 0, 1, 2... */
-  id: number;
+  readonly id: number;
   /** e.g. Nvidia GTX 2700 */
-  model: string;
+  readonly model: string;
   /** A provided compute api */
-  computeApi: PostSetupComputeProvider_ComputeApiClass;
+  readonly computeApi: PostSetupComputeProvider_ComputeApiClass;
   /** Estimated performance in hashes per second */
-  performance: string;
+  readonly performance: bigint;
 }
 
 export enum PostSetupComputeProvider_ComputeApiClass {
@@ -167,23 +167,23 @@ export function postSetupComputeProvider_ComputeApiClassToJSON(
 /** Post setup options, used to define the setup requirements. */
 export interface PostSetupOpts {
   /** User provided path to create the setup data files at */
-  dataDir: string;
+  readonly dataDir: string;
   /** Number of Post data units to generate */
-  numUnits: number;
+  readonly numUnits: number;
   /** Max size in bytes of a single file within the data files */
-  maxFileSize: string;
+  readonly maxFileSize: bigint;
   /** A `PostSetupComputeProvider` id */
-  computeProviderId: number;
+  readonly computeProviderId: number;
   /** Throttle down setup phase computations while user is interactive on system */
-  throttle: boolean;
+  readonly throttle: boolean;
 }
 
 export interface PostSetupStatus {
-  state: PostSetupStatus_State;
+  readonly state: PostSetupStatus_State;
   /** Number of labels (hashes) written to the data files */
-  numLabelsWritten: string;
+  readonly numLabelsWritten: bigint;
   /** setup options previously set by the user */
-  opts: PostSetupOpts | undefined;
+  readonly opts: PostSetupOpts | undefined;
 }
 
 export enum PostSetupStatus_State {
@@ -264,7 +264,7 @@ export const IsSmeshingResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): IsSmeshingResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseIsSmeshingResponse();
+    const message = createBaseIsSmeshingResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -289,12 +289,12 @@ export const IsSmeshingResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<IsSmeshingResponse>, I>>(base?: I): IsSmeshingResponse {
+  create(base?: DeepPartial<IsSmeshingResponse>): IsSmeshingResponse {
     return IsSmeshingResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<IsSmeshingResponse>, I>>(object: I): IsSmeshingResponse {
-    const message = createBaseIsSmeshingResponse();
+  fromPartial(object: DeepPartial<IsSmeshingResponse>): IsSmeshingResponse {
+    const message = createBaseIsSmeshingResponse() as any;
     message.isSmeshing = object.isSmeshing ?? false;
     return message;
   },
@@ -318,7 +318,7 @@ export const StartSmeshingRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StartSmeshingRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStartSmeshingRequest();
+    const message = createBaseStartSmeshingRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -351,12 +351,12 @@ export const StartSmeshingRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StartSmeshingRequest>, I>>(base?: I): StartSmeshingRequest {
+  create(base?: DeepPartial<StartSmeshingRequest>): StartSmeshingRequest {
     return StartSmeshingRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StartSmeshingRequest>, I>>(object: I): StartSmeshingRequest {
-    const message = createBaseStartSmeshingRequest();
+  fromPartial(object: DeepPartial<StartSmeshingRequest>): StartSmeshingRequest {
+    const message = createBaseStartSmeshingRequest() as any;
     message.coinbase = (object.coinbase !== undefined && object.coinbase !== null)
       ? AccountId.fromPartial(object.coinbase)
       : undefined;
@@ -382,7 +382,7 @@ export const StartSmeshingResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StartSmeshingResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStartSmeshingResponse();
+    const message = createBaseStartSmeshingResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -407,12 +407,12 @@ export const StartSmeshingResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StartSmeshingResponse>, I>>(base?: I): StartSmeshingResponse {
+  create(base?: DeepPartial<StartSmeshingResponse>): StartSmeshingResponse {
     return StartSmeshingResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StartSmeshingResponse>, I>>(object: I): StartSmeshingResponse {
-    const message = createBaseStartSmeshingResponse();
+  fromPartial(object: DeepPartial<StartSmeshingResponse>): StartSmeshingResponse {
+    const message = createBaseStartSmeshingResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -435,7 +435,7 @@ export const StopSmeshingRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StopSmeshingRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStopSmeshingRequest();
+    const message = createBaseStopSmeshingRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -460,12 +460,12 @@ export const StopSmeshingRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StopSmeshingRequest>, I>>(base?: I): StopSmeshingRequest {
+  create(base?: DeepPartial<StopSmeshingRequest>): StopSmeshingRequest {
     return StopSmeshingRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StopSmeshingRequest>, I>>(object: I): StopSmeshingRequest {
-    const message = createBaseStopSmeshingRequest();
+  fromPartial(object: DeepPartial<StopSmeshingRequest>): StopSmeshingRequest {
+    const message = createBaseStopSmeshingRequest() as any;
     message.deleteFiles = object.deleteFiles ?? false;
     return message;
   },
@@ -486,7 +486,7 @@ export const StopSmeshingResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): StopSmeshingResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStopSmeshingResponse();
+    const message = createBaseStopSmeshingResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -511,12 +511,12 @@ export const StopSmeshingResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<StopSmeshingResponse>, I>>(base?: I): StopSmeshingResponse {
+  create(base?: DeepPartial<StopSmeshingResponse>): StopSmeshingResponse {
     return StopSmeshingResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<StopSmeshingResponse>, I>>(object: I): StopSmeshingResponse {
-    const message = createBaseStopSmeshingResponse();
+  fromPartial(object: DeepPartial<StopSmeshingResponse>): StopSmeshingResponse {
+    const message = createBaseStopSmeshingResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -539,7 +539,7 @@ export const SetCoinbaseRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SetCoinbaseRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSetCoinbaseRequest();
+    const message = createBaseSetCoinbaseRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -564,12 +564,12 @@ export const SetCoinbaseRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SetCoinbaseRequest>, I>>(base?: I): SetCoinbaseRequest {
+  create(base?: DeepPartial<SetCoinbaseRequest>): SetCoinbaseRequest {
     return SetCoinbaseRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SetCoinbaseRequest>, I>>(object: I): SetCoinbaseRequest {
-    const message = createBaseSetCoinbaseRequest();
+  fromPartial(object: DeepPartial<SetCoinbaseRequest>): SetCoinbaseRequest {
+    const message = createBaseSetCoinbaseRequest() as any;
     message.id = (object.id !== undefined && object.id !== null) ? AccountId.fromPartial(object.id) : undefined;
     return message;
   },
@@ -590,7 +590,7 @@ export const SetCoinbaseResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SetCoinbaseResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSetCoinbaseResponse();
+    const message = createBaseSetCoinbaseResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -615,12 +615,12 @@ export const SetCoinbaseResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SetCoinbaseResponse>, I>>(base?: I): SetCoinbaseResponse {
+  create(base?: DeepPartial<SetCoinbaseResponse>): SetCoinbaseResponse {
     return SetCoinbaseResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SetCoinbaseResponse>, I>>(object: I): SetCoinbaseResponse {
-    const message = createBaseSetCoinbaseResponse();
+  fromPartial(object: DeepPartial<SetCoinbaseResponse>): SetCoinbaseResponse {
+    const message = createBaseSetCoinbaseResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -643,7 +643,7 @@ export const MinGasResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): MinGasResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMinGasResponse();
+    const message = createBaseMinGasResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -668,12 +668,12 @@ export const MinGasResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<MinGasResponse>, I>>(base?: I): MinGasResponse {
+  create(base?: DeepPartial<MinGasResponse>): MinGasResponse {
     return MinGasResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<MinGasResponse>, I>>(object: I): MinGasResponse {
-    const message = createBaseMinGasResponse();
+  fromPartial(object: DeepPartial<MinGasResponse>): MinGasResponse {
+    const message = createBaseMinGasResponse() as any;
     message.mingas = (object.mingas !== undefined && object.mingas !== null)
       ? SimpleInt.fromPartial(object.mingas)
       : undefined;
@@ -696,7 +696,7 @@ export const SetMinGasRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SetMinGasRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSetMinGasRequest();
+    const message = createBaseSetMinGasRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -721,12 +721,12 @@ export const SetMinGasRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SetMinGasRequest>, I>>(base?: I): SetMinGasRequest {
+  create(base?: DeepPartial<SetMinGasRequest>): SetMinGasRequest {
     return SetMinGasRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SetMinGasRequest>, I>>(object: I): SetMinGasRequest {
-    const message = createBaseSetMinGasRequest();
+  fromPartial(object: DeepPartial<SetMinGasRequest>): SetMinGasRequest {
+    const message = createBaseSetMinGasRequest() as any;
     message.mingas = (object.mingas !== undefined && object.mingas !== null)
       ? SimpleInt.fromPartial(object.mingas)
       : undefined;
@@ -749,7 +749,7 @@ export const SetMinGasResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SetMinGasResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSetMinGasResponse();
+    const message = createBaseSetMinGasResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -774,12 +774,12 @@ export const SetMinGasResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SetMinGasResponse>, I>>(base?: I): SetMinGasResponse {
+  create(base?: DeepPartial<SetMinGasResponse>): SetMinGasResponse {
     return SetMinGasResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SetMinGasResponse>, I>>(object: I): SetMinGasResponse {
-    const message = createBaseSetMinGasResponse();
+  fromPartial(object: DeepPartial<SetMinGasResponse>): SetMinGasResponse {
+    const message = createBaseSetMinGasResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? Status.fromPartial(object.status)
       : undefined;
@@ -802,7 +802,7 @@ export const SmesherIDResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): SmesherIDResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSmesherIDResponse();
+    const message = createBaseSmesherIDResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -828,12 +828,12 @@ export const SmesherIDResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SmesherIDResponse>, I>>(base?: I): SmesherIDResponse {
+  create(base?: DeepPartial<SmesherIDResponse>): SmesherIDResponse {
     return SmesherIDResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<SmesherIDResponse>, I>>(object: I): SmesherIDResponse {
-    const message = createBaseSmesherIDResponse();
+  fromPartial(object: DeepPartial<SmesherIDResponse>): SmesherIDResponse {
+    const message = createBaseSmesherIDResponse() as any;
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
       ? AccountId.fromPartial(object.accountId)
       : undefined;
@@ -856,7 +856,7 @@ export const CoinbaseResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): CoinbaseResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCoinbaseResponse();
+    const message = createBaseCoinbaseResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -882,12 +882,12 @@ export const CoinbaseResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CoinbaseResponse>, I>>(base?: I): CoinbaseResponse {
+  create(base?: DeepPartial<CoinbaseResponse>): CoinbaseResponse {
     return CoinbaseResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CoinbaseResponse>, I>>(object: I): CoinbaseResponse {
-    const message = createBaseCoinbaseResponse();
+  fromPartial(object: DeepPartial<CoinbaseResponse>): CoinbaseResponse {
+    const message = createBaseCoinbaseResponse() as any;
     message.accountId = (object.accountId !== undefined && object.accountId !== null)
       ? AccountId.fromPartial(object.accountId)
       : undefined;
@@ -907,7 +907,7 @@ export const EstimatedRewardsRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EstimatedRewardsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEstimatedRewardsRequest();
+    const message = createBaseEstimatedRewardsRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -928,12 +928,12 @@ export const EstimatedRewardsRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EstimatedRewardsRequest>, I>>(base?: I): EstimatedRewardsRequest {
+  create(base?: DeepPartial<EstimatedRewardsRequest>): EstimatedRewardsRequest {
     return EstimatedRewardsRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EstimatedRewardsRequest>, I>>(_: I): EstimatedRewardsRequest {
-    const message = createBaseEstimatedRewardsRequest();
+  fromPartial(_: DeepPartial<EstimatedRewardsRequest>): EstimatedRewardsRequest {
+    const message = createBaseEstimatedRewardsRequest() as any;
     return message;
   },
 };
@@ -956,7 +956,7 @@ export const EstimatedRewardsResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EstimatedRewardsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEstimatedRewardsResponse();
+    const message = createBaseEstimatedRewardsResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -988,12 +988,12 @@ export const EstimatedRewardsResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EstimatedRewardsResponse>, I>>(base?: I): EstimatedRewardsResponse {
+  create(base?: DeepPartial<EstimatedRewardsResponse>): EstimatedRewardsResponse {
     return EstimatedRewardsResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EstimatedRewardsResponse>, I>>(object: I): EstimatedRewardsResponse {
-    const message = createBaseEstimatedRewardsResponse();
+  fromPartial(object: DeepPartial<EstimatedRewardsResponse>): EstimatedRewardsResponse {
+    const message = createBaseEstimatedRewardsResponse() as any;
     message.amount = (object.amount !== undefined && object.amount !== null)
       ? Amount.fromPartial(object.amount)
       : undefined;
@@ -1017,7 +1017,7 @@ export const PostSetupComputeProvidersRequest = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupComputeProvidersRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupComputeProvidersRequest();
+    const message = createBasePostSetupComputeProvidersRequest() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1042,16 +1042,12 @@ export const PostSetupComputeProvidersRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupComputeProvidersRequest>, I>>(
-    base?: I,
-  ): PostSetupComputeProvidersRequest {
+  create(base?: DeepPartial<PostSetupComputeProvidersRequest>): PostSetupComputeProvidersRequest {
     return PostSetupComputeProvidersRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupComputeProvidersRequest>, I>>(
-    object: I,
-  ): PostSetupComputeProvidersRequest {
-    const message = createBasePostSetupComputeProvidersRequest();
+  fromPartial(object: DeepPartial<PostSetupComputeProvidersRequest>): PostSetupComputeProvidersRequest {
+    const message = createBasePostSetupComputeProvidersRequest() as any;
     message.benchmark = object.benchmark ?? false;
     return message;
   },
@@ -1072,7 +1068,7 @@ export const PostSetupComputeProvidersResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupComputeProvidersResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupComputeProvidersResponse();
+    const message = createBasePostSetupComputeProvidersResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1105,16 +1101,12 @@ export const PostSetupComputeProvidersResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupComputeProvidersResponse>, I>>(
-    base?: I,
-  ): PostSetupComputeProvidersResponse {
+  create(base?: DeepPartial<PostSetupComputeProvidersResponse>): PostSetupComputeProvidersResponse {
     return PostSetupComputeProvidersResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupComputeProvidersResponse>, I>>(
-    object: I,
-  ): PostSetupComputeProvidersResponse {
-    const message = createBasePostSetupComputeProvidersResponse();
+  fromPartial(object: DeepPartial<PostSetupComputeProvidersResponse>): PostSetupComputeProvidersResponse {
+    const message = createBasePostSetupComputeProvidersResponse() as any;
     message.providers = object.providers?.map((e) => PostSetupComputeProvider.fromPartial(e)) || [];
     return message;
   },
@@ -1135,7 +1127,7 @@ export const PostSetupStatusResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupStatusResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupStatusResponse();
+    const message = createBasePostSetupStatusResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1160,12 +1152,12 @@ export const PostSetupStatusResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupStatusResponse>, I>>(base?: I): PostSetupStatusResponse {
+  create(base?: DeepPartial<PostSetupStatusResponse>): PostSetupStatusResponse {
     return PostSetupStatusResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupStatusResponse>, I>>(object: I): PostSetupStatusResponse {
-    const message = createBasePostSetupStatusResponse();
+  fromPartial(object: DeepPartial<PostSetupStatusResponse>): PostSetupStatusResponse {
+    const message = createBasePostSetupStatusResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? PostSetupStatus.fromPartial(object.status)
       : undefined;
@@ -1188,7 +1180,7 @@ export const PostSetupStatusStreamResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupStatusStreamResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupStatusStreamResponse();
+    const message = createBasePostSetupStatusStreamResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1213,14 +1205,12 @@ export const PostSetupStatusStreamResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupStatusStreamResponse>, I>>(base?: I): PostSetupStatusStreamResponse {
+  create(base?: DeepPartial<PostSetupStatusStreamResponse>): PostSetupStatusStreamResponse {
     return PostSetupStatusStreamResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupStatusStreamResponse>, I>>(
-    object: I,
-  ): PostSetupStatusStreamResponse {
-    const message = createBasePostSetupStatusStreamResponse();
+  fromPartial(object: DeepPartial<PostSetupStatusStreamResponse>): PostSetupStatusStreamResponse {
+    const message = createBasePostSetupStatusStreamResponse() as any;
     message.status = (object.status !== undefined && object.status !== null)
       ? PostSetupStatus.fromPartial(object.status)
       : undefined;
@@ -1229,7 +1219,7 @@ export const PostSetupStatusStreamResponse = {
 };
 
 function createBasePostConfigResponse(): PostConfigResponse {
-  return { bitsPerLabel: 0, labelsPerUnit: "0", minNumUnits: 0, maxNumUnits: 0, k1: 0, k2: 0 };
+  return { bitsPerLabel: 0, labelsPerUnit: BigInt("0"), minNumUnits: 0, maxNumUnits: 0, k1: 0, k2: 0 };
 }
 
 export const PostConfigResponse = {
@@ -1237,8 +1227,8 @@ export const PostConfigResponse = {
     if (message.bitsPerLabel !== 0) {
       writer.uint32(8).uint32(message.bitsPerLabel);
     }
-    if (message.labelsPerUnit !== "0") {
-      writer.uint32(16).uint64(message.labelsPerUnit);
+    if (message.labelsPerUnit !== BigInt("0")) {
+      writer.uint32(16).uint64(message.labelsPerUnit.toString());
     }
     if (message.minNumUnits !== 0) {
       writer.uint32(24).uint32(message.minNumUnits);
@@ -1258,7 +1248,7 @@ export const PostConfigResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostConfigResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostConfigResponse();
+    const message = createBasePostConfigResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1266,7 +1256,7 @@ export const PostConfigResponse = {
           message.bitsPerLabel = reader.uint32();
           break;
         case 2:
-          message.labelsPerUnit = longToString(reader.uint64() as Long);
+          message.labelsPerUnit = longToBigint(reader.uint64() as Long);
           break;
         case 3:
           message.minNumUnits = reader.uint32();
@@ -1291,7 +1281,7 @@ export const PostConfigResponse = {
   fromJSON(object: any): PostConfigResponse {
     return {
       bitsPerLabel: isSet(object.bitsPerLabel) ? Number(object.bitsPerLabel) : 0,
-      labelsPerUnit: isSet(object.labelsPerUnit) ? String(object.labelsPerUnit) : "0",
+      labelsPerUnit: isSet(object.labelsPerUnit) ? BigInt(object.labelsPerUnit) : BigInt("0"),
       minNumUnits: isSet(object.minNumUnits) ? Number(object.minNumUnits) : 0,
       maxNumUnits: isSet(object.maxNumUnits) ? Number(object.maxNumUnits) : 0,
       k1: isSet(object.k1) ? Number(object.k1) : 0,
@@ -1302,7 +1292,7 @@ export const PostConfigResponse = {
   toJSON(message: PostConfigResponse): unknown {
     const obj: any = {};
     message.bitsPerLabel !== undefined && (obj.bitsPerLabel = Math.round(message.bitsPerLabel));
-    message.labelsPerUnit !== undefined && (obj.labelsPerUnit = message.labelsPerUnit);
+    message.labelsPerUnit !== undefined && (obj.labelsPerUnit = message.labelsPerUnit.toString());
     message.minNumUnits !== undefined && (obj.minNumUnits = Math.round(message.minNumUnits));
     message.maxNumUnits !== undefined && (obj.maxNumUnits = Math.round(message.maxNumUnits));
     message.k1 !== undefined && (obj.k1 = Math.round(message.k1));
@@ -1310,14 +1300,14 @@ export const PostConfigResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostConfigResponse>, I>>(base?: I): PostConfigResponse {
+  create(base?: DeepPartial<PostConfigResponse>): PostConfigResponse {
     return PostConfigResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostConfigResponse>, I>>(object: I): PostConfigResponse {
-    const message = createBasePostConfigResponse();
+  fromPartial(object: DeepPartial<PostConfigResponse>): PostConfigResponse {
+    const message = createBasePostConfigResponse() as any;
     message.bitsPerLabel = object.bitsPerLabel ?? 0;
-    message.labelsPerUnit = object.labelsPerUnit ?? "0";
+    message.labelsPerUnit = object.labelsPerUnit ?? BigInt("0");
     message.minNumUnits = object.minNumUnits ?? 0;
     message.maxNumUnits = object.maxNumUnits ?? 0;
     message.k1 = object.k1 ?? 0;
@@ -1327,7 +1317,7 @@ export const PostConfigResponse = {
 };
 
 function createBasePostSetupComputeProvider(): PostSetupComputeProvider {
-  return { id: 0, model: "", computeApi: 0, performance: "0" };
+  return { id: 0, model: "", computeApi: 0, performance: BigInt("0") };
 }
 
 export const PostSetupComputeProvider = {
@@ -1341,8 +1331,8 @@ export const PostSetupComputeProvider = {
     if (message.computeApi !== 0) {
       writer.uint32(24).int32(message.computeApi);
     }
-    if (message.performance !== "0") {
-      writer.uint32(32).uint64(message.performance);
+    if (message.performance !== BigInt("0")) {
+      writer.uint32(32).uint64(message.performance.toString());
     }
     return writer;
   },
@@ -1350,7 +1340,7 @@ export const PostSetupComputeProvider = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupComputeProvider {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupComputeProvider();
+    const message = createBasePostSetupComputeProvider() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1364,7 +1354,7 @@ export const PostSetupComputeProvider = {
           message.computeApi = reader.int32() as any;
           break;
         case 4:
-          message.performance = longToString(reader.uint64() as Long);
+          message.performance = longToBigint(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1379,7 +1369,7 @@ export const PostSetupComputeProvider = {
       id: isSet(object.id) ? Number(object.id) : 0,
       model: isSet(object.model) ? String(object.model) : "",
       computeApi: isSet(object.computeApi) ? postSetupComputeProvider_ComputeApiClassFromJSON(object.computeApi) : 0,
-      performance: isSet(object.performance) ? String(object.performance) : "0",
+      performance: isSet(object.performance) ? BigInt(object.performance) : BigInt("0"),
     };
   },
 
@@ -1389,26 +1379,26 @@ export const PostSetupComputeProvider = {
     message.model !== undefined && (obj.model = message.model);
     message.computeApi !== undefined &&
       (obj.computeApi = postSetupComputeProvider_ComputeApiClassToJSON(message.computeApi));
-    message.performance !== undefined && (obj.performance = message.performance);
+    message.performance !== undefined && (obj.performance = message.performance.toString());
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupComputeProvider>, I>>(base?: I): PostSetupComputeProvider {
+  create(base?: DeepPartial<PostSetupComputeProvider>): PostSetupComputeProvider {
     return PostSetupComputeProvider.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupComputeProvider>, I>>(object: I): PostSetupComputeProvider {
-    const message = createBasePostSetupComputeProvider();
+  fromPartial(object: DeepPartial<PostSetupComputeProvider>): PostSetupComputeProvider {
+    const message = createBasePostSetupComputeProvider() as any;
     message.id = object.id ?? 0;
     message.model = object.model ?? "";
     message.computeApi = object.computeApi ?? 0;
-    message.performance = object.performance ?? "0";
+    message.performance = object.performance ?? BigInt("0");
     return message;
   },
 };
 
 function createBasePostSetupOpts(): PostSetupOpts {
-  return { dataDir: "", numUnits: 0, maxFileSize: "0", computeProviderId: 0, throttle: false };
+  return { dataDir: "", numUnits: 0, maxFileSize: BigInt("0"), computeProviderId: 0, throttle: false };
 }
 
 export const PostSetupOpts = {
@@ -1419,8 +1409,8 @@ export const PostSetupOpts = {
     if (message.numUnits !== 0) {
       writer.uint32(16).uint32(message.numUnits);
     }
-    if (message.maxFileSize !== "0") {
-      writer.uint32(24).uint64(message.maxFileSize);
+    if (message.maxFileSize !== BigInt("0")) {
+      writer.uint32(24).uint64(message.maxFileSize.toString());
     }
     if (message.computeProviderId !== 0) {
       writer.uint32(32).uint32(message.computeProviderId);
@@ -1434,7 +1424,7 @@ export const PostSetupOpts = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupOpts {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupOpts();
+    const message = createBasePostSetupOpts() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1445,7 +1435,7 @@ export const PostSetupOpts = {
           message.numUnits = reader.uint32();
           break;
         case 3:
-          message.maxFileSize = longToString(reader.uint64() as Long);
+          message.maxFileSize = longToBigint(reader.uint64() as Long);
           break;
         case 4:
           message.computeProviderId = reader.uint32();
@@ -1465,7 +1455,7 @@ export const PostSetupOpts = {
     return {
       dataDir: isSet(object.dataDir) ? String(object.dataDir) : "",
       numUnits: isSet(object.numUnits) ? Number(object.numUnits) : 0,
-      maxFileSize: isSet(object.maxFileSize) ? String(object.maxFileSize) : "0",
+      maxFileSize: isSet(object.maxFileSize) ? BigInt(object.maxFileSize) : BigInt("0"),
       computeProviderId: isSet(object.computeProviderId) ? Number(object.computeProviderId) : 0,
       throttle: isSet(object.throttle) ? Boolean(object.throttle) : false,
     };
@@ -1475,21 +1465,21 @@ export const PostSetupOpts = {
     const obj: any = {};
     message.dataDir !== undefined && (obj.dataDir = message.dataDir);
     message.numUnits !== undefined && (obj.numUnits = Math.round(message.numUnits));
-    message.maxFileSize !== undefined && (obj.maxFileSize = message.maxFileSize);
+    message.maxFileSize !== undefined && (obj.maxFileSize = message.maxFileSize.toString());
     message.computeProviderId !== undefined && (obj.computeProviderId = Math.round(message.computeProviderId));
     message.throttle !== undefined && (obj.throttle = message.throttle);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupOpts>, I>>(base?: I): PostSetupOpts {
+  create(base?: DeepPartial<PostSetupOpts>): PostSetupOpts {
     return PostSetupOpts.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupOpts>, I>>(object: I): PostSetupOpts {
-    const message = createBasePostSetupOpts();
+  fromPartial(object: DeepPartial<PostSetupOpts>): PostSetupOpts {
+    const message = createBasePostSetupOpts() as any;
     message.dataDir = object.dataDir ?? "";
     message.numUnits = object.numUnits ?? 0;
-    message.maxFileSize = object.maxFileSize ?? "0";
+    message.maxFileSize = object.maxFileSize ?? BigInt("0");
     message.computeProviderId = object.computeProviderId ?? 0;
     message.throttle = object.throttle ?? false;
     return message;
@@ -1497,7 +1487,7 @@ export const PostSetupOpts = {
 };
 
 function createBasePostSetupStatus(): PostSetupStatus {
-  return { state: 0, numLabelsWritten: "0", opts: undefined };
+  return { state: 0, numLabelsWritten: BigInt("0"), opts: undefined };
 }
 
 export const PostSetupStatus = {
@@ -1505,8 +1495,8 @@ export const PostSetupStatus = {
     if (message.state !== 0) {
       writer.uint32(8).int32(message.state);
     }
-    if (message.numLabelsWritten !== "0") {
-      writer.uint32(16).uint64(message.numLabelsWritten);
+    if (message.numLabelsWritten !== BigInt("0")) {
+      writer.uint32(16).uint64(message.numLabelsWritten.toString());
     }
     if (message.opts !== undefined) {
       PostSetupOpts.encode(message.opts, writer.uint32(26).fork()).ldelim();
@@ -1517,7 +1507,7 @@ export const PostSetupStatus = {
   decode(input: _m0.Reader | Uint8Array, length?: number): PostSetupStatus {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostSetupStatus();
+    const message = createBasePostSetupStatus() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1525,7 +1515,7 @@ export const PostSetupStatus = {
           message.state = reader.int32() as any;
           break;
         case 2:
-          message.numLabelsWritten = longToString(reader.uint64() as Long);
+          message.numLabelsWritten = longToBigint(reader.uint64() as Long);
           break;
         case 3:
           message.opts = PostSetupOpts.decode(reader, reader.uint32());
@@ -1541,7 +1531,7 @@ export const PostSetupStatus = {
   fromJSON(object: any): PostSetupStatus {
     return {
       state: isSet(object.state) ? postSetupStatus_StateFromJSON(object.state) : 0,
-      numLabelsWritten: isSet(object.numLabelsWritten) ? String(object.numLabelsWritten) : "0",
+      numLabelsWritten: isSet(object.numLabelsWritten) ? BigInt(object.numLabelsWritten) : BigInt("0"),
       opts: isSet(object.opts) ? PostSetupOpts.fromJSON(object.opts) : undefined,
     };
   },
@@ -1549,19 +1539,19 @@ export const PostSetupStatus = {
   toJSON(message: PostSetupStatus): unknown {
     const obj: any = {};
     message.state !== undefined && (obj.state = postSetupStatus_StateToJSON(message.state));
-    message.numLabelsWritten !== undefined && (obj.numLabelsWritten = message.numLabelsWritten);
+    message.numLabelsWritten !== undefined && (obj.numLabelsWritten = message.numLabelsWritten.toString());
     message.opts !== undefined && (obj.opts = message.opts ? PostSetupOpts.toJSON(message.opts) : undefined);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<PostSetupStatus>, I>>(base?: I): PostSetupStatus {
+  create(base?: DeepPartial<PostSetupStatus>): PostSetupStatus {
     return PostSetupStatus.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostSetupStatus>, I>>(object: I): PostSetupStatus {
-    const message = createBasePostSetupStatus();
+  fromPartial(object: DeepPartial<PostSetupStatus>): PostSetupStatus {
+    const message = createBasePostSetupStatus() as any;
     message.state = object.state ?? 0;
-    message.numLabelsWritten = object.numLabelsWritten ?? "0";
+    message.numLabelsWritten = object.numLabelsWritten ?? BigInt("0");
     message.opts = (object.opts !== undefined && object.opts !== null)
       ? PostSetupOpts.fromPartial(object.opts)
       : undefined;
@@ -1576,12 +1566,8 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToString(long: Long) {
-  return long.toString();
+function longToBigint(long: Long) {
+  return BigInt(long.toString());
 }
 
 if (_m0.util.Long !== Long) {

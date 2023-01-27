@@ -6,32 +6,32 @@ import { LayerNumber, SimpleInt, SmesherId } from "./types";
 export const protobufPackage = "spacemesh.v1";
 
 export interface AccountsResponse {
-  accountWrapper: Account[];
+  readonly accountWrapper: readonly Account[];
 }
 
 export interface NetworkInfoResponse {
-  id: string;
+  readonly id: string;
 }
 
 export interface EpochData {
-  beacon: Uint8Array;
+  readonly beacon: Uint8Array;
 }
 
 export interface Eligibility {
-  j: number;
-  signature: Uint8Array;
+  readonly j: number;
+  readonly signature: Uint8Array;
 }
 
 export interface Proposal {
-  id: Uint8Array;
-  epoch: SimpleInt | undefined;
-  layer: LayerNumber | undefined;
-  smesher: SmesherId | undefined;
-  reference?: Uint8Array | undefined;
-  data?: EpochData | undefined;
-  ballot: Uint8Array;
-  eligibilities: Eligibility[];
-  status: Proposal_Status;
+  readonly id: Uint8Array;
+  readonly epoch: SimpleInt | undefined;
+  readonly layer: LayerNumber | undefined;
+  readonly smesher: SmesherId | undefined;
+  readonly reference?: Uint8Array | undefined;
+  readonly data?: EpochData | undefined;
+  readonly ballot: Uint8Array;
+  readonly eligibilities: readonly Eligibility[];
+  readonly status: Proposal_Status;
 }
 
 export enum Proposal_Status {
@@ -82,7 +82,7 @@ export const AccountsResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): AccountsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAccountsResponse();
+    const message = createBaseAccountsResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -115,12 +115,12 @@ export const AccountsResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<AccountsResponse>, I>>(base?: I): AccountsResponse {
+  create(base?: DeepPartial<AccountsResponse>): AccountsResponse {
     return AccountsResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<AccountsResponse>, I>>(object: I): AccountsResponse {
-    const message = createBaseAccountsResponse();
+  fromPartial(object: DeepPartial<AccountsResponse>): AccountsResponse {
+    const message = createBaseAccountsResponse() as any;
     message.accountWrapper = object.accountWrapper?.map((e) => Account.fromPartial(e)) || [];
     return message;
   },
@@ -141,7 +141,7 @@ export const NetworkInfoResponse = {
   decode(input: _m0.Reader | Uint8Array, length?: number): NetworkInfoResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseNetworkInfoResponse();
+    const message = createBaseNetworkInfoResponse() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -166,12 +166,12 @@ export const NetworkInfoResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<NetworkInfoResponse>, I>>(base?: I): NetworkInfoResponse {
+  create(base?: DeepPartial<NetworkInfoResponse>): NetworkInfoResponse {
     return NetworkInfoResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<NetworkInfoResponse>, I>>(object: I): NetworkInfoResponse {
-    const message = createBaseNetworkInfoResponse();
+  fromPartial(object: DeepPartial<NetworkInfoResponse>): NetworkInfoResponse {
+    const message = createBaseNetworkInfoResponse() as any;
     message.id = object.id ?? "";
     return message;
   },
@@ -192,7 +192,7 @@ export const EpochData = {
   decode(input: _m0.Reader | Uint8Array, length?: number): EpochData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEpochData();
+    const message = createBaseEpochData() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -218,12 +218,12 @@ export const EpochData = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<EpochData>, I>>(base?: I): EpochData {
+  create(base?: DeepPartial<EpochData>): EpochData {
     return EpochData.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<EpochData>, I>>(object: I): EpochData {
-    const message = createBaseEpochData();
+  fromPartial(object: DeepPartial<EpochData>): EpochData {
+    const message = createBaseEpochData() as any;
     message.beacon = object.beacon ?? new Uint8Array();
     return message;
   },
@@ -247,7 +247,7 @@ export const Eligibility = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Eligibility {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEligibility();
+    const message = createBaseEligibility() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -280,12 +280,12 @@ export const Eligibility = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Eligibility>, I>>(base?: I): Eligibility {
+  create(base?: DeepPartial<Eligibility>): Eligibility {
     return Eligibility.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Eligibility>, I>>(object: I): Eligibility {
-    const message = createBaseEligibility();
+  fromPartial(object: DeepPartial<Eligibility>): Eligibility {
+    const message = createBaseEligibility() as any;
     message.j = object.j ?? 0;
     message.signature = object.signature ?? new Uint8Array();
     return message;
@@ -341,7 +341,7 @@ export const Proposal = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Proposal {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProposal();
+    const message = createBaseProposal() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -416,12 +416,12 @@ export const Proposal = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Proposal>, I>>(base?: I): Proposal {
+  create(base?: DeepPartial<Proposal>): Proposal {
     return Proposal.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Proposal>, I>>(object: I): Proposal {
-    const message = createBaseProposal();
+  fromPartial(object: DeepPartial<Proposal>): Proposal {
+    const message = createBaseProposal() as any;
     message.id = object.id ?? new Uint8Array();
     message.epoch = (object.epoch !== undefined && object.epoch !== null)
       ? SimpleInt.fromPartial(object.epoch)
@@ -491,10 +491,6 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

@@ -15,18 +15,18 @@ export const protobufPackage = "google.rpc";
  */
 export interface Status {
   /** The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code]. */
-  code: number;
+  readonly code: number;
   /**
    * A developer-facing error message, which should be in English. Any
    * user-facing error message should be localized and sent in the
    * [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
    */
-  message: string;
+  readonly message: string;
   /**
    * A list of messages that carry the error details.  There is a common set of
    * message types for APIs to use.
    */
-  details: Any[];
+  readonly details: readonly Any[];
 }
 
 function createBaseStatus(): Status {
@@ -50,7 +50,7 @@ export const Status = {
   decode(input: _m0.Reader | Uint8Array, length?: number): Status {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStatus();
+    const message = createBaseStatus() as any;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -91,12 +91,12 @@ export const Status = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<Status>, I>>(base?: I): Status {
+  create(base?: DeepPartial<Status>): Status {
     return Status.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<Status>, I>>(object: I): Status {
-    const message = createBaseStatus();
+  fromPartial(object: DeepPartial<Status>): Status {
+    const message = createBaseStatus() as any;
     message.code = object.code ?? 0;
     message.message = object.message ?? "";
     message.details = object.details?.map((e) => Any.fromPartial(e)) || [];
@@ -110,10 +110,6 @@ export type DeepPartial<T> = T extends Builtin ? T
   : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
   : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
-
-type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
