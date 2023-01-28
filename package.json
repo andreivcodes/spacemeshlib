@@ -1,0 +1,37 @@
+{
+  "name": "@andreivcodes/spacemeshlib",
+  "author": "andreiv",
+  "version": "2.0.0",
+  "description": "",
+  "private": true,
+  "license": "MIT",
+  "main": "lib/index.cjs",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "type": "module",
+  "sideEffects": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:wasm": "cd ./src/wasm/go && GOOS=js GOARCH=wasm go build -o ./../ed25519.wasm",
+    "build:proto": "protoc --plugin=node_modules/ts-proto/protoc-gen-ts_proto --ts_proto_opt=esModuleInterop=true,outputServices=nice-grpc,outputServices=generic-definitions,useMapType=true,useReadonlyTypes=true,useExactTypes=false,forceLong=bigint --ts_proto_out=./src/proto/dist  -I=./src/proto -I=./src/proto/google ./src/proto/spacemesh/v1/*.proto",
+    "start": "node lib/test",
+    "dev": "tsup && node lib/test",
+    "clean": "rimraf node_modules dist lib"
+  },
+  "dependencies": {
+    "bip39": "^3.0.4",
+    "crypto": "^1.0.1",
+    "nice-grpc-common": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "ctix": "^1.8.2",
+    "rimraf": "^4.1.2",
+    "ts-proto": "^1.138.0",
+    "tsup": "^6.5.0",
+    "tsx": "^3.12.2",
+    "typescript": "4.6"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "project": "./tsconfig.json",
+  "useSemicolon": false,
+  "useTimestamp": true,
+  "useComment": true,
+  "quote": "'",
+  "overwrite": true,
+  "keepFileExt": false,
+  "skipEmptyDir": true,
+  "output": "./src",
+  "useRootDir": true,
+  "includeBackup": false,
+  "startAt": "./src"
+}
