@@ -1,8 +1,0 @@
-node_modules
-.DS_Store
-dist
-.env
-tests/coverage
-coverage.txt
-yarn-error.log
-src/wasm/ed25519-WASM/wasm_exec.js

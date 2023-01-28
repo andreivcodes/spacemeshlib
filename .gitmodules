@@ -1,6 +1,0 @@
-[submodule "src/proto/api"]
-	path = src/proto/api
-	url = https://github.com/spacemeshos/api
-[submodule "src/wasm/ed25519-WASM"]
-	path = src/wasm/ed25519-WASM
-	url = https://github.com/andreivcodes/ed25519-WASM

@@ -1,8 +1,0 @@
-{
-  "src/**": [
-    "DeepPartial",
-    "ServerStreamingMethodResult",
-    "Exact",
-    "protobufPackage"
-  ]
-}
