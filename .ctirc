@@ -1,8 +1,8 @@
 {
   "project": "./tsconfig.json",
   "useSemicolon": false,
-  "useTimestamp": true,
-  "useComment": true,
+  "useTimestamp": false,
+  "useComment": false,
   "quote": "'",
   "overwrite": true,
   "keepFileExt": false,

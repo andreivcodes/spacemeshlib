@@ -19,7 +19,6 @@ export const protobufPackage = "spacemesh.v1";
  * mesh to STF processing. This service is separate from the Mesh and
  * GlobalState services because txs move across both.
  */
-export type TransactionServiceDefinition = typeof TransactionServiceDefinition;
 export const TransactionServiceDefinition = {
   name: "TransactionService",
   fullName: "spacemesh.v1.TransactionService",
@@ -82,7 +81,7 @@ export interface TransactionServiceImplementation<CallContextExt = {}> {
    */
   submitTransaction(
     request: SubmitTransactionRequest,
-    context: CallContext & CallContextExt,
+    context: CallContext & CallContextExt
   ): Promise<DeepPartial<SubmitTransactionResponse>>;
   /**
    * Returns current tx state for one or more txs which indicates if a tx is
@@ -91,7 +90,7 @@ export interface TransactionServiceImplementation<CallContextExt = {}> {
    */
   transactionsState(
     request: TransactionsStateRequest,
-    context: CallContext & CallContextExt,
+    context: CallContext & CallContextExt
   ): Promise<DeepPartial<TransactionsStateResponse>>;
   /**
    * Returns tx state for one or more txs every time the tx state changes for
@@ -99,12 +98,12 @@ export interface TransactionServiceImplementation<CallContextExt = {}> {
    */
   transactionsStateStream(
     request: TransactionsStateStreamRequest,
-    context: CallContext & CallContextExt,
+    context: CallContext & CallContextExt
   ): ServerStreamingMethodResult<DeepPartial<TransactionsStateStreamResponse>>;
   /** StreamResults streams historical data and watch live events with transaction results. */
   streamResults(
     request: TransactionResultsRequest,
-    context: CallContext & CallContextExt,
+    context: CallContext & CallContextExt
   ): ServerStreamingMethodResult<DeepPartial<TransactionResult>>;
 }
 
@@ -116,7 +115,7 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
    */
   submitTransaction(
     request: DeepPartial<SubmitTransactionRequest>,
-    options?: CallOptions & CallOptionsExt,
+    options?: CallOptions & CallOptionsExt
   ): Promise<SubmitTransactionResponse>;
   /**
    * Returns current tx state for one or more txs which indicates if a tx is
@@ -125,7 +124,7 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
    */
   transactionsState(
     request: DeepPartial<TransactionsStateRequest>,
-    options?: CallOptions & CallOptionsExt,
+    options?: CallOptions & CallOptionsExt
   ): Promise<TransactionsStateResponse>;
   /**
    * Returns tx state for one or more txs every time the tx state changes for
@@ -133,20 +132,34 @@ export interface TransactionServiceClient<CallOptionsExt = {}> {
    */
   transactionsStateStream(
     request: DeepPartial<TransactionsStateStreamRequest>,
-    options?: CallOptions & CallOptionsExt,
+    options?: CallOptions & CallOptionsExt
   ): AsyncIterable<TransactionsStateStreamResponse>;
   /** StreamResults streams historical data and watch live events with transaction results. */
   streamResults(
     request: DeepPartial<TransactionResultsRequest>,
-    options?: CallOptions & CallOptionsExt,
+    options?: CallOptions & CallOptionsExt
   ): AsyncIterable<TransactionResult>;
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+export type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
-export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };
+export type ServerStreamingMethodResult<Response> = {
+  [Symbol.asyncIterator](): AsyncIterator<Response, void>;
+};

@@ -79,3 +79,21 @@ const newChildKeyPair = (index: number, seed: Uint8Array) => {
     secretKey,
   };
 };
+
+export const genKeyPair = (seed: Buffer) => {
+  let publicKey = new Uint8Array(32);
+  let secretKey = new Uint8Array(64);
+
+  const saveKeys = (pk: Uint8Array, sk: Uint8Array) => {
+    if (pk === null || sk === null) {
+      throw new Error("key generation failed");
+    }
+    publicKey = pk;
+    secretKey = sk;
+  };
+
+  //@ts-ignore
+  global.__generateKeyPair(seed, saveKeys);
+
+  return { publicKey, secretKey };
+};
