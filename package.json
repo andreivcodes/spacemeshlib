@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "bip39": "^3.0.4",
-    "crypto": "^1.0.1",
     "nice-grpc-common": "^2.0.1"
   },
   "devDependencies": {
