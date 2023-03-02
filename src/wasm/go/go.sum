@@ -1,2 +1,4 @@
 github.com/spacemeshos/ed25519 v0.1.1 h1:MQdxbFWnaPQyqp3CpJsN6j+AmSsGn47PHOrlK5lfw9A=
 github.com/spacemeshos/ed25519 v0.1.1/go.mod h1:g9ezAbHJwSpNryRrISJFTyRY7CjNRgY+DjrAEpFG5Go=
+github.com/spacemeshos/ed25519-recovery v0.1.0 h1:ITp0ANR5MiJda51G5R0dV1K0oVcZYuMF1dVxgCP0pAk=
+github.com/spacemeshos/ed25519-recovery v0.1.0/go.mod h1:3U2H/u9WginYc6AmIoVWPR0A085I+w1RNnr3rWMCgCQ=

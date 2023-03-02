@@ -2,17 +2,14 @@ package main
 
 import (
 	"bytes"
-	"syscall/js"
-
 	"fmt"
 	"reflect"
 	"runtime"
-
-	"github.com/spacemeshos/ed25519"
-
+	"syscall/js"
 	"unsafe"
-)
 
+	"github.com/spacemeshos/ed25519-recovery"
+)
 var c chan bool
 
 func init() {
@@ -174,7 +171,7 @@ var Sign2Callback = js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 	var sk ed25519.PrivateKey = TypedArrayToByteSlice(args[0])
 	var message = TypedArrayToByteSlice(args[1])
 	callback := args[len(args)-1:][0]
-	signature := ed25519.Sign2(sk, message)
+	signature := ed25519.Sign(sk, message)
 	callback.Invoke(SliceToTypedArray(signature))
 	return nil
 })
@@ -183,7 +180,7 @@ var Verify2Callback = js.FuncOf(func(this js.Value, args []js.Value) interface{}
 	var pk ed25519.PublicKey = TypedArrayToByteSlice(args[0])
 	var message = TypedArrayToByteSlice(args[1])
 	var signature = TypedArrayToByteSlice(args[2])
-	isValid := ed25519.Verify2(pk, message, signature)
+	isValid := ed25519.Verify(pk, message, signature)
 	callback := args[len(args)-1:][0]
 	callback.Invoke(isValid)
 	return nil
